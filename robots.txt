@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://xgbt.github.io/sitemap.xml
