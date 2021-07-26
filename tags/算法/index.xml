@@ -6,7 +6,16 @@
     <description>Recent content in 算法 on 西瓜不甜</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 09 Jul 2021 14:28:20 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 26 Jul 2021 14:31:05 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>子序列问题</title>
+      <link>https://xgbt.github.io/post/%E5%AD%90%E5%BA%8F%E5%88%97%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Mon, 26 Jul 2021 14:31:05 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E5%AD%90%E5%BA%8F%E5%88%97%E9%97%AE%E9%A2%98/</guid>
+      <description>1143. 最长公共子序列 给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。 方法1：动态规划，$dp</description>
+    </item>
+    
     <item>
       <title>剑指Offer</title>
       <link>https://xgbt.github.io/post/%E5%89%91%E6%8C%87/</link>
