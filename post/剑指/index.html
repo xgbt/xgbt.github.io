@@ -49,7 +49,7 @@
 <meta itemprop="name" content="剑指Offer">
 <meta itemprop="description" content="03. 数组中重复的数字★ 在一个长度为 n 的数组 nums 里的所有数字都在 0～n-1 的范围内。数组中某些数字是重复的，但不知道有几个数字重复了，也不知道每个"><meta itemprop="datePublished" content="2021-07-09T14:28:20+08:00" />
 <meta itemprop="dateModified" content="2021-07-09T14:28:20+08:00" />
-<meta itemprop="wordCount" content="7686">
+<meta itemprop="wordCount" content="8038">
 <meta itemprop="keywords" content="算法," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="剑指Offer"/>
 <meta name="twitter:description" content="03. 数组中重复的数字★ 在一个长度为 n 的数组 nums 里的所有数字都在 0～n-1 的范围内。数组中某些数字是重复的，但不知道有几个数字重复了，也不知道每个"/>
@@ -167,6 +167,7 @@
         <li><a href="#27-二叉树的镜像">27. 二叉树的镜像</a></li>
         <li><a href="#28-对称的二叉树">28. 对称的二叉树</a></li>
         <li><a href="#29-顺时针打印矩阵">29. 顺时针打印矩阵★</a></li>
+        <li><a href="#30-包含min函数的栈">30. 包含min函数的栈</a></li>
         <li><a href="#52-两个链表的第一个公共节点">52. 两个链表的第一个公共节点★★</a></li>
       </ul>
     </li>
@@ -2230,6 +2231,105 @@
         <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="30-包含min函数的栈">30. 包含min函数的栈</h2>
+<p>定义栈的数据结构，请在该类型中实现一个能够得到栈的最小元素的 min 函数在该栈中，调用 min、push 及 pop 的时间复杂度都是 O(1)。</p>
+<ul>
+<li>
+<p>方法1：辅助栈，push一个元素的时候和当前栈顶元素对比，如果比栈顶元素小，那就push他自己，否则继续push栈顶元素。</p>
+<p>时间复杂度 O(1)： push(), pop(), top(), min() 四个函数的时间复杂度均为常数级别。
+空间复杂度 O(N) ： 当共有 N 个待入栈元素时，辅助栈 B 最差情况下存储 N 个元素，使用 O(N) 额外空间。</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="k">class</span> <span class="nc">MinStack</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">stack</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">;</span>
+    <span class="n">stack</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">b</span><span class="p">;</span>
+    <span class="cm">/** initialize your data structure here. */</span>
+    <span class="n">MinStack</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="p">}</span>
+    
+    <span class="kt">void</span> <span class="nf">push</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">a</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+        <span class="c1">// 记得考虑b为空的情况
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span> <span class="o">||</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">.</span><span class="n">top</span><span class="p">())</span> <span class="p">{</span>
+            <span class="n">b</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="n">b</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">top</span><span class="p">());</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="kt">void</span> <span class="nf">pop</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">a</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+        <span class="n">b</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+    <span class="p">}</span>
+    
+    <span class="kt">int</span> <span class="nf">top</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">a</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+    <span class="p">}</span>
+    
+    <span class="kt">int</span> <span class="nf">min</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">b</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="cm">/**
+</span><span class="cm"> * Your MinStack object will be instantiated and called as such:
+</span><span class="cm"> * MinStack* obj = new MinStack();
+</span><span class="cm"> * obj-&gt;push(x);
+</span><span class="cm"> * obj-&gt;pop();
+</span><span class="cm"> * int param_3 = obj-&gt;top();
+</span><span class="cm"> * int param_4 = obj-&gt;min();
+</span><span class="cm"> */</span>
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="52-两个链表的第一个公共节点">52. 两个链表的第一个公共节点★★</h2>
