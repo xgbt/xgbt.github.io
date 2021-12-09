@@ -8,12 +8,12 @@
     <language>zh</language>
     <lastBuildDate>Thu, 09 Dec 2021 16:29:53 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Command Pattern 命令模式</title>
+      <title>命令模式</title>
       <link>https://xgbt.github.io/post/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Thu, 09 Dec 2021 16:29:53 +0800</pubDate>
       
       <guid>https://xgbt.github.io/post/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/</guid>
-      <description>定义 Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queues, or log requests, and supports undoable operations. 请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该</description>
+      <description>定义 请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命令传给相应的对象，该对象执行命令。 命令消息</description>
     </item>
     
     <item>
