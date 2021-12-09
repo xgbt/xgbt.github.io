@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="xgbt" /><meta name="description" content="Definition Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queues, or log requests, and supports undoable operations. 请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命" /><meta name="keywords" content="xgbt, 西瓜不甜" />
+<meta name="author" content="xgbt" /><meta name="description" content="定义 Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queues, or log requests, and supports undoable operations. 请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该" /><meta name="keywords" content="xgbt, 西瓜不甜" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="Command Pattern 命令模式" />
-<meta property="og:description" content="Definition Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queues, or log requests, and supports undoable operations. 请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命" />
+<meta property="og:description" content="定义 Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queues, or log requests, and supports undoable operations. 请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://xgbt.github.io/post/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-12-09T16:29:53+08:00" />
 <meta property="article:modified_time" content="2021-12-09T16:29:53+08:00" />
 
 <meta itemprop="name" content="Command Pattern 命令模式">
-<meta itemprop="description" content="Definition Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queues, or log requests, and supports undoable operations. 请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命"><meta itemprop="datePublished" content="2021-12-09T16:29:53+08:00" />
+<meta itemprop="description" content="定义 Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queues, or log requests, and supports undoable operations. 请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该"><meta itemprop="datePublished" content="2021-12-09T16:29:53+08:00" />
 <meta itemprop="dateModified" content="2021-12-09T16:29:53+08:00" />
-<meta itemprop="wordCount" content="1615">
+<meta itemprop="wordCount" content="1687">
 <meta itemprop="keywords" content="设计模式," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Command Pattern 命令模式"/>
-<meta name="twitter:description" content="Definition Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queues, or log requests, and supports undoable operations. 请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命"/>
+<meta name="twitter:description" content="定义 Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queues, or log requests, and supports undoable operations. 请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -141,37 +141,32 @@
   <div class="post-toc-content">
     <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#定义">定义</a></li>
+    <li><a href="#command-message-vs-command">Command Message vs Command</a></li>
+    <li><a href="#样例1">样例1</a>
       <ul>
-        <li><a href="#definition">Definition</a></li>
-        <li><a href="#command-message-vs-command">Command Message vs Command</a></li>
-        <li><a href="#implementation">Implementation</a>
-          <ul>
-            <li><a href="#output">Output</a></li>
-          </ul>
-        </li>
-        <li><a href="#modified-implementation">Modified Implementation</a>
-          <ul>
-            <li><a href="#output-1">Output</a></li>
-          </ul>
-        </li>
-        <li><a href="#advantages">Advantages</a></li>
-        <li><a href="#challenges">Challenges</a></li>
-        <li><a href="#参考文献">参考文献</a></li>
+        <li><a href="#输出">输出</a></li>
       </ul>
     </li>
+    <li><a href="#样例2">样例2</a>
+      <ul>
+        <li><a href="#输出-1">输出</a></li>
+      </ul>
+    </li>
+    <li><a href="#优点">优点</a></li>
+    <li><a href="#缺点">缺点</a></li>
+    <li><a href="#参考文献">参考文献</a></li>
   </ul>
 </nav>
   </div>
 </div>
     <div class="post-content">
-      <h2 id="definition">Definition</h2>
+      <h1 id="定义">定义</h1>
 <p>Encapsulate a request as an object, thereby letting you parameterize clients with different requests, queues, or log requests, and supports undoable operations.</p>
 <p>请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命令传给相应的对象，该对象执行命令。</p>
-<h2 id="command-message-vs-command">Command Message vs Command</h2>
-<p>待续。。</p>
-<p><a href="https://www.ledjonbehluli.com/posts/wash-tunnel/command_message/">https://www.ledjonbehluli.com/posts/wash-tunnel/command_message/</a></p>
-<h2 id="implementation">Implementation</h2>
+<h1 id="command-message-vs-command">Command Message vs Command</h1>
+<p>待续。。https://www.ledjonbehluli.com/posts/wash-tunnel/command_message/</p>
+<h1 id="样例1">样例1</h1>
 <p>本例中，只处理单个Receiver。</p>
 <p>![Command-Class diagram1](/Command-Class diagram1.png)</p>
 <div class="highlight"><div class="chroma">
@@ -338,11 +333,11 @@
 
     <span class="c1">// Set the command
 </span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setCommand</span><span class="o">(</span><span class="n">Command</span> <span class="n">command</span><span class="o">)</span> <span class="o">{</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">commandToBePerformed</span> <span class="o">=</span> <span class="n">command</span><span class="o">;</span>
+        <span class="n">commandToBePerformed</span> <span class="o">=</span> <span class="n">command</span><span class="o">;</span>
     <span class="o">}</span>
     <span class="c1">// Invoke the command
 </span><span class="c1"></span>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">invokeCommand</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">this</span><span class="o">.</span><span class="na">commandToBePerformed</span><span class="o">.</span><span class="na">executeCommand</span><span class="o">();</span>
+        <span class="n">commandToBePerformed</span><span class="o">.</span><span class="na">executeCommand</span><span class="o">();</span>
     <span class="o">}</span>
 <span class="o">}</span>
 
@@ -390,15 +385,15 @@
 
 </code></pre></td></tr></table>
 </div>
-</div><h3 id="output">Output</h3>
+</div><h2 id="输出">输出</h2>
 <blockquote>
 <p><em><strong>Command Pattern Demo</strong></em></p>
-<p>Executing -Optional Task/s prior to execute undo command.
-Performing an undo command in Receiver.
-Executing -Optional Task/s prior to execute redo command.
-Performing an redo command in Receiver.</p>
+<p>Executing -Optional Task/s prior to execute undo command.</p>
+<p>Performing an undo command in Receiver.</p>
+<p>Executing -Optional Task/s prior to execute redo command.</p>
+<p>Performing an redo command in Receiver.</p>
 </blockquote>
-<h2 id="modified-implementation">Modified Implementation</h2>
+<h1 id="样例2">样例2</h1>
 <p>本例中，可处理多个Receiver。本例中多加了一个Receiver的通用接口。两个接收器收到相同的命令，但可以执行不同的操作。</p>
 <p>![Command-Class diagram2](/Command-Class diagram2.png)</p>
 <div class="highlight"><div class="chroma">
@@ -807,63 +802,63 @@ Performing an redo command in Receiver.</p>
 <span class="o">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><h3 id="output-1">Output</h3>
+</div><h2 id="输出-1">输出</h2>
 <blockquote>
-<p><em><strong>Command Pattern Q&amp;As</strong></em>
-<em><strong>A simple demo with undo supported operations</strong></em></p>
-<p>&mdash;&ndash;Testing operations in Receiver1&mdash;&ndash;
-Receiver1 initialized with 10
-The objects of receiver1 cannot set beyond 10
-<em>Testing single do/undo operation</em>
-Received an addition request.
-10 + 2 =12
-Received an undo addition request.
-12 - 2 =10</p>
+<p><em><strong>Command Pattern Q&amp;As</strong></em></p>
+<p><em>A simple demo with undo supported operations</em>**</p>
+<p>&mdash;&ndash;Testing operations in Receiver1&mdash;&ndash;</p>
+<p>Receiver1 initialized with 10</p>
+<p>The objects of receiver1 cannot set beyond 10</p>
+<p><em>Testing single do/undo operation</em></p>
+<p>Received an addition request.</p>
+<p>10 + 2 =12</p>
+<p>Received an undo addition request.</p>
+<p>12 - 2 =10</p>
 <hr>
-<p><strong>Testing a series of do/undo operations</strong>
-Received an addition request.
-10 + 2 =12
-Received an addition request.
-12 + 2 =14
-Received an undo addition request.
-14 - 2 =12
-Received an undo addition request.
-12 - 2 =10
-Received an undo addition request.
-Nothing more to undo&hellip;</p>
-<p>&mdash;&ndash;Testing operations in Receiver2&mdash;&ndash;
-Receiver2 initialized.
-<em>Testing single do/undo operation</em>
-Received a system power on request.
-System is starting up.
-Received a undo request.
-System is currently powered on.Undo request processed.System is switched off now.</p>
+<p><strong>Testing a series of do/undo operations</strong></p>
+<p>Received an addition request.</p>
+<p>10 + 2 =12</p>
+<p>Received an addition request.</p>
+<p>12 + 2 =14</p>
+<p>Received an undo addition request.</p>
+<p>14 - 2 =12</p>
+<p>Received an undo addition request.</p>
+<p>12 - 2 =10</p>
+<p>Received an undo addition request.</p>
+<p>Nothing more to undo&hellip;</p>
+<p>&mdash;&ndash;Testing operations in Receiver2&mdash;&ndash;</p>
+<p>Receiver2 initialized.</p>
+<p>Testing single do/undo operation*</p>
+<p>Received a system power on request.</p>
+<p>System is starting up.</p>
+<p>Received a undo request.</p>
+<p>System is currently powered on. Undo request processed.System is switched off now.</p>
 <hr>
-<p><strong>Testing a series of do/undo operations</strong>
-Received a system power on request.
-System is starting up.
-Received a system power on request.
-System is already running. So, power on request is ignored.
-Received a undo request.
-System is currently powered on.Undo request processed.System is switched off now.
-Received a undo request.
-System is switched off at present.Undo request processed.System is powered on now.
-Received a undo request.
-System is currently powered on.Undo request processed.System is switched off now.</p>
+<p><strong>Testing a series of do/undo operations</strong></p>
+<p>Received a system power on request.</p>
+<p>System is starting up.</p>
+<p>Received a system power on request.</p>
+<p>System is already running. So, power on request is ignored.</p>
+<p>Received a undo request.</p>
+<p>System is currently powered on.Undo request processed.System is switched off now.</p>
+<p>Received a undo request.</p>
+<p>System is switched off at present.Undo request processed.System is powered on now.</p>
+<p>Received a undo request.</p>
+<p>System is currently powered on.Undo request processed.System is switched off now.</p>
 </blockquote>
-<h2 id="advantages">Advantages</h2>
+<h1 id="优点">优点</h1>
 <ul>
 <li>创建请求与最终执行请求是分离的，客户端不需要知道调用者如何执行操作。</li>
 <li>可以创建命令序列。</li>
 <li>可以在不影响现有系统的情况下添加新的命令。</li>
 <li>最重要的，支持undo/redo操作。</li>
 </ul>
-<h2 id="challenges">Challenges</h2>
+<h1 id="缺点">缺点</h1>
 <ul>
 <li>命令越多，后期需要创建的类也越多，会更难维护。</li>
 <li>因为我们将命令和客户端代码解耦，所以如果发生错误情况会难以处理。</li>
 </ul>
-<h2 id="参考文献">参考文献</h2>
+<h1 id="参考文献">参考文献</h1>
 <ol>
 <li>Sarcar V. Java design patterns[M]. Apress, 2016.</li>
 </ol>
