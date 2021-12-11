@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>观后感 · 西瓜不甜</title>
+  <title>SOLID原则简介 - 西瓜不甜</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="xgbt" /><meta name="description" content="xgbt&#39;s Blog" /><meta name="keywords" content="xgbt, 西瓜不甜" />
+<meta name="author" content="xgbt" /><meta name="description" content="" /><meta name="keywords" content="xgbt, 西瓜不甜" />
 
 
 
@@ -26,9 +26,7 @@
 <meta name="generator" content="Hugo 0.88.1 with theme even" />
 
 
-<link rel="canonical" href="https://xgbt.github.io/categories/%E8%A7%82%E5%90%8E%E6%84%9F/" />
-  <link href="https://xgbt.github.io/categories/%E8%A7%82%E5%90%8E%E6%84%9F/index.xml" rel="alternate" type="application/rss+xml" title="西瓜不甜" />
-  <link href="https://xgbt.github.io/categories/%E8%A7%82%E5%90%8E%E6%84%9F/index.xml" rel="feed" type="application/rss+xml" title="西瓜不甜" />
+<link rel="canonical" href="https://xgbt.github.io/post/solid%E5%8E%9F%E5%88%99/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -41,15 +39,20 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="观后感" />
-<meta property="og:description" content="xgbt&#39;s Blog" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://xgbt.github.io/categories/%E8%A7%82%E5%90%8E%E6%84%9F/" />
+<meta property="og:title" content="SOLID原则简介" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://xgbt.github.io/post/solid%E5%8E%9F%E5%88%99/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-12-11T21:12:53+08:00" />
+<meta property="article:modified_time" content="2021-12-11T21:12:53+08:00" />
 
-<meta itemprop="name" content="观后感">
-<meta itemprop="description" content="xgbt&#39;s Blog"><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="观后感"/>
-<meta name="twitter:description" content="xgbt&#39;s Blog"/>
+<meta itemprop="name" content="SOLID原则简介">
+<meta itemprop="description" content=""><meta itemprop="datePublished" content="2021-12-11T21:12:53+08:00" />
+<meta itemprop="dateModified" content="2021-12-11T21:12:53+08:00" />
+<meta itemprop="wordCount" content="0">
+<meta itemprop="keywords" content="设计模式," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SOLID原则简介"/>
+<meta name="twitter:description" content=""/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -119,74 +122,51 @@
     <main id="main" class="main">
       <div class="content-wrapper">
         <div id="content" class="content">
-          <section id="archive" class="archive">
-  <div class="archive-title category">
-        <h2 class="archive-name">观后感</h2>
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">SOLID原则简介</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-12-11 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%AC%94%E8%AE%B0/"> 笔记 </a>
+            </div>
+        
       </div>
+    </header>
 
-  <div class="archive-post">
-      <span class="archive-post-time">
-        2017-01-05
-      </span>
-      <span class="archive-post-title">
-        <a href="/post/%E6%AC%B2%E6%98%9F%E7%A7%BB/" class="archive-post-link">
-          欲星移：证因果，法海渡航
-        </a>
-      </span>
-    </div><div class="archive-post">
-      <span class="archive-post-time">
-        2017-01-03
-      </span>
-      <span class="archive-post-title">
-        <a href="/post/%E7%8E%84%E4%B9%8B%E7%8E%84/" class="archive-post-link">
-          玄之玄：自我实现型反派
-        </a>
-      </span>
-    </div><div class="archive-post">
-      <span class="archive-post-time">
-        2016-12-10
-      </span>
-      <span class="archive-post-title">
-        <a href="/post/%E6%97%A0%E6%83%85%E8%91%AC%E6%9C%88/" class="archive-post-link">
-          无情葬月：多情最是无情人
-        </a>
-      </span>
-    </div><div class="archive-post">
-      <span class="archive-post-time">
-        2016-12-01
-      </span>
-      <span class="archive-post-title">
-        <a href="/post/%E8%8D%BB%E8%8A%B1%E9%A2%98%E5%8F%B6/" class="archive-post-link">
-          荻花题叶：为爱痴狂
-        </a>
-      </span>
-    </div><div class="archive-post">
-      <span class="archive-post-time">
-        2016-11-12
-      </span>
-      <span class="archive-post-title">
-        <a href="/post/%E7%8E%B2%E7%8F%91%E9%9B%AA%E9%9C%8F/" class="archive-post-link">
-          玲珑雪霏：溺水的蝴蝶
-        </a>
-      </span>
-    </div><div class="archive-post">
-      <span class="archive-post-time">
-        2016-10-17
-      </span>
-      <span class="archive-post-title">
-        <a href="/post/%E9%A3%8E%E9%80%8D%E9%81%A5/" class="archive-post-link">
-          风逍遥：随缘而来，随风而去
-        </a>
-      </span>
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents"></nav>
+  </div>
+</div>
+    <div class="post-content">
+      
     </div>
-</section>
 
-<nav class="pagination">
-  
-  
-</nav>
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+          </div>
+      <nav class="post-nav">
+        
+        <a class="next" href="/post/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">
+            <span class="next-text nav-default">命令模式</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
         </div>
         
+
+  
+
+  
 
       </div>
     </main>
@@ -233,6 +213,15 @@
 
 
 <script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        tags: 'ams',
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
 
 
 
