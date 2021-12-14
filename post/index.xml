@@ -26,6 +26,15 @@
     </item>
     
     <item>
+      <title>工厂模式</title>
+      <link>https://xgbt.github.io/post/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Sat, 04 Dec 2021 16:29:53 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
+      <description>定义 请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命令传给相应的对象，该对象执行命令。 样例1 创</description>
+    </item>
+    
+    <item>
       <title>《江城》书摘</title>
       <link>https://xgbt.github.io/post/%E4%B9%A6%E6%91%98-%E6%B1%9F%E5%9F%8E/</link>
       <pubDate>Sun, 29 Aug 2021 14:00:53 +0800</pubDate>
