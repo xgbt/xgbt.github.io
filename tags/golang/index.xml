@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on 西瓜不甜</title>
+    <link>https://xgbt.github.io/tags/golang/</link>
+    <description>Recent content in Golang on 西瓜不甜</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 15 Dec 2021 16:29:53 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Golang的错误处理</title>
+      <link>https://xgbt.github.io/post/go%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</link>
+      <pubDate>Wed, 15 Dec 2021 16:29:53 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/go%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</guid>
+      <description>异常（panic）和错误（error） panic panic会中止程序执行进入异常处理逻辑，panic可以在当前函数或者调用链向上的任何一层被defe</description>
+    </item>
+    
+  </channel>
+</rss>
