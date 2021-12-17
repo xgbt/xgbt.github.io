@@ -6,7 +6,16 @@
     <description>Recent content in Posts on 西瓜不甜</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 15 Dec 2021 16:29:53 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 17 Dec 2021 16:29:53 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>菲利普和他的女朋友们</title>
+      <link>https://xgbt.github.io/post/%E4%BA%BA%E6%80%A7%E7%9A%84%E6%9E%B7%E9%94%81/</link>
+      <pubDate>Fri, 17 Dec 2021 16:29:53 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E4%BA%BA%E6%80%A7%E7%9A%84%E6%9E%B7%E9%94%81/</guid>
+      <description>威尔金森小姐是菲利普的初恋。菲利普在她身上实践了一下自己理想中的浪漫爱情，却发现初恋只是看上去很美，尝起来甘苦自知。在没有得到她之前，他满脑</description>
+    </item>
+    
     <item>
       <title>Golang的错误处理</title>
       <link>https://xgbt.github.io/post/go%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</link>
@@ -28,7 +37,7 @@
     <item>
       <title>中介者模式</title>
       <link>https://xgbt.github.io/post/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</link>
-      <pubDate>Sat, 11 Dec 2021 16:29:53 +0800</pubDate>
+      <pubDate>Sun, 21 Nov 2021 16:29:53 +0800</pubDate>
       
       <guid>https://xgbt.github.io/post/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</guid>
       <description>定义 定义一个对象来封装一组对象的交互方式。中介者模式通过避免对象显式地相互引用来促进低耦合，并且它允许您独立地改变它们的交互。 中介模式的整体</description>
