@@ -6,7 +6,16 @@
     <description>Recent content in Posts on 西瓜不甜</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 17 Dec 2021 16:29:53 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 28 Dec 2021 14:31:05 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>字典树问题</title>
+      <link>https://xgbt.github.io/post/%E5%AD%97%E5%85%B8%E6%A0%91/</link>
+      <pubDate>Tue, 28 Dec 2021 14:31:05 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E5%AD%97%E5%85%B8%E6%A0%91/</guid>
+      <description>472. 连接词 给你一个 不含重复 单词的字符串数组 words ，请你找出并返回 words 中的所有 连接词 。 连接词 定义为：一个完全由给定数组中的至少两个较短单词组成的字符串</description>
+    </item>
+    
     <item>
       <title>菲利普和他的女朋友们</title>
       <link>https://xgbt.github.io/post/%E4%BA%BA%E6%80%A7%E7%9A%84%E6%9E%B7%E9%94%81/</link>
@@ -35,29 +44,56 @@
     </item>
     
     <item>
+      <title>工厂方法模式 (Factory Method)</title>
+      <link>https://xgbt.github.io/post/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Thu, 02 Dec 2021 16:29:53 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/</guid>
+      <description>定义 工厂方法模式将「实例化逻辑」委托给子类实现。 实例化一个对象，是通过调用工厂方法，而不是通过调用构造函数来完成的。 何时使用？ 当客户端不知道</description>
+    </item>
+    
+    <item>
+      <title>抽象工厂模式 (Abstract Factory)</title>
+      <link>https://xgbt.github.io/post/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Thu, 02 Dec 2021 16:29:53 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
+      <description>定义 抽象工厂模式用于生成产品族的工厂，所生成的对象是有关联的。 如果抽象工厂退化成生成的对象无关联则成为工厂方法模式。 何时使用？ 当生成的对象存</description>
+    </item>
+    
+    <item>
+      <title>简单工厂模式(Simple Factory)</title>
+      <link>https://xgbt.github.io/post/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Wed, 01 Dec 2021 16:29:53 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
+      <description>定义 简单工厂只为客户端生成一个实例，而不向客户端暴露任何实例化的逻辑。 何时使用？ 当创建一个对象不仅仅是几个赋值并且涉及一些逻辑时，此时适合采</description>
+    </item>
+    
+    <item>
       <title>中介者模式</title>
-      <link>https://xgbt.github.io/post/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</link>
+      <link>https://xgbt.github.io/post/%E8%8D%89%E7%A8%BF/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Sun, 21 Nov 2021 16:29:53 +0800</pubDate>
       
-      <guid>https://xgbt.github.io/post/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</guid>
+      <guid>https://xgbt.github.io/post/%E8%8D%89%E7%A8%BF/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</guid>
       <description>定义 定义一个对象来封装一组对象的交互方式。中介者模式通过避免对象显式地相互引用来促进低耦合，并且它允许您独立地改变它们的交互。 中介模式的整体</description>
     </item>
     
     <item>
       <title>命令模式</title>
-      <link>https://xgbt.github.io/post/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/</link>
+      <link>https://xgbt.github.io/post/%E8%8D%89%E7%A8%BF/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Tue, 09 Nov 2021 16:29:53 +0800</pubDate>
       
-      <guid>https://xgbt.github.io/post/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/</guid>
+      <guid>https://xgbt.github.io/post/%E8%8D%89%E7%A8%BF/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/</guid>
       <description>定义 请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命令传给相应的对象，该对象执行命令。 样例1 本</description>
     </item>
     
     <item>
       <title>工厂模式</title>
-      <link>https://xgbt.github.io/post/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</link>
+      <link>https://xgbt.github.io/post/%E8%8D%89%E7%A8%BF/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Thu, 04 Nov 2021 16:29:53 +0800</pubDate>
       
-      <guid>https://xgbt.github.io/post/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
+      <guid>https://xgbt.github.io/post/%E8%8D%89%E7%A8%BF/%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
       <description>定义 请求以命令的形式包裹在对象中，并传给调用对象。调用对象寻找可以处理该命令的合适的对象，并把该命令传给相应的对象，该对象执行命令。 样例1 创</description>
     </item>
     
