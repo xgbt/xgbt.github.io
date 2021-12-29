@@ -17,21 +17,21 @@
     </item>
     
     <item>
+      <title>抽象工厂模式 (Abstract Factory)</title>
+      <link>https://xgbt.github.io/post/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Fri, 03 Dec 2021 16:29:53 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
+      <description>定义 抽象工厂模式用于生成产品族的工厂，所生成的对象是有关联的。 如果抽象工厂退化成生成的对象无关联则成为工厂方法模式。 何时使用？ 当生成的对象存</description>
+    </item>
+    
+    <item>
       <title>工厂方法模式 (Factory Method)</title>
       <link>https://xgbt.github.io/post/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Thu, 02 Dec 2021 16:29:53 +0800</pubDate>
       
       <guid>https://xgbt.github.io/post/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/</guid>
       <description>定义 工厂方法模式将「实例化逻辑」委托给子类实现。 实例化一个对象，是通过调用工厂方法，而不是通过调用构造函数来完成的。 何时使用？ 当客户端不知道</description>
-    </item>
-    
-    <item>
-      <title>抽象工厂模式 (Abstract Factory)</title>
-      <link>https://xgbt.github.io/post/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</link>
-      <pubDate>Thu, 02 Dec 2021 16:29:53 +0800</pubDate>
-      
-      <guid>https://xgbt.github.io/post/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</guid>
-      <description>定义 抽象工厂模式用于生成产品族的工厂，所生成的对象是有关联的。 如果抽象工厂退化成生成的对象无关联则成为工厂方法模式。 何时使用？ 当生成的对象存</description>
     </item>
     
     <item>
