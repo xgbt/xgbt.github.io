@@ -9,10 +9,10 @@
     <lastBuildDate>Wed, 15 Dec 2021 16:29:53 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Golang的错误处理</title>
-      <link>https://xgbt.github.io/post/go%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</link>
+      <link>https://xgbt.github.io/post/golang/go%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</link>
       <pubDate>Wed, 15 Dec 2021 16:29:53 +0800</pubDate>
       
-      <guid>https://xgbt.github.io/post/go%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</guid>
+      <guid>https://xgbt.github.io/post/golang/go%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</guid>
       <description>异常（panic）和错误（error） panic panic会中止程序执行进入异常处理逻辑，panic可以在当前函数或者调用链向上的任何一层被defe</description>
     </item>
     
