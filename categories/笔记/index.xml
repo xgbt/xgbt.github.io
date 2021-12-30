@@ -35,6 +35,24 @@
     </item>
     
     <item>
+      <title>适配器模式 (Adapter)</title>
+      <link>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Tue, 07 Dec 2021 16:29:53 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/</guid>
+      <description>定义 适配器模式用于转换一种接口适配另一种接口。 Golang 实际使用中Adaptee一般为接口，并且使用工厂函数生成实例。 在Adapter中匿名组合Ad</description>
+    </item>
+    
+    <item>
+      <title>单例模式 (Singleton)</title>
+      <link>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Mon, 06 Dec 2021 16:29:53 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</guid>
+      <description>定义 确保只创建特定类的一个对象，比如数据库连接类。 使用懒惰模式的单例模式，Java使用双重检查加锁保证线程安全。 Golang Go中可以使用Once.D</description>
+    </item>
+    
+    <item>
       <title>原型模式 (Prototype)</title>
       <link>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Sun, 05 Dec 2021 16:29:53 +0800</pubDate>
