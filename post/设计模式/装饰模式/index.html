@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>适配器模式 (Adapter) - 西瓜不甜</title>
+  <title>装饰模式 (Decorator) - 西瓜不甜</title>
   <meta name="renderer" content="webkit" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="xgbt" /><meta name="description" content="定义 适配器模式用于转换一种接口适配另一种接口。 何时使用 系统需要使用现有的类，而此类的接口不符合系统的需要。 想要建立一个可以重复使用的类，用于" /><meta name="keywords" content="xgbt, 西瓜不甜" />
+<meta name="author" content="xgbt" /><meta name="description" content="定义 装饰模式使用对象组合的方式动态改变或增加对象行为。 允许程序员通过将对象包装在「装饰器类的对象」中，在运行时动态更改对象的行为。 何时使用 在" /><meta name="keywords" content="xgbt, 西瓜不甜" />
 
 
 
@@ -26,7 +26,7 @@
 <meta name="generator" content="Hugo 0.88.1 with theme even" />
 
 
-<link rel="canonical" href="https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/" />
+<link rel="canonical" href="https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F/" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -39,20 +39,20 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
 
 
-<meta property="og:title" content="适配器模式 (Adapter)" />
-<meta property="og:description" content="定义 适配器模式用于转换一种接口适配另一种接口。 何时使用 系统需要使用现有的类，而此类的接口不符合系统的需要。 想要建立一个可以重复使用的类，用于" />
+<meta property="og:title" content="装饰模式 (Decorator)" />
+<meta property="og:description" content="定义 装饰模式使用对象组合的方式动态改变或增加对象行为。 允许程序员通过将对象包装在「装饰器类的对象」中，在运行时动态更改对象的行为。 何时使用 在" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/" /><meta property="article:section" content="post" />
-<meta property="article:published_time" content="2021-12-07T16:29:53+08:00" />
-<meta property="article:modified_time" content="2021-12-07T16:29:53+08:00" />
+<meta property="og:url" content="https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2021-12-10T16:29:53+08:00" />
+<meta property="article:modified_time" content="2021-12-10T16:29:53+08:00" />
 
-<meta itemprop="name" content="适配器模式 (Adapter)">
-<meta itemprop="description" content="定义 适配器模式用于转换一种接口适配另一种接口。 何时使用 系统需要使用现有的类，而此类的接口不符合系统的需要。 想要建立一个可以重复使用的类，用于"><meta itemprop="datePublished" content="2021-12-07T16:29:53+08:00" />
-<meta itemprop="dateModified" content="2021-12-07T16:29:53+08:00" />
-<meta itemprop="wordCount" content="607">
+<meta itemprop="name" content="装饰模式 (Decorator)">
+<meta itemprop="description" content="定义 装饰模式使用对象组合的方式动态改变或增加对象行为。 允许程序员通过将对象包装在「装饰器类的对象」中，在运行时动态更改对象的行为。 何时使用 在"><meta itemprop="datePublished" content="2021-12-10T16:29:53+08:00" />
+<meta itemprop="dateModified" content="2021-12-10T16:29:53+08:00" />
+<meta itemprop="wordCount" content="346">
 <meta itemprop="keywords" content="设计模式," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="适配器模式 (Adapter)"/>
-<meta name="twitter:description" content="定义 适配器模式用于转换一种接口适配另一种接口。 何时使用 系统需要使用现有的类，而此类的接口不符合系统的需要。 想要建立一个可以重复使用的类，用于"/>
+<meta name="twitter:title" content="装饰模式 (Decorator)"/>
+<meta name="twitter:description" content="定义 装饰模式使用对象组合的方式动态改变或增加对象行为。 允许程序员通过将对象包装在「装饰器类的对象」中，在运行时动态更改对象的行为。 何时使用 在"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -125,10 +125,10 @@
           <article class="post">
     
     <header class="post-header">
-      <h1 class="post-title">适配器模式 (Adapter)</h1>
+      <h1 class="post-title">装饰模式 (Decorator)</h1>
 
       <div class="post-meta">
-        <span class="post-time"> 2021-12-07 </span>
+        <span class="post-time"> 2021-12-10 </span>
         <div class="post-category">
             <a href="/categories/%E7%AC%94%E8%AE%B0/"> 笔记 </a>
             </div>
@@ -150,25 +150,14 @@
 </div>
     <div class="post-content">
       <h1 id="定义">定义</h1>
-<p>适配器模式用于转换一种接口适配另一种接口。</p>
+<p>装饰模式使用对象组合的方式动态改变或增加对象行为。</p>
+<p>允许程序员通过将对象包装在「装饰器类的对象」中，在运行时动态更改对象的行为。</p>
 <p><strong>何时使用</strong></p>
-<ul>
-<li>
-<p>系统需要使用现有的类，而此类的接口不符合系统的需要。</p>
-</li>
-<li>
-<p>想要建立一个可以重复使用的类，用于与一些彼此之间没有太大关联的一些类，包括一些可能在将来引进的类一起工作，这些源类不一定有一致的接口。</p>
-</li>
-<li>
-<p>通过接口转换，将一个类插入另一个类系中。</p>
-</li>
-</ul>
+<p>在不想增加很多子类的情况下扩展类。</p>
 <p><strong>Golang</strong></p>
-<p>实际使用中Adaptee一般为接口，并且使用工厂函数生成实例。</p>
-<p>在Adapter中匿名组合Adaptee接口，所以Adapter类也拥有SpecificRequest实例方法，又因为Go语言中非入侵式接口特征，其实Adapter也适配Adaptee接口。</p>
+<p>Go语言借助于匿名组合和非入侵式接口可以很方便实现装饰模式。</p>
+<p>使用匿名组合，在装饰器中不必显式定义转调原对象方法。</p>
 <h1 id="样例">样例</h1>
-<p>有适配器Adapter，要适配Target接口，Adpatee是被适配接口，</p>
-<p>那么Adapter将实现Target接口，但实际上用的都是Adpatee的方法。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -212,49 +201,59 @@
 </span><span class="lnt">39
 </span><span class="lnt">40
 </span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">adapter</span>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">decorator</span>
 
-<span class="c1">//Target 是适配的目标接口
-</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Target</span> <span class="kd">interface</span> <span class="p">{</span>
-	<span class="nf">Request</span><span class="p">()</span> <span class="kt">string</span>
+<span class="kd">type</span> <span class="nx">Component</span> <span class="kd">interface</span> <span class="p">{</span>
+	<span class="nf">Calc</span><span class="p">()</span> <span class="kt">int</span>
 <span class="p">}</span>
 
-<span class="c1">//Adaptee 是被适配的目标接口
-</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Adaptee</span> <span class="kd">interface</span> <span class="p">{</span>
-	<span class="nf">SpecificRequest</span><span class="p">()</span> <span class="kt">string</span>
+<span class="kd">type</span> <span class="nx">ConcreteComponent</span> <span class="kd">struct</span><span class="p">{}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="o">*</span><span class="nx">ConcreteComponent</span><span class="p">)</span> <span class="nf">Calc</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="mi">0</span>
 <span class="p">}</span>
 
-<span class="c1">//AdapteeImpl 是被适配的目标类
-</span><span class="c1"></span><span class="kd">type</span> <span class="nx">adapteeImpl</span> <span class="kd">struct</span><span class="p">{}</span>
-
-<span class="c1">//SpecificRequest 是目标类的一个方法
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="o">*</span><span class="nx">adapteeImpl</span><span class="p">)</span> <span class="nf">SpecificRequest</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-	<span class="k">return</span> <span class="s">&#34;adaptee method&#34;</span>
+<span class="c1">// MulDecorator 乘法装饰器
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">MulDecorator</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Component</span>
+	<span class="nx">num</span> <span class="kt">int</span>
 <span class="p">}</span>
 
-<span class="c1">//NewAdaptee 是被适配接口的工厂函数
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">NewAdaptee</span><span class="p">()</span> <span class="nx">Adaptee</span> <span class="p">{</span>
-	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">adapteeImpl</span><span class="p">{}</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">d</span> <span class="o">*</span><span class="nx">MulDecorator</span><span class="p">)</span> <span class="nf">Calc</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">Component</span><span class="p">.</span><span class="nf">Calc</span><span class="p">()</span> <span class="o">*</span> <span class="nx">d</span><span class="p">.</span><span class="nx">num</span>
 <span class="p">}</span>
 
-<span class="c1">//Adapter 将Adaptee接口转换为Target接口的适配器
-</span><span class="c1"></span><span class="kd">type</span> <span class="nx">adapter</span> <span class="kd">struct</span> <span class="p">{</span>
-	<span class="nx">Adaptee</span>
-<span class="p">}</span>
-
-<span class="c1">//Request 实现Target接口
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">a</span> <span class="o">*</span><span class="nx">adapter</span><span class="p">)</span> <span class="nf">Request</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-	<span class="k">return</span> <span class="nx">a</span><span class="p">.</span><span class="nf">SpecificRequest</span><span class="p">()</span>
-<span class="p">}</span>
-
-<span class="c1">//NewAdapter 是Adapter的工厂函数
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">NewAdapter</span><span class="p">(</span><span class="nx">adaptee</span> <span class="nx">Adaptee</span><span class="p">)</span> <span class="nx">Target</span> <span class="p">{</span>
-	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">adapter</span><span class="p">{</span>
-		<span class="nx">Adaptee</span><span class="p">:</span> <span class="nx">adaptee</span><span class="p">,</span>
+<span class="kd">func</span> <span class="nf">WarpMulDecorator</span><span class="p">(</span><span class="nx">c</span> <span class="nx">Component</span><span class="p">,</span> <span class="nx">num</span> <span class="kt">int</span><span class="p">)</span> <span class="nx">Component</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">MulDecorator</span><span class="p">{</span>
+		<span class="nx">c</span><span class="p">,</span>
+		<span class="nx">num</span><span class="p">,</span>
 	<span class="p">}</span>
 <span class="p">}</span>
+
+<span class="c1">// AddDecorator 加法装饰器
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">AddDecorator</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Component</span>
+	<span class="nx">num</span> <span class="kt">int</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">d</span> <span class="o">*</span><span class="nx">AddDecorator</span><span class="p">)</span> <span class="nf">Calc</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">d</span><span class="p">.</span><span class="nx">Component</span><span class="p">.</span><span class="nf">Calc</span><span class="p">()</span> <span class="o">+</span> <span class="nx">d</span><span class="p">.</span><span class="nx">num</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">WarpAddDecorator</span><span class="p">(</span><span class="nx">c</span> <span class="nx">Component</span><span class="p">,</span> <span class="nx">num</span> <span class="kt">int</span><span class="p">)</span> <span class="nx">Component</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="o">&amp;</span><span class="nx">AddDecorator</span><span class="p">{</span>
+		<span class="nx">Component</span><span class="p">:</span> <span class="nx">c</span><span class="p">,</span>
+		<span class="nx">num</span><span class="p">:</span>       <span class="nx">num</span><span class="p">,</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
 </code></pre></td></tr></table>
 </div>
 </div><p>测试</p>
@@ -274,22 +273,26 @@
 </span><span class="lnt">12
 </span><span class="lnt">13
 </span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">adapter</span>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">decorator</span>
 
-<span class="kn">import</span> <span class="s">&#34;testing&#34;</span>
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;fmt&#34;</span>
+	<span class="s">&#34;testing&#34;</span>
+<span class="p">)</span>
 
-<span class="kd">var</span> <span class="nx">expect</span> <span class="p">=</span> <span class="s">&#34;adaptee method&#34;</span>
+<span class="kd">func</span> <span class="nf">TestDecorator</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">c</span> <span class="nx">Component</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">ConcreteComponent</span><span class="p">{}</span>
+	<span class="nx">c</span> <span class="p">=</span> <span class="nf">WarpAddDecorator</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+	<span class="nx">c</span> <span class="p">=</span> <span class="nf">WarpMulDecorator</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+	<span class="nx">res</span> <span class="o">:=</span> <span class="nx">c</span><span class="p">.</span><span class="nf">Calc</span><span class="p">()</span>
 
-<span class="kd">func</span> <span class="nf">TestAdapter</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
-   <span class="nx">adaptee</span> <span class="o">:=</span> <span class="nf">NewAdaptee</span><span class="p">()</span>
-   <span class="nx">target</span> <span class="o">:=</span> <span class="nf">NewAdapter</span><span class="p">(</span><span class="nx">adaptee</span><span class="p">)</span>
-   <span class="nx">res</span> <span class="o">:=</span> <span class="nx">target</span><span class="p">.</span><span class="nf">Request</span><span class="p">()</span>
-   <span class="k">if</span> <span class="nx">res</span> <span class="o">!=</span> <span class="nx">expect</span> <span class="p">{</span>
-      <span class="nx">t</span><span class="p">.</span><span class="nf">Fatalf</span><span class="p">(</span><span class="s">&#34;expect: %s, actual: %s&#34;</span><span class="p">,</span> <span class="nx">expect</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span>
-   <span class="p">}</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;res: %d\n&#34;</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span>
 <span class="p">}</span>
+
 </code></pre></td></tr></table>
 </div>
 </div><h1 id="参考文献">参考文献</h1>
@@ -306,13 +309,13 @@
           <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
           </div>
       <nav class="post-nav">
-        <a class="prev" href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F/">
+        <a class="prev" href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">
             <i class="iconfont icon-left"></i>
-            <span class="prev-text nav-default">桥接模式 (Bridge)</span>
+            <span class="prev-text nav-default">外观模式 (Facade)</span>
             <span class="prev-text nav-mobile">上一篇</span>
           </a>
-        <a class="next" href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
-            <span class="next-text nav-default">单例模式 (Singleton)</span>
+        <a class="next" href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/">
+            <span class="next-text nav-default">组合模式 (Composite)</span>
             <span class="next-text nav-mobile">下一篇</span>
             <i class="iconfont icon-right"></i>
           </a>

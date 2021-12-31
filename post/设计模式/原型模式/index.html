@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="xgbt" /><meta name="description" content="定义 简单说，创建现有对象的副本并根据需要对其进行修改。 原型模式使对象能复制自身，并且暴露到接口中，使客户端面向接口编程时，不知道接口实际对象" /><meta name="keywords" content="xgbt, 西瓜不甜" />
+<meta name="author" content="xgbt" /><meta name="description" content="定义 简单说，创建现有对象的副本并根据需要对其进行修改。 原型模式配合原型管理器使用，使得客户端在不知道具体类的情况下，通过接口管理器得到新的实" /><meta name="keywords" content="xgbt, 西瓜不甜" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="原型模式 (Prototype)" />
-<meta property="og:description" content="定义 简单说，创建现有对象的副本并根据需要对其进行修改。 原型模式使对象能复制自身，并且暴露到接口中，使客户端面向接口编程时，不知道接口实际对象" />
+<meta property="og:description" content="定义 简单说，创建现有对象的副本并根据需要对其进行修改。 原型模式配合原型管理器使用，使得客户端在不知道具体类的情况下，通过接口管理器得到新的实" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2021-12-05T16:29:53+08:00" />
 <meta property="article:modified_time" content="2021-12-05T16:29:53+08:00" />
 
 <meta itemprop="name" content="原型模式 (Prototype)">
-<meta itemprop="description" content="定义 简单说，创建现有对象的副本并根据需要对其进行修改。 原型模式使对象能复制自身，并且暴露到接口中，使客户端面向接口编程时，不知道接口实际对象"><meta itemprop="datePublished" content="2021-12-05T16:29:53+08:00" />
+<meta itemprop="description" content="定义 简单说，创建现有对象的副本并根据需要对其进行修改。 原型模式配合原型管理器使用，使得客户端在不知道具体类的情况下，通过接口管理器得到新的实"><meta itemprop="datePublished" content="2021-12-05T16:29:53+08:00" />
 <meta itemprop="dateModified" content="2021-12-05T16:29:53+08:00" />
-<meta itemprop="wordCount" content="464">
+<meta itemprop="wordCount" content="410">
 <meta itemprop="keywords" content="设计模式," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="原型模式 (Prototype)"/>
-<meta name="twitter:description" content="定义 简单说，创建现有对象的副本并根据需要对其进行修改。 原型模式使对象能复制自身，并且暴露到接口中，使客户端面向接口编程时，不知道接口实际对象"/>
+<meta name="twitter:description" content="定义 简单说，创建现有对象的副本并根据需要对其进行修改。 原型模式配合原型管理器使用，使得客户端在不知道具体类的情况下，通过接口管理器得到新的实"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -151,8 +151,7 @@
     <div class="post-content">
       <h1 id="定义">定义</h1>
 <p>简单说，创建现有对象的副本并根据需要对其进行修改。</p>
-<p>原型模式使对象能复制自身，并且暴露到接口中，使客户端面向接口编程时，不知道接口实际对象的情况下生成新的对象。
-原型模式配合原型管理器使用，使得客户端在不知道具体类的情况下，通过接口管理器得到新的实例，并且包含部分预设定配置。</p>
+<p>原型模式配合原型管理器使用，使得客户端在不知道具体类的情况下，通过接口管理器得到新的实例，并且包含部分预设定配置。</p>
 <p><strong>何时使用？</strong></p>
 <p>当需要一个与现有对象相似的对象，或者与克隆相比，创建成本较高时，适合使用。</p>
 <h1 id="样例">样例</h1>

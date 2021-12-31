@@ -26,12 +26,48 @@
     </item>
     
     <item>
+      <title>代理模式 (Proxy)</title>
+      <link>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Mon, 13 Dec 2021 16:29:53 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/</guid>
+      <description>定义 使用代理模式，一个类代表另一个类的功能。 代理模式的常见用法有： 虚代理 COW代理 远程代理 保护代理 Cache 代理 防火墙代理 同步代理 智能指引 何时使用 代</description>
+    </item>
+    
+    <item>
+      <title>享元模式 (Flyweight)</title>
+      <link>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Sun, 12 Dec 2021 16:29:53 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/</guid>
+      <description>定义 它用于通过尽可能多地与相似对象共享来最小化内存使用或计算开销。 享元模式从对象中剥离出不发生改变且多个实例需要的重复数据，独立出一个享元，</description>
+    </item>
+    
+    <item>
       <title>SOLID原则简介</title>
       <link>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/solid%E5%8E%9F%E5%88%99/</link>
       <pubDate>Sat, 11 Dec 2021 21:12:53 +0800</pubDate>
       
       <guid>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/solid%E5%8E%9F%E5%88%99/</guid>
       <description>1. 单一职责原则 单一职责原则 Single Responsibility Principle &amp;ldquo;There should never be more than one reason for a class to change.&amp;rdquo; — Robert Martin. 一个类应该只有一个发生变化的原因 一个类应该专注做一件事 SRP原则具体指一个类</description>
+    </item>
+    
+    <item>
+      <title>外观模式 (Facade)</title>
+      <link>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Sat, 11 Dec 2021 16:29:53 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/</guid>
+      <description>定义 外观模式为复杂的子系统提供了一个简化的接口。 何时使用 1、客户端不需要知道系统内部的复杂联系，整个系统只需提供一个&amp;quot;接待员&amp;qu</description>
+    </item>
+    
+    <item>
+      <title>装饰模式 (Decorator)</title>
+      <link>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Fri, 10 Dec 2021 16:29:53 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A3%85%E9%A5%B0%E6%A8%A1%E5%BC%8F/</guid>
+      <description>定义 装饰模式使用对象组合的方式动态改变或增加对象行为。 允许程序员通过将对象包装在「装饰器类的对象」中，在运行时动态更改对象的行为。 何时使用 在</description>
     </item>
     
     <item>
@@ -58,7 +94,7 @@
       <pubDate>Tue, 07 Dec 2021 16:29:53 +0800</pubDate>
       
       <guid>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/</guid>
-      <description>定义 适配器模式用于转换一种接口适配另一种接口。 Golang 实际使用中Adaptee一般为接口，并且使用工厂函数生成实例。 在Adapter中匿名组合Ad</description>
+      <description>定义 适配器模式用于转换一种接口适配另一种接口。 何时使用 系统需要使用现有的类，而此类的接口不符合系统的需要。 想要建立一个可以重复使用的类，用于</description>
     </item>
     
     <item>
@@ -76,7 +112,7 @@
       <pubDate>Sun, 05 Dec 2021 16:29:53 +0800</pubDate>
       
       <guid>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/</guid>
-      <description>定义 简单说，创建现有对象的副本并根据需要对其进行修改。 原型模式使对象能复制自身，并且暴露到接口中，使客户端面向接口编程时，不知道接口实际对象</description>
+      <description>定义 简单说，创建现有对象的副本并根据需要对其进行修改。 原型模式配合原型管理器使用，使得客户端在不知道具体类的情况下，通过接口管理器得到新的实</description>
     </item>
     
     <item>
