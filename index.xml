@@ -53,6 +53,15 @@
     </item>
     
     <item>
+      <title>模版方法模式 (Template)</title>
+      <link>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%A8%A1%E7%89%88%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Mon, 20 Dec 2021 16:29:53 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%A8%A1%E7%89%88%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/</guid>
+      <description>定义 模版方法模式使用继承机制，把通用步骤和通用方法放到父类中，把具体实现延迟到子类中实现。使得实现符合开闭原则。 如实例代码中通用步骤在父类中</description>
+    </item>
+    
+    <item>
       <title>观察者模式 (Observer)</title>
       <link>https://xgbt.github.io/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Mon, 20 Dec 2021 16:29:53 +0800</pubDate>
