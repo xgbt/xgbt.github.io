@@ -122,9 +122,9 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F/">责任链模式 (Chain of Responsibility)</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/">观察者模式 (Observer)</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2021-12-14 </span>
+      <span class="post-time"> 2021-12-20 </span>
       <div class="post-category">
           <a href="/categories/%E7%AC%94%E8%AE%B0/"> 笔记 </a>
           </div>
@@ -133,19 +133,19 @@
   
   <div class="post-content">
     <div class="post-summary">
-      定义 职责链模式用于分离不同职责，并且动态组合相关职责。 构建一条对象链，请求从一端进入并不断从一个对象到另一个对象，直到找到合适的处理程序。 何
+      定义 观察者模式用于触发联动。 定义对象之间的依赖关系，以便每当对象更改其状态时，都会通知其所有依赖项。 一个对象的改变会触发其它观察者的相关动作
     </div>
     <div class="read-more">
-      <a href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F/" class="read-more-link">阅读更多</a>
+      <a href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">代理模式 (Proxy)</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F/">备忘录模式 (Memento)</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2021-12-13 </span>
+      <span class="post-time"> 2021-12-19 </span>
       <div class="post-category">
           <a href="/categories/%E7%AC%94%E8%AE%B0/"> 笔记 </a>
           </div>
@@ -154,19 +154,19 @@
   
   <div class="post-content">
     <div class="post-summary">
-      定义 使用代理模式，一个类代表另一个类的功能。 代理模式的常见用法有： 虚代理 COW代理 远程代理 保护代理 Cache 代理 防火墙代理 同步代理 智能指引 何时使用 代
+      定义 备忘录模式用于保存程序内部状态到外部，又不希望暴露内部状态的情形。 程序内部状态使用窄接口传递给外部进行存储，从而不暴露程序实现细节。 何时
     </div>
     <div class="read-more">
-      <a href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/" class="read-more-link">阅读更多</a>
+      <a href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/">享元模式 (Flyweight)</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/">中介者模式 (Mediator)</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2021-12-12 </span>
+      <span class="post-time"> 2021-12-17 </span>
       <div class="post-category">
           <a href="/categories/%E7%AC%94%E8%AE%B0/"> 笔记 </a>
           </div>
@@ -175,40 +175,40 @@
   
   <div class="post-content">
     <div class="post-summary">
-      定义 它用于通过尽可能多地与相似对象共享来最小化内存使用或计算开销。 享元模式从对象中剥离出不发生改变且多个实例需要的重复数据，独立出一个享元，
+      定义 Mediator 模式添加第三方对象（称为中介者）来控制两个对象（称为同事）之间的交互。它有助于减少彼此通信的类之间的耦合。因为现在他们不需要了解彼此的
     </div>
     <div class="read-more">
-      <a href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/" class="read-more-link">阅读更多</a>
+      <a href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/solid%E5%8E%9F%E5%88%99/">SOLID原则简介</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E4%BA%BA%E6%80%A7%E7%9A%84%E6%9E%B7%E9%94%81/">菲利普和他的女朋友们</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2021-12-11 </span>
+      <span class="post-time"> 2021-12-17 </span>
       <div class="post-category">
-          <a href="/categories/%E7%AC%94%E8%AE%B0/"> 笔记 </a>
+          <a href="/categories/%E8%AF%BB%E5%90%8E%E6%84%9F/"> 读后感 </a>
           </div>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      1. 单一职责原则 单一职责原则 Single Responsibility Principle &ldquo;There should never be more than one reason for a class to change.&rdquo; — Robert Martin. 一个类应该只有一个发生变化的原因 一个类应该专注做一件事 SRP原则具体指一个类
+      威尔金森小姐是菲利普的初恋。菲利普在她身上实践了一下自己理想中的浪漫爱情，却发现初恋只是看上去很美，尝起来甘苦自知。在没有得到她之前，他满脑
     </div>
     <div class="read-more">
-      <a href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/solid%E5%8E%9F%E5%88%99/" class="read-more-link">阅读更多</a>
+      <a href="/post/%E4%BA%BA%E6%80%A7%E7%9A%84%E6%9E%B7%E9%94%81/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">外观模式 (Facade)</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/">迭代器模式 (Iterator)</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 2021-12-11 </span>
+      <span class="post-time"> 2021-12-16 </span>
       <div class="post-category">
           <a href="/categories/%E7%AC%94%E8%AE%B0/"> 笔记 </a>
           </div>
@@ -217,10 +217,10 @@
   
   <div class="post-content">
     <div class="post-summary">
-      定义 外观模式为复杂的子系统提供了一个简化的接口。 何时使用 1、客户端不需要知道系统内部的复杂联系，整个系统只需提供一个&quot;接待员&qu
+      定义 迭代器模式用于使用相同方式送代不同类型集合或者隐藏集合类型的具体实现。 何时使用？ 可以使用迭代器模式使遍历同时应用送代策略，如请求新对象、
     </div>
     <div class="read-more">
-      <a href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/" class="read-more-link">阅读更多</a>
+      <a href="/post/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/" class="read-more-link">阅读更多</a>
     </div>
   </div>
 </article>
