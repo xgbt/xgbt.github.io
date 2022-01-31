@@ -6,7 +6,16 @@
     <description>Recent content in 笔记 on 西瓜不甜</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Thu, 13 Jan 2022 14:31:05 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/categories/%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 20 Jan 2022 21:31:05 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/categories/%E7%AC%94%E8%AE%B0/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>学习笔记</title>
+      <link>https://xgbt.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Thu, 20 Jan 2022 21:31:05 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>Linux 鸟哥的 Linux 私房菜 &amp;ndash; 基础学习篇目录 鸟哥的 Linux 私房菜 &amp;ndash; 服务器架设篇目录 ifcongif 指令相关 计算机网络</description>
+    </item>
+    
     <item>
       <title>多路归并问题</title>
       <link>https://xgbt.github.io/post/%E7%AE%97%E6%B3%95/%E5%A4%9A%E8%B7%AF%E5%BD%92%E5%B9%B6/</link>
