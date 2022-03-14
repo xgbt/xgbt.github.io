@@ -3,48 +3,55 @@
   
   <url>
     <loc>https://xgbt.github.io/categories/</loc>
-    <lastmod>2022-01-20T21:31:05+08:00</lastmod>
+    <lastmod>2022-02-28T21:31:05+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://xgbt.github.io/post/</loc>
-    <lastmod>2022-01-20T21:31:05+08:00</lastmod>
+    <lastmod>2022-02-28T21:31:05+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://xgbt.github.io/tags/</loc>
-    <lastmod>2022-01-20T21:31:05+08:00</lastmod>
+    <lastmod>2022-02-28T21:31:05+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://xgbt.github.io/tags/%E4%B8%93%E4%B8%9A%E7%9F%A5%E8%AF%86/</loc>
-    <lastmod>2022-01-20T21:31:05+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://xgbt.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2022-01-20T21:31:05+08:00</lastmod>
+    <lastmod>2022-02-28T21:31:05+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://xgbt.github.io/categories/%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2022-01-20T21:31:05+08:00</lastmod>
+    <lastmod>2022-02-28T21:31:05+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://xgbt.github.io/post/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E6%A8%A1%E7%89%88/</loc>
+    <lastmod>2022-02-28T21:31:05+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://xgbt.github.io/</loc>
+    <lastmod>2022-02-28T21:31:05+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://xgbt.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2022-01-20T21:31:05+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
