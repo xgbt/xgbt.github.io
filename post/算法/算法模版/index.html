@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="xgbt" /><meta name="description" content="拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 C&#43;&#43; 浮点数比较 1 2 3 4 const double EPS = 1e-6; if (fabs(a-b) &amp;lt; EPS) // 判断" /><meta name="keywords" content="xgbt, 西瓜不甜" />
+<meta name="author" content="xgbt" /><meta name="description" content="拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 判断质数 1 2 3 4 5 6 7 8 9 10 11 bool isPrime(int x) { if (x &amp;lt;" /><meta name="keywords" content="xgbt, 西瓜不甜" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="算法模版" />
-<meta property="og:description" content="拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 C&#43;&#43; 浮点数比较 1 2 3 4 const double EPS = 1e-6; if (fabs(a-b) &lt; EPS) // 判断" />
+<meta property="og:description" content="拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 判断质数 1 2 3 4 5 6 7 8 9 10 11 bool isPrime(int x) { if (x &lt;" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://xgbt.github.io/post/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E6%A8%A1%E7%89%88/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-02-28T21:31:05+08:00" />
 <meta property="article:modified_time" content="2022-02-28T21:31:05+08:00" />
 
 <meta itemprop="name" content="算法模版">
-<meta itemprop="description" content="拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 C&#43;&#43; 浮点数比较 1 2 3 4 const double EPS = 1e-6; if (fabs(a-b) &lt; EPS) // 判断"><meta itemprop="datePublished" content="2022-02-28T21:31:05+08:00" />
+<meta itemprop="description" content="拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 判断质数 1 2 3 4 5 6 7 8 9 10 11 bool isPrime(int x) { if (x &lt;"><meta itemprop="datePublished" content="2022-02-28T21:31:05+08:00" />
 <meta itemprop="dateModified" content="2022-02-28T21:31:05+08:00" />
-<meta itemprop="wordCount" content="679">
+<meta itemprop="wordCount" content="735">
 <meta itemprop="keywords" content="专业知识," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="算法模版"/>
-<meta name="twitter:description" content="拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 C&#43;&#43; 浮点数比较 1 2 3 4 const double EPS = 1e-6; if (fabs(a-b) &lt; EPS) // 判断"/>
+<meta name="twitter:description" content="拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 判断质数 1 2 3 4 5 6 7 8 9 10 11 bool isPrime(int x) { if (x &lt;"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -155,6 +155,7 @@
     </li>
     <li><a href="#技巧">技巧</a>
       <ul>
+        <li><a href="#判断质数">判断质数</a></li>
         <li><a href="#c-浮点数比较">C++ 浮点数比较</a></li>
         <li><a href="#二分">二分</a></li>
         <li><a href="#快速幂">快速幂</a></li>
@@ -165,6 +166,7 @@
         <li><a href="#lcm">lcm</a></li>
         <li><a href="#图论">图论</a></li>
         <li><a href="#邻接表构图">邻接表构图</a></li>
+        <li><a href="#位运算-1">位运算</a></li>
       </ul>
     </li>
   </ul>
@@ -184,7 +186,36 @@
 <p><code>if (mp.count(x)) </code></p>
 <p><code>if (mp.find(x) != mp.end())</code></p>
 <h1 id="技巧">技巧</h1>
-<h2 id="c-浮点数比较">C++ 浮点数比较</h2>
+<h2 id="判断质数">判断质数</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="kt">bool</span> <span class="nf">isPrime</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="c-浮点数比较">C++ 浮点数比较</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -431,7 +462,8 @@
 
 </code></pre></td></tr></table>
 </div>
-</div>
+</div><h2 id="位运算-1">位运算</h2>
+
     </div>
 
     

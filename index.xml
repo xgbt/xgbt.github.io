@@ -6,7 +6,16 @@
     <description>Recent content on 西瓜不甜</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Thu, 24 Mar 2022 21:31:05 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 13 Apr 2022 21:31:05 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>geeCache项目笔记</title>
+      <link>https://xgbt.github.io/post/geecache/</link>
+      <pubDate>Wed, 13 Apr 2022 21:31:05 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/geecache/</guid>
+      <description>LRU缓存淘汰策略 LRU 认为，如果数据最近被访问过，那么将来被访问的概率也会更高。LRU 算法的实现非常简单，维护一个队列，如果某条记录被访问了，</description>
+    </item>
+    
     <item>
       <title>geeWeb项目笔记</title>
       <link>https://xgbt.github.io/post/geeweb/</link>
@@ -22,7 +31,7 @@
       <pubDate>Mon, 28 Feb 2022 21:31:05 +0800</pubDate>
       
       <guid>https://xgbt.github.io/post/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E6%A8%A1%E7%89%88/</guid>
-      <description>拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 C++ 浮点数比较 1 2 3 4 const double EPS = 1e-6; if (fabs(a-b) &amp;lt; EPS) // 判断</description>
+      <description>拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 判断质数 1 2 3 4 5 6 7 8 9 10 11 bool isPrime(int x) { if (x &amp;lt;</description>
     </item>
     
     <item>
