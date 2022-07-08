@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="xgbt" /><meta name="description" content="拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 判断质数 1 2 3 4 5 6 7 8 9 10 11 bool isPrime(int x) { if (x &amp;lt;" /><meta name="keywords" content="xgbt, 西瓜不甜" />
+<meta name="author" content="xgbt" /><meta name="description" content="位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返回1，不存在返回0 或者 1 if (mp.find(x) != mp.end()) 遍历map中" /><meta name="keywords" content="xgbt, 西瓜不甜" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="算法模版" />
-<meta property="og:description" content="拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 判断质数 1 2 3 4 5 6 7 8 9 10 11 bool isPrime(int x) { if (x &lt;" />
+<meta property="og:description" content="位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返回1，不存在返回0 或者 1 if (mp.find(x) != mp.end()) 遍历map中" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://xgbt.github.io/post/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E6%A8%A1%E7%89%88/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-02-28T21:31:05+08:00" />
 <meta property="article:modified_time" content="2022-02-28T21:31:05+08:00" />
 
 <meta itemprop="name" content="算法模版">
-<meta itemprop="description" content="拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 判断质数 1 2 3 4 5 6 7 8 9 10 11 bool isPrime(int x) { if (x &lt;"><meta itemprop="datePublished" content="2022-02-28T21:31:05+08:00" />
+<meta itemprop="description" content="位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返回1，不存在返回0 或者 1 if (mp.find(x) != mp.end()) 遍历map中"><meta itemprop="datePublished" content="2022-02-28T21:31:05+08:00" />
 <meta itemprop="dateModified" content="2022-02-28T21:31:05+08:00" />
-<meta itemprop="wordCount" content="735">
+<meta itemprop="wordCount" content="1760">
 <meta itemprop="keywords" content="专业知识," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="算法模版"/>
-<meta name="twitter:description" content="拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 判断质数 1 2 3 4 5 6 7 8 9 10 11 bool isPrime(int x) { if (x &lt;"/>
+<meta name="twitter:description" content="位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返回1，不存在返回0 或者 1 if (mp.find(x) != mp.end()) 遍历map中"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -141,16 +141,22 @@
   <div class="post-toc-content">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#拓扑排序">拓扑排序</a></li>
     <li><a href="#位运算">位运算</a></li>
-    <li><a href="#vector">vector</a>
+    <li><a href="#数据结构">数据结构</a>
       <ul>
-        <li><a href="#在首尾插入元素">在首尾插入元素</a></li>
-      </ul>
-    </li>
-    <li><a href="#map">map</a>
-      <ul>
-        <li><a href="#判断元素x是否存在">判断元素x是否存在</a></li>
+        <li><a href="#vector">vector</a>
+          <ul>
+            <li><a href="#首部插入元素">首部插入元素</a></li>
+            <li><a href="#尾部插入元素">尾部插入元素</a></li>
+          </ul>
+        </li>
+        <li><a href="#map">map</a>
+          <ul>
+            <li><a href="#删除某元素">删除某元素</a></li>
+            <li><a href="#判断元素x是否存在">判断元素x是否存在</a></li>
+            <li><a href="#遍历map中的元素unordered_map与map">遍历map中的元素(unordered_map与map)</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
     <li><a href="#技巧">技巧</a>
@@ -160,13 +166,33 @@
         <li><a href="#二分">二分</a></li>
         <li><a href="#快速幂">快速幂</a></li>
         <li><a href="#结构体操作">结构体操作</a></li>
+      </ul>
+    </li>
+    <li><a href="#树">树</a>
+      <ul>
+        <li><a href="#字典树">字典树</a></li>
+      </ul>
+    </li>
+    <li><a href="#字符串">字符串</a>
+      <ul>
+        <li><a href="#c手动实现split">C++手动实现Split</a></li>
+        <li><a href="#使用stringstream解析字符串">使用stringstream解析字符串</a></li>
         <li><a href="#字符串转数字">字符串转数字</a></li>
         <li><a href="#数字转字符串">数字转字符串</a></li>
+        <li><a href="#最大子数组和">最大子数组和</a></li>
         <li><a href="#gcd">gcd</a></li>
         <li><a href="#lcm">lcm</a></li>
-        <li><a href="#图论">图论</a></li>
+      </ul>
+    </li>
+    <li><a href="#图论">图论</a>
+      <ul>
+        <li><a href="#判环拓扑排序">判环（拓扑排序）</a></li>
         <li><a href="#邻接表构图">邻接表构图</a></li>
-        <li><a href="#位运算-1">位运算</a></li>
+      </ul>
+    </li>
+    <li><a href="#位运算-1">位运算</a>
+      <ul>
+        <li><a href="#求x二进制下有多少个1">求x二进制下有多少个1</a></li>
       </ul>
     </li>
   </ul>
@@ -174,17 +200,87 @@
   </div>
 </div>
     <div class="post-content">
-      <h1 id="拓扑排序">拓扑排序</h1>
-<h1 id="位运算">位运算</h1>
-<p><code>__builtin_popcount(x)</code> 求x二进制下有多少个1</p>
-<h1 id="vector">vector</h1>
-<h2 id="在首尾插入元素">在首尾插入元素</h2>
-<p><code>v.insert(v.begin(), num);</code></p>
-<p><code>v.push_back(num);</code></p>
-<h1 id="map">map</h1>
-<h2 id="判断元素x是否存在">判断元素x是否存在</h2>
-<p><code>if (mp.count(x)) </code></p>
-<p><code>if (mp.find(x) != mp.end())</code></p>
+      <h1 id="位运算">位运算</h1>
+<h1 id="数据结构">数据结构</h1>
+<h2 id="vector">vector</h2>
+<h3 id="首部插入元素">首部插入元素</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="n">v</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">num</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="尾部插入元素">尾部插入元素</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">num</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="map">map</h2>
+<h3 id="删除某元素">删除某元素</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="n">mp</span><span class="p">.</span><span class="n">earse</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="判断元素x是否存在">判断元素x是否存在</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="n">mp</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1">// 存在返回1，不存在返回0
+</span></code></pre></td></tr></table>
+</div>
+</div><p>或者</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="k">if</span> <span class="p">(</span><span class="n">mp</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="n">mp</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="遍历map中的元素unordered_map与map">遍历map中的元素(unordered_map与map)</h3>
+<p>注意，以下两种方式只适合map遍历，因为map基于红黑树实现，内部数据是有序的。</p>
+<p>不适合unordered_map遍历，因为u_map是基于哈希表实现的，内部数据是无序的</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="p">[</span><span class="n">_</span><span class="p">,</span> <span class="n">cnt</span><span class="p">]</span><span class="o">:</span> <span class="n">mp</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">imax</span> <span class="o">+=</span> <span class="n">cnt</span><span class="p">;</span>
+    <span class="n">ans</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">imax</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">it</span><span class="p">:</span> <span class="n">mp</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">imax</span> <span class="o">+=</span> <span class="n">it</span><span class="p">.</span><span class="n">second</span><span class="p">;</span>
+    <span class="n">ans</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">imax</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="https://pic1.zhimg.com/80/v2-e7a0e37ae8457359287f99f9859dda28_720w.jpg" alt="img"></p>
 <h1 id="技巧">技巧</h1>
 <h2 id="判断质数">判断质数</h2>
 <div class="highlight"><div class="chroma">
@@ -215,20 +311,83 @@
     <span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
+</div><p>统计1-n质数数量</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="kt">int</span> <span class="nf">primes</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">is</span><span class="p">[</span><span class="mi">105</span><span class="p">];</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">is</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">is</span><span class="p">));</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">is</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span> <span class="o">+=</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">is</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+            <span class="p">}</span> 
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">is</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+            <span class="n">ret</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
 </div><h2 id="c-浮点数比较">C++ 浮点数比较</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="k">const</span> <span class="kt">double</span> <span class="n">EPS</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">;</span>
 
-<span class="k">if</span> <span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">b</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">EPS</span><span class="p">)</span>  	<span class="c1">// 判断是否相等 
-</span><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="o">&gt;</span> <span class="n">EPS</span><span class="p">)</span>   		<span class="c1">// 判断a是否大于b，因为大的肯定大，所以即使你小的加上，还是会更大 
-</span></code></pre></td></tr></table>
+<span class="c1">// 0 =, 1 &gt;, -1 &lt;
+</span><span class="c1"></span><span class="kt">int</span> <span class="nf">dcmp</span><span class="p">(</span><span class="kt">double</span> <span class="n">x</span><span class="p">,</span> <span class="kt">double</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">fabs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">){</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">fabs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="mi">1</span> <span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
 </div>
 </div><h2 id="二分">二分</h2>
 <p>在排序数组中查找某元素的第一个和最后一个位置</p>
@@ -396,6 +555,230 @@
 <span class="p">};</span>
 </code></pre></td></tr></table>
 </div>
+</div><h1 id="树">树</h1>
+<h2 id="字典树">字典树</h2>
+<p>例题：https://leetcode.cn/problems/replace-words/ 模版替换</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="c1">// 字典树数据结构
+</span><span class="c1"></span><span class="k">struct</span> <span class="nc">Trie</span> <span class="p">{</span>
+    <span class="n">unordered_map</span> <span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="n">Trie</span><span class="o">*&gt;</span> <span class="n">mp</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">string</span> <span class="n">replaceWords</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">string</span> <span class="n">sentence</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 构建字典树
+</span><span class="c1"></span>        <span class="n">Trie</span><span class="o">*</span> <span class="n">trie</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Trie</span><span class="p">();</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">word</span><span class="p">:</span> <span class="n">dictionary</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">trie</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">char</span><span class="o">&amp;</span> <span class="nl">ch</span> <span class="p">:</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">mp</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="n">cur</span><span class="o">-&gt;</span><span class="n">mp</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Trie</span><span class="p">();</span>
+                <span class="p">}</span>
+                <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">mp</span><span class="p">[</span><span class="n">ch</span><span class="p">];</span>
+            <span class="p">}</span>
+            <span class="n">cur</span><span class="o">-&gt;</span><span class="n">mp</span><span class="p">[</span><span class="sc">&#39;#&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Trie</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="n">vector</span> <span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">words</span> <span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="sc">&#39; &#39;</span><span class="p">);</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">word</span> <span class="p">:</span> <span class="n">words</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">word</span> <span class="o">=</span> <span class="n">findRoot</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">trie</span><span class="p">);</span>
+        <span class="p">}</span>
+		
+        <span class="n">string</span> <span class="n">ans</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">words</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">ans</span> <span class="o">+=</span> <span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#34; &#34;</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">ans</span> <span class="o">+=</span> <span class="n">words</span><span class="p">.</span><span class="n">back</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">split</span><span class="p">(</span><span class="n">string</span> <span class="n">str</span><span class="p">,</span> <span class="kt">char</span> <span class="n">ch</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">...</span>
+    <span class="p">}</span>
+	<span class="c1">// 跟根据字典树返回词根
+</span><span class="c1"></span>    <span class="n">string</span> <span class="nf">findRoot</span><span class="p">(</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">word</span><span class="p">,</span> <span class="n">Trie</span><span class="o">*</span> <span class="n">trie</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">string</span> <span class="n">root</span><span class="p">;</span>
+        <span class="k">auto</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">trie</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="nl">ch</span> <span class="p">:</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">mp</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="sc">&#39;#&#39;</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="n">root</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">mp</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="n">word</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="n">root</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">ch</span><span class="p">);</span>
+                <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">mp</span><span class="p">[</span><span class="n">ch</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">root</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="字符串">字符串</h1>
+<h2 id="c手动实现split">C++手动实现Split</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">split</span><span class="p">(</span><span class="n">string</span> <span class="n">str</span><span class="p">,</span> <span class="kt">char</span> <span class="n">ch</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">ret</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">pos</span> <span class="o">&lt;</span> <span class="n">str</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">pos</span> <span class="o">&lt;</span> <span class="n">str</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">str</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">==</span> <span class="n">ch</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">pos</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">pos</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">pos</span> <span class="o">&lt;</span> <span class="n">str</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">str</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">!=</span> <span class="n">ch</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">pos</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">start</span> <span class="o">&lt;</span> <span class="n">str</span><span class="p">.</span><span class="n">size</span><span class="p">())</span> <span class="p">{</span>
+            <span class="n">ret</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">str</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">start</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="使用stringstream解析字符串">使用stringstream解析字符串</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="c1">// 邻接表
+</span><span class="c1"></span>    <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">G</span><span class="p">[</span><span class="mi">105</span><span class="p">];</span>
+    <span class="c1">// 入度
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">deg</span><span class="p">[</span><span class="mi">105</span><span class="p">];</span>
+    
+    <span class="kt">bool</span> <span class="nf">hasCycle</span><span class="p">(</span><span class="n">string</span> <span class="n">graph</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 输入：
+</span><span class="c1"></span><span class="s">&#34;1-&gt;4,2-&gt;5,3-&gt;6,3-&gt;7,4-&gt;8,5-&gt;8,5-&gt;9,6-&gt;9,6-&gt;11,7-&gt;11,8-&gt;12,9-&gt;12,9-&gt;13,10-&gt;13,10-&gt;14,11-&gt;10,11-&gt;14&#34;</span>
+        <span class="n">stringstream</span> <span class="n">ss</span><span class="p">(</span><span class="n">graph</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">;</span>
+        <span class="kt">char</span> <span class="n">ch1</span><span class="p">,</span> <span class="n">ch2</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">ss</span> <span class="o">&gt;&gt;</span> <span class="n">u</span> <span class="o">&gt;&gt;</span> <span class="n">ch1</span> <span class="o">&gt;&gt;</span> <span class="n">ch2</span> <span class="o">&gt;&gt;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">G</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+            <span class="n">deg</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">ss</span> <span class="o">&gt;&gt;</span> <span class="n">ch1</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        
+       <span class="p">...</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
 </div><h2 id="字符串转数字">字符串转数字</h2>
 <p><code>int stoi(str)</code></p>
 <p><code>long stol(str)</code></p>
@@ -403,10 +786,145 @@
 <p><code>double stod(str)</code></p>
 <h2 id="数字转字符串">数字转字符串</h2>
 <p><code>string to_string(num)</code></p>
-<h2 id="gcd">gcd</h2>
+<h2 id="最大子数组和">最大子数组和</h2>
+<p><strong>子数组</strong> 是数组中的一个连续部分。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">maxSubArray</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">ans</span> <span class="o">=</span> <span class="n">INT_MIN</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="nl">num</span> <span class="p">:</span> <span class="n">nums</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">sum</span> <span class="o">+=</span> <span class="n">num</span><span class="p">;</span>
+            <span class="n">ans</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">ans</span><span class="p">,</span> <span class="n">sum</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">sum</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">ans</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="gcd">gcd</h2>
 <h2 id="lcm">lcm</h2>
-<h2 id="图论">图论</h2>
-<p>dfs</p>
+<h1 id="图论">图论</h1>
+<h2 id="判环拓扑排序">判环（拓扑排序）</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="c1">// 邻接表
+</span><span class="c1"></span>    <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">G</span><span class="p">[</span><span class="mi">105</span><span class="p">];</span>
+    <span class="c1">// 入度
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">deg</span><span class="p">[</span><span class="mi">105</span><span class="p">];</span>
+    
+    <span class="kt">bool</span> <span class="nf">hasCycle</span><span class="p">(</span><span class="n">string</span> <span class="n">graph</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 输入：
+</span><span class="c1"></span><span class="s">&#34;1-&gt;4,2-&gt;5,3-&gt;6,3-&gt;7,4-&gt;8,5-&gt;8,5-&gt;9,6-&gt;9,6-&gt;11,7-&gt;11,8-&gt;12,9-&gt;12,9-&gt;13,10-&gt;13,10-&gt;14,11-&gt;10,11-&gt;14&#34;</span>
+        <span class="n">stringstream</span> <span class="n">ss</span><span class="p">(</span><span class="n">graph</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">;</span>
+        <span class="kt">char</span> <span class="n">ch1</span><span class="p">,</span> <span class="n">ch2</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">ss</span> <span class="o">&gt;&gt;</span> <span class="n">u</span> <span class="o">&gt;&gt;</span> <span class="n">ch1</span> <span class="o">&gt;&gt;</span> <span class="n">ch2</span> <span class="o">&gt;&gt;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">G</span><span class="p">[</span><span class="n">u</span><span class="p">].</span><span class="n">push_back</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+            <span class="n">deg</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">ss</span> <span class="o">&gt;&gt;</span> <span class="n">ch1</span><span class="p">))</span> <span class="p">{</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        
+        <span class="c1">// 遍历所有节点入度,入度为0的入队
+</span><span class="c1"></span>        <span class="n">queue</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">q</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">deg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">q</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">q</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+            <span class="n">q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+            <span class="n">cnt</span><span class="o">--</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="nl">v</span> <span class="p">:</span> <span class="n">G</span><span class="p">[</span><span class="n">cur</span><span class="p">])</span> <span class="p">{</span>
+                <span class="n">deg</span><span class="p">[</span><span class="n">v</span><span class="p">]</span><span class="o">--</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">deg</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        
+        <span class="k">return</span> <span class="n">cnt</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>dfs</p>
 <p>bfs</p>
 <p>floyd算法</p>
 <p>dijkstra算法</p>
@@ -436,6 +954,10 @@
 </span><span class="lnt">20
 </span><span class="lnt">21
 </span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="k">const</span> <span class="kt">int</span> <span class="n">maxn</span> <span class="o">=</span> <span class="mi">1005</span><span class="p">;</span>
@@ -460,10 +982,23 @@
     <span class="n">head</span><span class="p">[</span><span class="n">from</span><span class="p">]</span> <span class="o">=</span> <span class="n">num</span><span class="o">++</span><span class="p">;</span>
 <span class="p">}</span>
 
+
+<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">head</span><span class="p">[</span><span class="n">cur</span><span class="p">];</span> <span class="n">i</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">=</span> <span class="n">e</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+    
+<span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><h2 id="位运算-1">位运算</h2>
-
+</div><h1 id="位运算-1">位运算</h1>
+<h2 id="求x二进制下有多少个1">求x二进制下有多少个1</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">__builtin_popcount(x)
+</code></pre></td></tr></table>
+</div>
+</div>
     </div>
 
     
@@ -477,7 +1012,7 @@
             <span class="prev-text nav-default">geeWeb项目笔记</span>
             <span class="prev-text nav-mobile">上一篇</span>
           </a>
-        <a class="next" href="/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+        <a class="next" href="/post/%E7%AC%94%E8%AE%B0/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
             <span class="next-text nav-default">学习笔记</span>
             <span class="next-text nav-mobile">下一篇</span>
             <i class="iconfont icon-right"></i>

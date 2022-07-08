@@ -6,7 +6,25 @@
     <description>Recent content on 西瓜不甜</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 13 Apr 2022 21:31:05 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 08 Jul 2022 21:31:05 +0800</lastBuildDate><atom:link href="https://xgbt.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>计算机网络笔记</title>
+      <link>https://xgbt.github.io/post/%E7%AC%94%E8%AE%B0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Fri, 08 Jul 2022 21:31:05 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E7%AC%94%E8%AE%B0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%AC%94%E8%AE%B0/</guid>
+      <description>TCP/UDP 头格式 序列号：在建立连接时由计算机生成的随机数作为其初始值，通过 SYN 包传给接收端主机，每发送一次数据，就「累加」一次该「数据字节数」的大小。</description>
+    </item>
+    
+    <item>
+      <title>mysql笔记</title>
+      <link>https://xgbt.github.io/post/%E7%AC%94%E8%AE%B0/mysql%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Thu, 07 Jul 2022 21:31:05 +0800</pubDate>
+      
+      <guid>https://xgbt.github.io/post/%E7%AC%94%E8%AE%B0/mysql%E7%AC%94%E8%AE%B0/</guid>
+      <description>mysql 索引 索引类型 按「数据结构」分类：B+tree索引、Hash索引、Full-text索引。 按「物理存储」分类：聚簇索引、二级索引。 聚簇索引的</description>
+    </item>
+    
     <item>
       <title>geeCache项目笔记</title>
       <link>https://xgbt.github.io/post/geecache/</link>
@@ -31,15 +49,15 @@
       <pubDate>Mon, 28 Feb 2022 21:31:05 +0800</pubDate>
       
       <guid>https://xgbt.github.io/post/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E6%A8%A1%E7%89%88/</guid>
-      <description>拓扑排序 位运算 __builtin_popcount(x) 求x二进制下有多少个1 vector 在首尾插入元素 v.insert(v.begin(), num); v.push_back(num); map 判断元素x是否存在 if (mp.count(x)) if (mp.find(x) != mp.end()) 技巧 判断质数 1 2 3 4 5 6 7 8 9 10 11 bool isPrime(int x) { if (x &amp;lt;</description>
+      <description>位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返回1，不存在返回0 或者 1 if (mp.find(x) != mp.end()) 遍历map中</description>
     </item>
     
     <item>
       <title>学习笔记</title>
-      <link>https://xgbt.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>https://xgbt.github.io/post/%E7%AC%94%E8%AE%B0/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Thu, 20 Jan 2022 21:31:05 +0800</pubDate>
       
-      <guid>https://xgbt.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://xgbt.github.io/post/%E7%AC%94%E8%AE%B0/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       <description>八股文聚合 https://github.com/CyC2018/CS-Notes JavaGuide 这个内容更详细一点 JavaLearn 算法 CodeTop 分类刷题 https://github.com/labuladong/fucking-algorithm Golang 学习 ✔ Go指南 官方入门教程 https://go.dev/doc/ 官方文档 ✔ 《The Go Programming Language》 入门电子书 ✔ Gola</description>
     </item>
     
