@@ -16,7 +16,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
 
 
-<meta name="author" content="xgbt" /><meta name="description" content="位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返回1，不存在返回0 或者 1 if (mp.find(x) != mp.end()) 遍历map中" /><meta name="keywords" content="xgbt, 西瓜不甜" />
+<meta name="author" content="xgbt" /><meta name="description" content="位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); 求和 1 accumulate(nums.begin(), nums.end(), 0); 最大元素 1 *max_element(nums.begin(), nums.end()); 排序 1 2 sort(nums.begin(), nums.end()); sort(nums.begin(), nums.end(), greater&amp;lt;int&amp;gt;()); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返" /><meta name="keywords" content="xgbt, 西瓜不甜" />
 
 
 
@@ -40,19 +40,19 @@
 
 
 <meta property="og:title" content="算法模版" />
-<meta property="og:description" content="位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返回1，不存在返回0 或者 1 if (mp.find(x) != mp.end()) 遍历map中" />
+<meta property="og:description" content="位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); 求和 1 accumulate(nums.begin(), nums.end(), 0); 最大元素 1 *max_element(nums.begin(), nums.end()); 排序 1 2 sort(nums.begin(), nums.end()); sort(nums.begin(), nums.end(), greater&lt;int&gt;()); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://xgbt.github.io/post/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E6%A8%A1%E7%89%88/" /><meta property="article:section" content="post" />
 <meta property="article:published_time" content="2022-02-28T21:31:05+08:00" />
 <meta property="article:modified_time" content="2022-02-28T21:31:05+08:00" />
 
 <meta itemprop="name" content="算法模版">
-<meta itemprop="description" content="位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返回1，不存在返回0 或者 1 if (mp.find(x) != mp.end()) 遍历map中"><meta itemprop="datePublished" content="2022-02-28T21:31:05+08:00" />
+<meta itemprop="description" content="位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); 求和 1 accumulate(nums.begin(), nums.end(), 0); 最大元素 1 *max_element(nums.begin(), nums.end()); 排序 1 2 sort(nums.begin(), nums.end()); sort(nums.begin(), nums.end(), greater&lt;int&gt;()); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返"><meta itemprop="datePublished" content="2022-02-28T21:31:05+08:00" />
 <meta itemprop="dateModified" content="2022-02-28T21:31:05+08:00" />
-<meta itemprop="wordCount" content="1760">
+<meta itemprop="wordCount" content="2206">
 <meta itemprop="keywords" content="专业知识," /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="算法模版"/>
-<meta name="twitter:description" content="位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返回1，不存在返回0 或者 1 if (mp.find(x) != mp.end()) 遍历map中"/>
+<meta name="twitter:description" content="位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); 求和 1 accumulate(nums.begin(), nums.end(), 0); 最大元素 1 *max_element(nums.begin(), nums.end()); 排序 1 2 sort(nums.begin(), nums.end()); sort(nums.begin(), nums.end(), greater&lt;int&gt;()); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -148,6 +148,9 @@
           <ul>
             <li><a href="#首部插入元素">首部插入元素</a></li>
             <li><a href="#尾部插入元素">尾部插入元素</a></li>
+            <li><a href="#求和">求和</a></li>
+            <li><a href="#最大元素">最大元素</a></li>
+            <li><a href="#排序">排序</a></li>
           </ul>
         </li>
         <li><a href="#map">map</a>
@@ -161,7 +164,9 @@
     </li>
     <li><a href="#技巧">技巧</a>
       <ul>
+        <li><a href="#离散化">离散化</a></li>
         <li><a href="#判断质数">判断质数</a></li>
+        <li><a href="#差分数组">差分数组</a></li>
         <li><a href="#c-浮点数比较">C++ 浮点数比较</a></li>
         <li><a href="#二分">二分</a></li>
         <li><a href="#快速幂">快速幂</a></li>
@@ -186,6 +191,7 @@
     </li>
     <li><a href="#图论">图论</a>
       <ul>
+        <li><a href="#并查集">并查集</a></li>
         <li><a href="#判环拓扑排序">判环（拓扑排序）</a></li>
         <li><a href="#邻接表构图">邻接表构图</a></li>
       </ul>
@@ -219,6 +225,35 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">num</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="求和">求和</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="n">accumulate</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">nums</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="最大元素">最大元素</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">*max_element(nums.begin(), nums.end());
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="排序">排序</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">sort</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">nums</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+<span class="n">sort</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">nums</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">greater</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">());</span>
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="map">map</h2>
@@ -282,7 +317,40 @@
 </div>
 </div><p><img src="https://pic1.zhimg.com/80/v2-e7a0e37ae8457359287f99f9859dda28_720w.jpg" alt="img"></p>
 <h1 id="技巧">技巧</h1>
-<h2 id="判断质数">判断质数</h2>
+<h2 id="离散化">离散化</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">arrayRankTransform</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">arr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">arr</span><span class="p">;</span>
+        <span class="n">sort</span><span class="p">(</span><span class="n">temp</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">temp</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+        <span class="n">temp</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">unique</span><span class="p">(</span><span class="n">temp</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">temp</span><span class="p">.</span><span class="n">end</span><span class="p">()),</span> <span class="n">temp</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="o">&amp;</span><span class="nl">x</span> <span class="p">:</span> <span class="n">arr</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">upper_bound</span><span class="p">(</span><span class="n">temp</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">temp</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">temp</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">arr</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="判断质数">判断质数</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
@@ -358,6 +426,43 @@
 
     <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
 <span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="差分数组">差分数组</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="kt">int</span> <span class="n">busyStudent</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">startTime</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span> <span class="n">endTime</span><span class="p">,</span> <span class="kt">int</span> <span class="n">queryTime</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">vector</span> <span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">c</span><span class="p">(</span><span class="mi">1005</span><span class="p">);</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">startTime</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">c</span><span class="p">[</span><span class="n">startTime</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">c</span><span class="p">[</span><span class="n">endTime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">--</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">queryTime</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">cnt</span> <span class="o">+=</span> <span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">cnt</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
 </code></pre></td></tr></table>
 </div>
 </div><h2 id="c-浮点数比较">C++ 浮点数比较</h2>
@@ -676,6 +781,62 @@
 <span class="p">};</span>
 </code></pre></td></tr></table>
 </div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="k">struct</span> <span class="nc">Trie</span> <span class="p">{</span>
+    <span class="kt">bool</span> <span class="n">isFinished</span><span class="p">;</span>
+    <span class="n">unordered_map</span> <span class="o">&lt;</span><span class="kt">char</span><span class="p">,</span> <span class="n">Trie</span><span class="o">*&gt;</span> <span class="n">mp</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">MagicDictionary</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Trie</span><span class="o">*</span> <span class="n">root</span><span class="p">;</span>
+
+    <span class="n">MagicDictionary</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Trie</span><span class="p">();</span>
+    <span class="p">}</span>
+    
+    <span class="kt">void</span> <span class="nf">buildDict</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">dictionary</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">word</span> <span class="p">:</span> <span class="n">dictionary</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">auto</span> <span class="n">cur</span> <span class="o">=</span> <span class="n">root</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="nl">ch</span> <span class="p">:</span> <span class="n">word</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">cur</span><span class="o">-&gt;</span><span class="n">mp</span><span class="p">.</span><span class="n">count</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="n">cur</span><span class="o">-&gt;</span><span class="n">mp</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Trie</span><span class="p">();</span>
+                <span class="p">}</span>
+                <span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">-&gt;</span><span class="n">mp</span><span class="p">[</span><span class="n">ch</span><span class="p">];</span>
+            <span class="p">}</span>
+            <span class="n">cur</span><span class="o">-&gt;</span><span class="n">isFinished</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
 </div><h1 id="字符串">字符串</h1>
 <h2 id="c手动实现split">C++手动实现Split</h2>
 <div class="highlight"><div class="chroma">
@@ -779,6 +940,48 @@
 <span class="p">};</span>
 </code></pre></td></tr></table>
 </div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="k">class</span> <span class="nc">Solution</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">string</span> <span class="n">fractionAddition</span><span class="p">(</span><span class="n">string</span> <span class="n">expression</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">stringstream</span> <span class="nf">ss</span><span class="p">(</span><span class="n">expression</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">A</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">;</span>
+        <span class="kt">char</span> <span class="n">ch</span><span class="p">;</span>
+		
+        <span class="k">while</span> <span class="p">(</span><span class="n">ss</span> <span class="o">&gt;&gt;</span> <span class="n">num1</span> <span class="o">&gt;&gt;</span> <span class="n">ch</span> <span class="o">&gt;&gt;</span> <span class="n">num2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">num2</span> <span class="o">+</span> <span class="n">B</span> <span class="o">*</span> <span class="n">num1</span><span class="p">;</span>
+            <span class="n">B</span> <span class="o">*=</span> <span class="n">num2</span><span class="p">;</span>
+            <span class="kt">int</span> <span class="n">g</span> <span class="o">=</span> <span class="n">abs</span><span class="p">(</span><span class="n">__gcd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">));</span>
+            <span class="n">A</span> <span class="o">/=</span> <span class="n">g</span><span class="p">;</span>
+            <span class="n">B</span> <span class="o">/=</span> <span class="n">g</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nf">to_string</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#34;/&#34;</span> <span class="o">+</span> <span class="n">to_string</span><span class="p">(</span><span class="n">B</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
 </div><h2 id="字符串转数字">字符串转数字</h2>
 <p><code>int stoi(str)</code></p>
 <p><code>long stol(str)</code></p>
@@ -829,7 +1032,88 @@
 </div><h2 id="gcd">gcd</h2>
 <h2 id="lcm">lcm</h2>
 <h1 id="图论">图论</h1>
-<h2 id="判环拓扑排序">判环（拓扑排序）</h2>
+<h2 id="并查集">并查集</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="kt">int</span> <span class="n">fa</span><span class="p">[</span><span class="mi">100005</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">rank</span><span class="p">[</span><span class="mi">100005</span><span class="p">];</span>
+
+<span class="kt">void</span> <span class="nf">init</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">rank</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">rank</span><span class="p">));</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fa</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">find</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">fa</span><span class="p">[</span><span class="n">x</span><span class="p">])</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">fa</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">fa</span><span class="p">[</span><span class="n">x</span><span class="p">]);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">unit</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">rank</span><span class="p">[</span><span class="n">y</span><span class="p">])</span> <span class="p">{</span>
+        <span class="n">fa</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">fa</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">rank</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="n">rank</span><span class="p">[</span><span class="n">y</span><span class="p">])</span> <span class="p">{</span>
+            <span class="n">rank</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">same</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="n">find</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="判环拓扑排序">判环（拓扑排序）</h2>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1

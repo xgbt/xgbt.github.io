@@ -16,5 +16,23 @@
       <description>异常（panic）和错误（error） panic panic会中止程序执行进入异常处理逻辑，panic可以在当前函数或者调用链向上的任何一层被defe</description>
     </item>
     
+    <item>
+      <title>Golang的defer</title>
+      <link>https://xgbt.github.io/post/golang/go-defer/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://xgbt.github.io/post/golang/go-defer/</guid>
+      <description>1、多个defer语句，按先进后出的方式执行 1 2 3 4 5 6 7 8 9 10 package main import &amp;#34;fmt&amp;#34; func main() { var whatever [5]struct{} for i := range whatever { defer fmt.Println(i) } } 1 2 3 4 5 4 3 2 1 0 2、defer声</description>
+    </item>
+    
+    <item>
+      <title>Golang闭包</title>
+      <link>https://xgbt.github.io/post/golang/go%E9%97%AD%E5%8C%85/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://xgbt.github.io/post/golang/go%E9%97%AD%E5%8C%85/</guid>
+      <description>闭包（closure） case 1 1 2 3 4 5 6 func foo1(x *int) func() { return func() { *x = *x + 1 fmt.Printf(&amp;#34;foo1 val = %d\n&amp;#34;, *x) } } case 2 1 2 3 4 5 6 func foo2(x int) func() { return func() { x = x + 1 fmt.Printf(&amp;#34;foo2 val = %d\n&amp;#34;, x) } } cas</description>
+    </item>
+    
   </channel>
 </rss>

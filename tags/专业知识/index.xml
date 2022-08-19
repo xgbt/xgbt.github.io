@@ -49,7 +49,7 @@
       <pubDate>Mon, 28 Feb 2022 21:31:05 +0800</pubDate>
       
       <guid>https://xgbt.github.io/post/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E6%A8%A1%E7%89%88/</guid>
-      <description>位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返回1，不存在返回0 或者 1 if (mp.find(x) != mp.end()) 遍历map中</description>
+      <description>位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); 求和 1 accumulate(nums.begin(), nums.end(), 0); 最大元素 1 *max_element(nums.begin(), nums.end()); 排序 1 2 sort(nums.begin(), nums.end()); sort(nums.begin(), nums.end(), greater&amp;lt;int&amp;gt;()); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返</description>
     </item>
     
     <item>

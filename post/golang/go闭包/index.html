@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Golang闭包 - 西瓜不甜</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="xgbt" /><meta name="description" content="闭包（closure） case 1 1 2 3 4 5 6 func foo1(x *int) func() { return func() { *x = *x &#43; 1 fmt.Printf(&amp;#34;foo1 val = %d\n&amp;#34;, *x) } } case 2 1 2 3 4 5 6 func foo2(x int) func() { return func() { x = x &#43; 1 fmt.Printf(&amp;#34;foo2 val = %d\n&amp;#34;, x) } } cas" /><meta name="keywords" content="xgbt, 西瓜不甜" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.88.1 with theme even" />
+
+
+<link rel="canonical" href="https://xgbt.github.io/post/golang/go%E9%97%AD%E5%8C%85/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+<link href="/sass/main.min.f92fd13721ddf72129410fd8250e73152cc6f2438082b6c0208dc24ee7c13fc4.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Golang闭包" />
+<meta property="og:description" content="闭包（closure） case 1 1 2 3 4 5 6 func foo1(x *int) func() { return func() { *x = *x &#43; 1 fmt.Printf(&#34;foo1 val = %d\n&#34;, *x) } } case 2 1 2 3 4 5 6 func foo2(x int) func() { return func() { x = x &#43; 1 fmt.Printf(&#34;foo2 val = %d\n&#34;, x) } } cas" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://xgbt.github.io/post/golang/go%E9%97%AD%E5%8C%85/" /><meta property="article:section" content="post" />
+
+
+
+<meta itemprop="name" content="Golang闭包">
+<meta itemprop="description" content="闭包（closure） case 1 1 2 3 4 5 6 func foo1(x *int) func() { return func() { *x = *x &#43; 1 fmt.Printf(&#34;foo1 val = %d\n&#34;, *x) } } case 2 1 2 3 4 5 6 func foo2(x int) func() { return func() { x = x &#43; 1 fmt.Printf(&#34;foo2 val = %d\n&#34;, x) } } cas">
+
+<meta itemprop="wordCount" content="2685">
+<meta itemprop="keywords" content="Golang," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Golang闭包"/>
+<meta name="twitter:description" content="闭包（closure） case 1 1 2 3 4 5 6 func foo1(x *int) func() { return func() { *x = *x &#43; 1 fmt.Printf(&#34;foo1 val = %d\n&#34;, *x) } } case 2 1 2 3 4 5 6 func foo2(x int) func() { return func() { x = x &#43; 1 fmt.Printf(&#34;foo2 val = %d\n&#34;, x) } } cas"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">xgbt&#39;s Blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a>
+  </ul>
+
+  
+
+
+</nav>
+
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">xgbt&#39;s Blog</a>
+</div>
+
+
+
+
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li>
+  </ul>
+</nav>
+
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Golang闭包</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 0001-01-01 </span>
+        <div class="post-category">
+            <a href="/categories/%E7%AC%94%E8%AE%B0/"> 笔记 </a>
+            </div>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#闭包closure"><strong>闭包（closure）</strong></a></li>
+    <li><a href="#heading"></a></li>
+    <li><a href="#闭包的延迟绑定"><strong>闭包的延迟绑定</strong></a></li>
+    <li><a href="#goroutine的延迟绑定"><strong>Goroutine的延迟绑定</strong></a></li>
+    <li><a href="#参考文献">参考文献</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <h1 id="闭包closure"><strong>闭包（closure）</strong></h1>
+<p>case 1</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">foo1</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span><span class="kt">int</span><span class="p">)</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+    <span class="o">*</span><span class="nx">x</span> <span class="p">=</span> <span class="o">*</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;foo1 val = %d\n&#34;</span><span class="p">,</span> <span class="o">*</span><span class="nx">x</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>case 2</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">foo2</span><span class="p">(</span><span class="nx">x</span> <span class="kt">int</span><span class="p">)</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">x</span> <span class="p">=</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;foo2 val = %d\n&#34;</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>case1~2：值传递（by value） vs. 引用传递（by reference）</p>
+<p>Go是没有<strong>引用传递</strong>的，即使是<code>foo1()</code>在参数上加了<code>*</code>，内部实现机制仍旧是<strong>值传递</strong>，只不过传递的是指针的数值。</p>
+<h1 id="heading"></h1>
+<p>什么是闭包呢？摘用Wikipedia上的一句定义：</p>
+<blockquote>
+<p>a <strong>closure</strong> is a record storing <strong>a function</strong> together with <strong>an environment</strong>.
+<strong>闭包</strong>是由<strong>函数</strong>和与其相关的引用<strong>环境</strong>组合而成的实体 。</p>
+</blockquote>
+<p>因此<strong>闭包</strong>的核心就是：<strong>函数</strong>和<strong>环境</strong>。其实这里就已经可以回答本文题目的问题：<strong>闭包究竟包了什么？答案是：函数和环境。</strong></p>
+<p>跳回<code>foo1()</code>和<code>foo2()</code>的例子，来解释<strong>闭包</strong>的<strong>函数和环境</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">foo1</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span><span class="kt">int</span><span class="p">)</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="o">*</span><span class="nx">x</span> <span class="p">=</span> <span class="o">*</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;foo1 val = %d\n&#34;</span><span class="p">,</span> <span class="o">*</span><span class="nx">x</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">func</span> <span class="nf">foo2</span><span class="p">(</span><span class="nx">x</span> <span class="kt">int</span><span class="p">)</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">x</span> <span class="p">=</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;foo1 val = %d\n&#34;</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Q1第一组实验
+</span><span class="c1"></span><span class="nx">x</span> <span class="o">:=</span> <span class="mi">133</span>
+<span class="nx">f1</span> <span class="o">:=</span> <span class="nf">foo1</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">x</span><span class="p">)</span>
+<span class="nx">f2</span> <span class="o">:=</span> <span class="nf">foo2</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span>
+<span class="nf">f1</span><span class="p">()</span> <span class="c1">// foo1 val = 134
+</span><span class="c1"></span><span class="nf">f2</span><span class="p">()</span> <span class="c1">// foo2 val = 134
+</span><span class="c1"></span><span class="nf">f1</span><span class="p">()</span> <span class="c1">// foo1 val = 135
+</span><span class="c1"></span><span class="nf">f2</span><span class="p">()</span> <span class="c1">// foo2 val = 135
+</span><span class="c1">// Q1第二组
+</span><span class="c1"></span><span class="nx">x</span> <span class="p">=</span> <span class="mi">233</span>
+<span class="nf">f1</span><span class="p">()</span> <span class="c1">// foo1 val = 234
+</span><span class="c1"></span><span class="nf">f2</span><span class="p">()</span> <span class="c1">// foo2 val = 136
+</span><span class="c1"></span><span class="nf">f1</span><span class="p">()</span> <span class="c1">// foo1 val = 235
+</span><span class="c1"></span><span class="nf">f2</span><span class="p">()</span> <span class="c1">// foo2 val = 137
+</span><span class="c1">// Q1第三组
+</span><span class="c1"></span><span class="nf">foo1</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">x</span><span class="p">)()</span> <span class="c1">// foo1 val = 236
+</span><span class="c1"></span><span class="nf">foo2</span><span class="p">(</span><span class="nx">x</span><span class="p">)()</span> <span class="c1">// foo2 val = 237
+</span><span class="c1"></span><span class="nf">foo1</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">x</span><span class="p">)()</span> <span class="c1">// foo1 val = 237
+</span><span class="c1"></span><span class="nf">foo2</span><span class="p">(</span><span class="nx">x</span><span class="p">)()</span> <span class="c1">// foo2 val = 238
+</span><span class="c1"></span><span class="nf">foo2</span><span class="p">(</span><span class="nx">x</span><span class="p">)()</span> <span class="c1">// foo2 val = 238
+</span></code></pre></td></tr></table>
+</div>
+</div><p>定义了<code>x=133</code>之后，我们获取得到了<code>f1=foo1(&amp;x)</code>和<code>f2=foo2(x)</code>。这里<code>f1\f2</code>就是<strong>闭包的函数</strong>，也就是<code>foo1()\foo2()</code>的内部匿名函数；而<strong>闭包的环境</strong>即外部函数<code>foo1()\foo2()</code>的变量<code>x</code>（因为内部匿名函数引用到的相关变量只有<code>x</code>，因此这里简化为变量<code>x</code>）。</p>
+<p><strong>闭包的函数</strong>做的事情归纳为：1). 将环境的变量<code>x</code>自增1；2). 打印环境变量<code>x</code>。</p>
+<p><strong>闭包的环境</strong>则是其外部函数获取到的变量<code>x</code>。</p>
+<p>因此<strong>Q1第一组实验</strong>的答案为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="nf">f1</span><span class="p">()</span> <span class="c1">// foo1 val = 134
+</span><span class="c1"></span><span class="nf">f2</span><span class="p">()</span> <span class="c1">// foo2 val = 134
+</span><span class="c1"></span><span class="nf">f1</span><span class="p">()</span> <span class="c1">// foo1 val = 135
+</span><span class="c1"></span><span class="nf">f2</span><span class="p">()</span> <span class="c1">// foo2 val = 135
+</span></code></pre></td></tr></table>
+</div>
+</div><p>这是因为闭包<code>f1\f2</code>都保存了<code>x=133</code>时的整个环境，每次调用闭包<code>f1\f2</code>都会执行一次自增+打印的内部匿名函数。因此第一次输出都是<code>(133+1=)134</code>，第二次输出都是<code>(134+1=)135</code>。</p>
+<p>那么<strong>Q1第二组实验</strong>的答案呢？</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="nf">f1</span><span class="p">()</span> <span class="c1">// foo1 val = 234
+</span><span class="c1"></span><span class="nf">f2</span><span class="p">()</span> <span class="c1">// foo2 val = 136
+</span><span class="c1"></span><span class="nf">f1</span><span class="p">()</span> <span class="c1">// foo1 val = 235
+</span><span class="c1"></span><span class="nf">f2</span><span class="p">()</span> <span class="c1">// foo2 val = 137
+</span></code></pre></td></tr></table>
+</div>
+</div><p><strong>有趣的事情发生了！</strong><code>f1</code>的值居然发生了显著性的变化！通过这组实验，能够更好地解释<strong>其（函数）相关的引用环境</strong>其实就是产生这个闭包的时候的外部函数的环境，因此变量<code>x</code>的可见性和作用域也与外部函数相同，又因为<code>foo1</code>是“引用传递”，变量<code>x</code>的作用域不局限在<code>foo1()</code>中，因此当<code>x</code>发生变化的时候，闭包<code>f1</code>内部也变化了。这个也正好是&quot;<strong>反之，那么闭包其实不再封闭，全局可见的变量的修改，也会对闭包内的这个变量造成影响</strong>&ldquo;的证明。</p>
+<p><strong>Q1的第三组实验</strong>的答案：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="nf">foo1</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">x</span><span class="p">)()</span> <span class="c1">// foo1 val = 236
+</span><span class="c1"></span><span class="nf">foo2</span><span class="p">(</span><span class="nx">x</span><span class="p">)()</span> <span class="c1">// foo2 val = 237
+</span><span class="c1"></span><span class="nf">foo1</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">x</span><span class="p">)()</span> <span class="c1">// foo1 val = 237
+</span><span class="c1"></span><span class="nf">foo2</span><span class="p">(</span><span class="nx">x</span><span class="p">)()</span> <span class="c1">// foo2 val = 238
+</span><span class="c1"></span><span class="nf">foo2</span><span class="p">(</span><span class="nx">x</span><span class="p">)()</span> <span class="c1">// foo2 val = 238
+</span></code></pre></td></tr></table>
+</div>
+</div><p>因为<code>foo1()</code>返回的闭包都会修改变量<code>x</code>的数值，因此调用<code>foo1()()</code>之后，变量<code>x</code>必然增加1。而<code>foo2()</code>返回的闭包仅仅修改其内部环境的变量<code>x</code>而对调用外部的变量<code>x</code>不影响，且每次调用<code>foo2()</code>返回的闭包是独立的，和其他调用<code>foo2()</code>的闭包不相关，因此最后两次的调用，打印的数值都是相同的；第一次调用和第二次调用<code>foo2()</code>发现打印出来的数值增加了1，是因为两次调用之间传入的<code>x</code>的数值分别是236和237，而不是说第二次在第一次基础上增加了1，这点需要补充说明。</p>
+<h1 id="闭包的延迟绑定"><strong>闭包的延迟绑定</strong></h1>
+<p>调用<code>f7()</code>的时候分别会打印什么？</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">foo7</span><span class="p">(</span><span class="nx">x</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[]</span><span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">fs</span> <span class="p">[]</span><span class="kd">func</span><span class="p">()</span>
+    <span class="nx">values</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span>
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">values</span> <span class="p">{</span>
+        <span class="nx">fs</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">fs</span><span class="p">,</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;foo7 val = %d\n&#34;</span><span class="p">,</span> <span class="nx">x</span><span class="o">+</span><span class="nx">val</span><span class="p">)</span>
+        <span class="p">})</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">fs</span>
+<span class="p">}</span>
+<span class="c1">// Q4实验：
+</span><span class="c1"></span><span class="nx">f7s</span> <span class="o">:=</span> <span class="nf">foo7</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">f7</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">f7s</span> <span class="p">{</span>
+    <span class="nf">f7</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>答案是：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="nx">foo7</span> <span class="nx">val</span> <span class="p">=</span> <span class="mi">16</span>
+<span class="nx">foo7</span> <span class="nx">val</span> <span class="p">=</span> <span class="mi">16</span>
+<span class="nx">foo7</span> <span class="nx">val</span> <span class="p">=</span> <span class="mi">16</span>
+<span class="nx">foo7</span> <span class="nx">val</span> <span class="p">=</span> <span class="mi">16</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>闭包</strong>是一段<strong>函数</strong>和<strong>相关的引用环境</strong>的实体。case7的问题中，函数是打印变量<code>val</code>的值，引用环境是变量<code>val</code>。仅仅是这样的话，遍历到val=1的时候，记录的不应该是val=1的环境吗？</p>
+<p>上文在闭包解释最后，还有一句话：闭包保存/记录了它<strong>产生</strong>时的外部函数的所有环境。如同普通变量/函数的<strong>定义</strong>和实际<strong>赋值/调用或者说执行</strong>，是两个阶段。</p>
+<p>闭包也是一样，for-loop内部仅仅是声明了一个闭包，<code>foo7()</code>返回的也仅仅是一段闭包的函数定义，只有在外部执行了<code>f7()</code>时才真正执行了闭包，此时才闭包内部的变量才会进行赋值的操作。</p>
+<p>这就是闭包的神奇之处，它会保存相关引用的环境，也就是说，<code>val</code>这个变量在闭包内的生命周期得到了保证。因此在执行这个闭包的时候，会去外部环境寻找最新的数值。</p>
+<p><strong>临时case</strong>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">foo0</span><span class="p">()</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">x</span> <span class="o">:=</span> <span class="mi">1</span>
+    <span class="nx">f</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;foo0 val = %d\n&#34;</span><span class="p">,</span> <span class="nx">x</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nx">x</span> <span class="p">=</span> <span class="mi">11</span>
+    <span class="k">return</span> <span class="nx">f</span>
+<span class="p">}</span>
+
+<span class="nf">foo0</span><span class="p">()()</span> <span class="c1">// 猜猜我会输出什么？
+</span></code></pre></td></tr></table>
+</div>
+</div><p>既然我说会<strong>在执行的时候去外部环境寻找最新的数值</strong>，那<code>x</code>的最新数值就是11，果然，最后输出的就是11。</p>
+<h1 id="goroutine的延迟绑定"><strong>Goroutine的延迟绑定</strong></h1>
+<p><strong>case3、case4和case5</strong>不是闭包，<strong>case3</strong>只是遍历了内部的slice并且打印，<strong>case4</strong>是在遍历时通过协程调用了打印函数打印，<strong>case5</strong>也是在遍历slice时调用了内部匿名函数打印。</p>
+<p><strong>Q2的case3问题</strong>的答案先丢出来：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">foo3</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">values</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span>
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">values</span> <span class="p">{</span>
+        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;foo3 val = %d\n&#34;</span><span class="p">,</span> <span class="nx">val</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nf">foo3</span><span class="p">()</span>
+<span class="c1">//foo3 val = 1
+</span><span class="c1">//foo3 val = 2
+</span><span class="c1">//foo3 val = 3
+</span><span class="c1">//foo3 val = 5
+</span></code></pre></td></tr></table>
+</div>
+</div><p>中规中矩，遍历输出slice的内容：1，2，3，5。</p>
+<p><strong>Q2的case4问题</strong>的答案再丢出来：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">show</span><span class="p">(</span><span class="nx">v</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;foo4 val = %v\n&#34;</span><span class="p">,</span> <span class="nx">v</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="kd">func</span> <span class="nf">foo4</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">values</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span>
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">values</span> <span class="p">{</span>
+        <span class="k">go</span> <span class="nf">show</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nf">foo4</span><span class="p">()</span>
+<span class="c1">//foo3 val = 2
+</span><span class="c1">//foo3 val = 3
+</span><span class="c1">//foo3 val = 1
+</span><span class="c1">//foo3 val = 5
+</span></code></pre></td></tr></table>
+</div>
+</div><p>嗯，因为Go Routine的执行顺序是随机并行的，因此执行多次<code>foo4()</code>输出的顺序不一行相同，但是一定打印了“1，2，3，5”各个元素。</p>
+<p>最后是<strong>Q2的case5问题</strong>的答案：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">foo5</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">values</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">}</span>
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">values</span> <span class="p">{</span>
+        <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;foo5 val = %v\n&#34;</span><span class="p">,</span> <span class="nx">val</span><span class="p">)</span>
+        <span class="p">}()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nf">foo5</span><span class="p">()</span>
+<span class="c1">//foo3 val = 5
+</span><span class="c1">//foo3 val = 5
+</span><span class="c1">//foo3 val = 5
+</span><span class="c1">//foo3 val = 5
+</span></code></pre></td></tr></table>
+</div>
+</div><p>居然都打印了5，惊不惊喜，意不意外？！相信看过子标题的你，一定不意外了（捂脸）。是的，接下来就要讲讲<strong>Go Routine的延迟绑定</strong>：</p>
+<p>这个问题的本质同<strong>闭包的延迟绑定</strong>，或者说，这段匿名函数的对象就是<strong>闭包</strong>。</p>
+<p>在我们调用<code>go func() { xxx }()</code>的时候，只要没有真正开始执行这段代码，那它还只是一段函数声明。</p>
+<p>而在这段匿名函数被执行的时候，才是内部变量寻找真正赋值的时候。</p>
+<p>在<strong>case5</strong>中，for-loop的遍历几乎是“瞬时”完成的，4个Go Routine真正被执行在其后。</p>
+<p>这个匿名函数就是一个闭包吗？</p>
+<p><strong>闭包</strong>真正被执行的时候，for-loop结束了，但是<code>val</code>的生命周期在闭包内部被延长了且被赋值到最新的数值5。</p>
+<p>所以，<strong>Go Routine的匿名函数的延迟绑定本质就是闭包，实际生成中注意下这种写法~</strong></p>
+<h1 id="参考文献">参考文献</h1>
+<ol>
+<li><a href="https://zhuanlan.zhihu.com/p/92634505">https://zhuanlan.zhihu.com/p/92634505</a></li>
+</ol>
+
+    </div>
+
+    
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/golang/">Golang</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/golang/go-defer/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Golang的defer</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:1027581514@qq.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/xgbt" class="iconfont icon-github" title="github"></a>
+      <a href="https://weibo.com/u/1775994674" class="iconfont icon-weibo" title="weibo"></a>
+      <a href="https://www.douban.com/people/53958783/" class="iconfont icon-douban" title="douban"></a>
+      <a href="https://space.bilibili.com/1768038" class="iconfont icon-bilibili" title="bilibili"></a>
+  <a href="https://xgbt.github.io/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2021 - 
+    2022<span class="heart"><i class="iconfont icon-heart"></i></span><span>xgbt</span>
+  </span>
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+
+
+
+<script type="text/javascript" src="/js/main.min.c99b103c33d1539acf3025e1913697534542c4a5aa5af0ccc20475ed2863603b.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        tags: 'ams',
+        }
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.5/es5/tex-mml-chtml.js" integrity="sha256-HGLuEfFcsUJGhvB8cQ8nr0gai9EucOOaIxFw7qxmd+w=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

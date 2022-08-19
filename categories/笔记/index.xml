@@ -49,7 +49,7 @@
       <pubDate>Mon, 28 Feb 2022 21:31:05 +0800</pubDate>
       
       <guid>https://xgbt.github.io/post/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95%E6%A8%A1%E7%89%88/</guid>
-      <description>位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返回1，不存在返回0 或者 1 if (mp.find(x) != mp.end()) 遍历map中</description>
+      <description>位运算 数据结构 vector 首部插入元素 1 v.insert(v.begin(), num); 尾部插入元素 1 v.push_back(num); 求和 1 accumulate(nums.begin(), nums.end(), 0); 最大元素 1 *max_element(nums.begin(), nums.end()); 排序 1 2 sort(nums.begin(), nums.end()); sort(nums.begin(), nums.end(), greater&amp;lt;int&amp;gt;()); map 删除某元素 1 mp.earse(x) 判断元素x是否存在 1 mp.count(x) // 存在返</description>
     </item>
     
     <item>
@@ -320,6 +320,24 @@
       
       <guid>https://xgbt.github.io/post/%E7%AE%97%E6%B3%95/%E5%89%91%E6%8C%87/</guid>
       <description>03. 数组中重复的数字★ 在一个长度为 n 的数组 nums 里的所有数字都在 0～n-1 的范围内。数组中某些数字是重复的，但不知道有几个数字重复了，也不知道每个</description>
+    </item>
+    
+    <item>
+      <title>Golang的defer</title>
+      <link>https://xgbt.github.io/post/golang/go-defer/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://xgbt.github.io/post/golang/go-defer/</guid>
+      <description>1、多个defer语句，按先进后出的方式执行 1 2 3 4 5 6 7 8 9 10 package main import &amp;#34;fmt&amp;#34; func main() { var whatever [5]struct{} for i := range whatever { defer fmt.Println(i) } } 1 2 3 4 5 4 3 2 1 0 2、defer声</description>
+    </item>
+    
+    <item>
+      <title>Golang闭包</title>
+      <link>https://xgbt.github.io/post/golang/go%E9%97%AD%E5%8C%85/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://xgbt.github.io/post/golang/go%E9%97%AD%E5%8C%85/</guid>
+      <description>闭包（closure） case 1 1 2 3 4 5 6 func foo1(x *int) func() { return func() { *x = *x + 1 fmt.Printf(&amp;#34;foo1 val = %d\n&amp;#34;, *x) } } case 2 1 2 3 4 5 6 func foo2(x int) func() { return func() { x = x + 1 fmt.Printf(&amp;#34;foo2 val = %d\n&amp;#34;, x) } } cas</description>
     </item>
     
   </channel>
