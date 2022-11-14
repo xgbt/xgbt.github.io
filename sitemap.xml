@@ -30,7 +30,7 @@
   </url>
   
   <url>
-    <loc>https://xgbt.github.io/tags/%E8%8B%B1%E5%9B%BD%E6%96%87%E5%AD%A6/</loc>
+    <loc>https://xgbt.github.io/tags/%E7%99%BE%E6%97%A0%E4%B8%80%E7%94%A8/</loc>
     <lastmod>2021-12-17T16:29:53+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -44,7 +44,7 @@
   </url>
   
   <url>
-    <loc>https://xgbt.github.io/categories/%E8%AF%BB%E5%90%8E%E6%84%9F/</loc>
+    <loc>https://xgbt.github.io/categories/%E8%A7%82%E5%90%8E%E6%84%9F/</loc>
     <lastmod>2021-12-17T16:29:53+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -79,22 +79,8 @@
   </url>
   
   <url>
-    <loc>https://xgbt.github.io/tags/%E6%B3%95%E5%9B%BD%E6%96%87%E5%AD%A6/</loc>
-    <lastmod>2021-07-15T14:00:53+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://xgbt.github.io/post/%E8%AF%BB%E5%90%8E%E6%84%9F/%E5%BF%85%E9%A1%BB%E6%AD%BB/</loc>
     <lastmod>2021-07-01T16:29:53+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://xgbt.github.io/tags/%E4%BF%84%E5%9B%BD%E6%96%87%E5%AD%A6/</loc>
-    <lastmod>2021-06-12T21:25:53+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -107,22 +93,8 @@
   </url>
   
   <url>
-    <loc>https://xgbt.github.io/tags/%E7%99%BE%E6%97%A0%E4%B8%80%E7%94%A8/</loc>
-    <lastmod>2021-05-22T18:03:44+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://xgbt.github.io/post/%E8%AF%BB%E5%90%8E%E6%84%9F/%E8%A2%AB%E7%A4%BE%E4%BC%9A%E6%89%80%E5%A1%91%E9%80%A0%E7%9A%84%E6%80%A7%E5%88%AB%E9%9A%94%E9%98%82/</loc>
     <lastmod>2021-05-22T18:03:44+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://xgbt.github.io/tags/%E5%BE%B7%E5%9B%BD%E6%96%87%E5%AD%A6/</loc>
-    <lastmod>2021-04-28T12:05:55+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -143,13 +115,6 @@
   
   <url>
     <loc>https://xgbt.github.io/post/%E5%B8%83%E8%A2%8B%E6%88%8F/%E6%AC%B2%E6%98%9F%E7%A7%BB/</loc>
-    <lastmod>2017-01-05T00:33:11+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://xgbt.github.io/categories/%E8%A7%82%E5%90%8E%E6%84%9F/</loc>
     <lastmod>2017-01-05T00:33:11+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
