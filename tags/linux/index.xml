@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Linux on xgbt&#39;s Blog</title>
-    <link>/tags/linux/</link>
+    <link>xgbt.site/tags/linux/</link>
     <description>Recent content in Linux on xgbt&#39;s Blog</description>
     <generator>Hugo -- 0.124.1</generator>
     <language>zh-cn</language>
     <lastBuildDate>Thu, 04 Jan 2024 16:09:19 +0800</lastBuildDate>
-    <atom:link href="/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="xgbt.site/tags/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CVE-2008-5161 OpenSSH CBC模式信息泄露漏洞</title>
-      <link>/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</link>
+      <link>xgbt.site/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</link>
       <pubDate>Thu, 04 Jan 2024 16:09:19 +0800</pubDate>
-      <guid>/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</guid>
+      <guid>xgbt.site/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</guid>
       <description>升级 OpenSSH 从选择一个最新的版本 https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/ 1# 获取最新版本 openssh 2wget --no-check-certificate https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.7p1.tar.gz 3 4# 解压 5tar -zxvf openssh-9.7p1.tar.gz 6 7# 安装相关需要组件 8yum -y install pam-devel gcc zlib-devel openssl-devel 9 10# 检查配置 11./configure --prefix=/usr --sysconfdir=/etc/ssh --with-zlib --with-ssl-dir=/usr/local/ssl --with-md5-passwords --mandir=/usr/share/man --with-pam 12 13# 编译安装 14make</description>
     </item>
     <item>
       <title>修改 Linux DNS 配置</title>
-      <link>/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/</link>
+      <link>xgbt.site/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Fri, 08 Sep 2023 16:09:19 +0800</pubDate>
-      <guid>/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/</guid>
+      <guid>xgbt.site/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/</guid>
       <description>查看网卡配置 1ip a 修改或添加 DNS 服务器 1vim /etc/sysconfig/network-scripts/ifcfg-eth0 1# 添加规则 2DNS1=114.114.114.114 3DNS2=8.8.8.8 重启网络使配置生效 1service network restart</description>
     </item>
   </channel>

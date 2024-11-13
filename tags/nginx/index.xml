@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Nginx on xgbt&#39;s Blog</title>
-    <link>/tags/nginx/</link>
+    <link>xgbt.site/tags/nginx/</link>
     <description>Recent content in Nginx on xgbt&#39;s Blog</description>
     <generator>Hugo -- 0.124.1</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 29 May 2024 16:09:19 +0800</lastBuildDate>
-    <atom:link href="/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="xgbt.site/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nginx 实现 GPT 流式传输</title>
-      <link>/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</link>
+      <link>xgbt.site/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</link>
       <pubDate>Wed, 29 May 2024 16:09:19 +0800</pubDate>
-      <guid>/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</guid>
+      <guid>xgbt.site/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</guid>
       <description>核心参数 1proxy_buffering off; 该指令使 Nginx 不缓冲来自上游服务器的响应，而是立即将其发送给客户端。适合需要实时或流式传输数据的场景非常有用，比如实时聊天、流媒体等</description>
     </item>
   </channel>
