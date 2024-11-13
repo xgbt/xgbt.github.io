@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>K8s 启用 ipvs 模式 | xgbt&#39;s Blog</title>
+<meta name="keywords" content="Kubernetes">
+<meta name="description" content="安装 ipvs 1# 安装 ipvs 相关软件包 2yum install ipvsadm ipset sysstat conntrack libseccomp 3 4# 载入模块 5modprobe -- ip_vs 6modprobe -- ip_vs_rr 7modprobe -- ip_vs_wrr 8modprobe -- ip_vs_sh 9modprobe -- nf_conntrack 10 11# 创建ipvs.conf，设置内核模块的自动载入。 12cat &lt;&lt;EOF &gt; /etc/modules-load.d/ipvs.conf">
+<meta name="author" content="">
+<link rel="canonical" href="/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/assets/apple-icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><style>
+@import url('https://fonts.cdnfonts.com/css/code-new-roman');
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
+    rel="stylesheet"><meta property="og:title" content="K8s 启用 ipvs 模式" />
+<meta property="og:description" content="安装 ipvs 1# 安装 ipvs 相关软件包 2yum install ipvsadm ipset sysstat conntrack libseccomp 3 4# 载入模块 5modprobe -- ip_vs 6modprobe -- ip_vs_rr 7modprobe -- ip_vs_wrr 8modprobe -- ip_vs_sh 9modprobe -- nf_conntrack 10 11# 创建ipvs.conf，设置内核模块的自动载入。 12cat &lt;&lt;EOF &gt; /etc/modules-load.d/ipvs.conf" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/" /><meta property="article:section" content="tech" />
+<meta property="article:published_time" content="2024-04-13T16:09:19+08:00" />
+<meta property="article:modified_time" content="2024-04-13T16:09:19+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="K8s 启用 ipvs 模式"/>
+<meta name="twitter:description" content="安装 ipvs 1# 安装 ipvs 相关软件包 2yum install ipvsadm ipset sysstat conntrack libseccomp 3 4# 载入模块 5modprobe -- ip_vs 6modprobe -- ip_vs_rr 7modprobe -- ip_vs_wrr 8modprobe -- ip_vs_sh 9modprobe -- nf_conntrack 10 11# 创建ipvs.conf，设置内核模块的自动载入。 12cat &lt;&lt;EOF &gt; /etc/modules-load.d/ipvs.conf"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Tech",
+      "item": "/tech/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "K8s 启用 ipvs 模式",
+      "item": "/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "K8s 启用 ipvs 模式",
+  "name": "K8s 启用 ipvs 模式",
+  "description": "安装 ipvs 1# 安装 ipvs 相关软件包 2yum install ipvsadm ipset sysstat conntrack libseccomp 3 4# 载入模块 5modprobe -- ip_vs 6modprobe -- ip_vs_rr 7modprobe -- ip_vs_wrr 8modprobe -- ip_vs_sh 9modprobe -- nf_conntrack 10 11# 创建ipvs.conf，设置内核模块的自动载入。 12cat \u0026lt;\u0026lt;EOF \u0026gt; /etc/modules-load.d/ipvs.conf",
+  "keywords": [
+    "Kubernetes"
+  ],
+  "articleBody": " 安装 ipvs 1# 安装 ipvs 相关软件包 2yum install ipvsadm ipset sysstat conntrack libseccomp 3 4# 载入模块 5modprobe -- ip_vs 6modprobe -- ip_vs_rr 7modprobe -- ip_vs_wrr 8modprobe -- ip_vs_sh 9modprobe -- nf_conntrack 10 11# 创建ipvs.conf，设置内核模块的自动载入。 12cat \u003c /etc/modules-load.d/ipvs.conf 13ip_vs 14ip_vs_lc 15ip_vs_wlc 16ip_vs_rr 17ip_vs_wrr 18ip_vs_lblc 19ip_vs_lblcr 20ip_vs_dh 21ip_vs_sh 22ip_vs_fo 23ip_vs_nq 24ip_vs_sed 25ip_vs_ftp 26ip_vs_sh 27nf_conntrack 28ip_tables 29ip_set 30xt_set 31ipt_set 32ipt_rpfilter 33ipt_REJECT 34ipip 35EOF 1systemctl enable --now systemd-modules-load.service 修改 kube-proxy configmap 1# 将 mode 改为 'ipvs' 2kubectl edit cm kube-proxy -n kube-system 重启 kube-proxy 1kubectl -n kube-system rollout restart daemonset kube-proxy 查看新 Kube-proxy pod 的日志 会出现 Using ipvs Proxier\n1# 检查 kube-proxy 模式 2curl 127.0.0.1:10249/proxyMode ",
+  "wordCount" : "145",
+  "inLanguage": "zh",
+  "datePublished": "2024-04-13T16:09:19+08:00",
+  "dateModified": "2024-04-13T16:09:19+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "xgbt's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/assets/apple-icon.png"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/" title="🏠主页">
+                    <span>🏠主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/search" title="🔍搜索">
+                    <span>🔍搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags" title="🏷️标签">
+                    <span>🏷️标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives" title="📦归档">
+                    <span>📦归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
+    <h1 class="post-title entry-hint-parent">
+      K8s 启用 ipvs 模式
+    </h1>
+    <div class="post-meta"><span title='2024-04-13 16:09:19 +0800 CST'>四月 13, 2024</span>
+
+</div>
+  </header> 
+  <div class="post-content"><ol>
+<li><strong>安装 ipvs</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1"># 安装 ipvs 相关软件包</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">yum install ipvsadm ipset sysstat conntrack libseccomp
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"># 载入模块</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">modprobe -- ip_vs
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">modprobe -- ip_vs_rr
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">modprobe -- ip_vs_wrr
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">modprobe -- ip_vs_sh
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">modprobe -- nf_conntrack
+</span></span><span class="line"><span class="ln">10</span><span class="cl">
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="c1"># 创建ipvs.conf，设置内核模块的自动载入。</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">cat <span class="s">&lt;&lt;EOF &gt; /etc/modules-load.d/ipvs.conf 
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="s">ip_vs
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="s">ip_vs_lc
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="s">ip_vs_wlc
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="s">ip_vs_rr
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="s">ip_vs_wrr
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="s">ip_vs_lblc
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="s">ip_vs_lblcr
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="s">ip_vs_dh
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="s">ip_vs_sh
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="s">ip_vs_fo
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="s">ip_vs_nq
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="s">ip_vs_sed
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="s">ip_vs_ftp
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="s">ip_vs_sh
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="s">nf_conntrack
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="s">ip_tables
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="s">ip_set
+</span></span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="s">xt_set
+</span></span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="s">ipt_set
+</span></span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="s">ipt_rpfilter
+</span></span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="s">ipt_REJECT
+</span></span></span><span class="line"><span class="ln">34</span><span class="cl"><span class="s">ipip
+</span></span></span><span class="line"><span class="ln">35</span><span class="cl"><span class="s">EOF</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">systemctl <span class="nb">enable</span> --now systemd-modules-load.service
+</span></span></code></pre></div><ol start="2">
+<li><strong>修改 kube-proxy configmap</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 将 mode 改为 &#39;ipvs&#39;</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">kubectl edit cm kube-proxy -n kube-system
+</span></span></code></pre></div><ol start="3">
+<li><strong>重启 kube-proxy</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">kubectl -n kube-system rollout restart daemonset kube-proxy
+</span></span></code></pre></div><ol start="4">
+<li><strong>查看新 Kube-proxy pod 的日志</strong></li>
+</ol>
+<p>会出现 <code>Using ipvs Proxier</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 检查 kube-proxy 模式</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">curl 127.0.0.1:10249/proxyMode
+</span></span></code></pre></div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="/tags/kubernetes/">Kubernetes</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>K8s 下线节点流程</span>
+  </a>
+  <a class="next" href="/tech/kubernetes/k8s-%E4%BF%AE%E6%94%B9-nodeport-%E9%BB%98%E8%AE%A4%E8%8C%83%E5%9B%B4/">
+    <span class="title">下一页 »</span>
+    <br>
+    <span>K8s 修改 NodePort 默认范围</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制！';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

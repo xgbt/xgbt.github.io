@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Volume 基础知识 | xgbt&#39;s Blog</title>
+<meta name="keywords" content="Kubernetes">
+<meta name="description" content="数据卷（Volume）是 Pod 与外部存储设备进行数据传递的通道，也是 Pod 内部容器间、Pod 与Pod 间、Pod 与外部环境进行数据共享的方式。 Volume 定义了">
+<meta name="author" content="">
+<link rel="canonical" href="/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/assets/apple-icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><style>
+@import url('https://fonts.cdnfonts.com/css/code-new-roman');
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
+    rel="stylesheet"><meta property="og:title" content="Volume 基础知识" />
+<meta property="og:description" content="数据卷（Volume）是 Pod 与外部存储设备进行数据传递的通道，也是 Pod 内部容器间、Pod 与Pod 间、Pod 与外部环境进行数据共享的方式。 Volume 定义了" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" /><meta property="article:section" content="tech" />
+<meta property="article:published_time" content="2024-03-15T16:09:19+08:00" />
+<meta property="article:modified_time" content="2024-03-15T16:09:19+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Volume 基础知识"/>
+<meta name="twitter:description" content="数据卷（Volume）是 Pod 与外部存储设备进行数据传递的通道，也是 Pod 内部容器间、Pod 与Pod 间、Pod 与外部环境进行数据共享的方式。 Volume 定义了"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Tech",
+      "item": "/tech/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Volume 基础知识",
+      "item": "/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Volume 基础知识",
+  "name": "Volume 基础知识",
+  "description": "数据卷（Volume）是 Pod 与外部存储设备进行数据传递的通道，也是 Pod 内部容器间、Pod 与Pod 间、Pod 与外部环境进行数据共享的方式。 Volume 定义了",
+  "keywords": [
+    "Kubernetes"
+  ],
+  "articleBody": "数据卷（Volume）是 Pod 与外部存储设备进行数据传递的通道，也是 Pod 内部容器间、Pod 与Pod 间、Pod 与外部环境进行数据共享的方式。\nVolume 定义了外置存储的细节，并内嵌到 Pod 中作为 Pod 的一部分。其实质是外置存储在Kubernetes 系统的一个资源映射，当负载需要使用外置存储的时候，可以从数据卷（Volume）中查到相关信息并进行存储挂载操作。\nVolume 的生命周期和 Pod 一致，Pod 被删除时，Volume也会被删除，Volume 中的数据是否丢失取决于 Volume 的具体类型。\n常用的Volume类型分类如下：\n分类 描述 本地存储 适用于本地存储的数据卷，例如 HostPath、emptyDir等。本地存储卷的特点是数据保存在集群的特定节点上，并且不能随着应用漂移，节点停机时数据即不再可用。 网络存储 适用于网络存储的数据卷，例如Ceph、GlusterFS、NFS、iSCSI等。网络存储卷的特点是数据不在集群的某个节点上，而是在远端的存储服务上，使用存储卷时需要将存储服务挂载到本地使用。 Secret和ConfigMap Secret和ConfigMap是特殊的数据卷，其数据是集群的一些对象信息，该对象数据以卷的形式被挂载到节点上供应用使用。 PVC 一种数据卷定义方式，将数据卷抽象成一个独立于Pod的对象，这个对象定义（关联）的存储信息即存储卷对应的真正存储信息，供Kubernetes负载挂载使用。 Volume 使用原则 一个 Pod 可以挂载多个 Volume 一个 Pod 可以挂载多种类型的 Volume 每个被 Pod 挂载的 Volume，可以被该 Pod 内不同的容器间共享。 K8S 环境推荐使用 PVC 和 PV 方式挂载 Volume Volume 类型 emptyDir emptyDir 类型的 Volume 在 Pod 分配到 Node 上时被创建，Kubernetes会在 Node 上自动分配一个目录，因此无需指定宿主机Node上对应的目录文件，该目录的初始内容为空，当 Pod 从 Node 上被删除时，emptyDir 中的数据会被永久删除。\n特别的，容器崩溃不会导致 Pod 被从节点上移除，因此容器崩溃期间 emptyDir 卷中的数据是安全的。\n常见使用场景：\nemptyDir 卷适合用于 Pod 中的容器共享文件。 缓存空间，例如基于磁盘的归并排序算法。 为耗时较长的计算任务提供检查点，以便任务能方便地从崩溃前状态恢复执行。 在 Web 服务器容器服务数据时，保存内容管理器容器获取的文件。 例如前后端容器，前端容器是辅助进程，不对外提供任何服务，前端文件通过 emptyDir 共享到 Web 的 wwwroot 目录中。由 Web 对外提供 8080 端口服务，用户访问 Web 时，可以访问到前端静态文件。这样前后端可以分开更新和部署，存放前端文件的辅助容器只负责提供静态文件，最终由 Web 后端程序对外提供静态页面和 API。\n1apiVersion: v1 2kind: Pod 3metadata: 4 name: pod-demo 5 namespace: default 6 labels: 7 app: myapp 8 tier: frontend 9spec: 10 containers: 11 - name: myapp 12 image: ikubernetes/myapp:v1 13 imagePullPolicy: IfNotPresent 14 ports: 15 - name: http 16 containerPort: 80 17 volumeMounts: #在容器内定义挂载存储名称和挂载路径 18 - name: html 19 mountPath: /usr/share/nginx/html/ 20 - name: busybox 21 image: busybox:latest 22 imagePullPolicy: IfNotPresent 23 volumeMounts: 24 - name: html 25 mountPath: /data/ #在容器内定义挂载存储名称和挂载路径 26 command: ['/bin/sh','-c','while true;do echo $(date) \u003e\u003e /data/index.html;sleep 2;done'] 27 volumes: #定义存储卷 28 - name: html #定义存储卷名称 29 emptyDir: {} #定义存储卷类型 hostPath hostPath 卷将主机节点文件系统上的文件或目录挂载到 Pod 中，类似 Docker 的 -v 挂载。hostPath 卷依赖于节点上的目录或文件，不同节点的 Pod 无法共享相同的文件内容。\n常见使用场景:\n挂载宿主机的时区文件到容器内，保持和宿主机时区一致。 1 volumeMounts: 2 - name: timezone # 卷名称 3 mountPath: /etc/localtime # 挂载到容器中的路径目录 4 volumes: 5 - name: timezone 6 hostPath: 7 path: /usr/share/zoneinfo/Asia/Shanghai configmap ConfigMap 可以用来存储非机密性的数据到键值对中，这些信息会被存储到 etcd，不会分节点，任何节点都可以使用到。使用时，将其用作环境变量、命令行参数或者存储卷中的配置文件送入到 Pod 中，主要目的是解耦应用程序和配置，这样不必维护那些 .json 等配置文件，也可以避免不小心将带有机密信息的配置文件上传到代码仓库中。\n假设有配置文件 c.txt 如下：\n1enemies=aliens 2lives=3 3enemies.cheat=true 4enemies.cheat.level=noGoodRotten 5secret.code.passphrase=UUDDLRLRBABAS 6secret.code.allowed=true 7secret.code.lives=30 创建 configMap：\n1# 基于单个配置文件创建 ConfigMap 2kubectl create configmap my-config1 --from-file=c.txt 3 4# 基于多个配置文件创建 ConfigMap 5kubectl create configmap my-config --from-file=key1=/path/to/bar/file1.txt --from-file=key2=/path/to/bar/file2.txt 6 7# 基于目录创建 ConfigMap： 8kubectl create configmap my-config2 --from-file=config/ 在 pod 中挂载 configMap：\n1apiVersion: v1 2kind: Pod 3metadata: 4 name: configmap-pod 5spec: 6 containers: 7 - name: configmap-pod 8 image: busybox 9 command: [\"ls\"] 10 args: [\"/etc/config\"] 11 volumeMounts: 12 - name: config-vol 13 mountPath: /etc/config 14 volumes: 15 - name: config-vol 16 configMap: 17 name: my-config secret Secret 卷用来给 Pod 传递敏感信息，例如密码、密钥等。Secret卷实际上不是用于存储的，Secret 中存储的信息，会以环境变量、文件等的形式显示在 Pod 中。最常用的情况是使用 Secret 为 Ingress 增加 TLS 加密访问。\nSecret 主要包括以下类型：\n内置类型 用法 Opaque 用户定义的任意数据 kubernetes.io/service-account-token 服务账号令牌 kubernetes.io/dockercfg ~/.dockercfg 文件的序列化形式 kubernetes.io/dockerconfigjson ~/.docker/config.json 文件的序列化形式 kubernetes.io/basic-auth 用于基本身份认证的凭据 kubernetes.io/ssh-auth 用于 SSH 身份认证的凭据 kubernetes.io/tls 用于 TLS 客户端或者服务器端的数据 bootstrap.kubernetes.io/token 启动引导令牌数据 使用 kubectl 命令创建 Secret：\n1kubectl create secret {类型} {secret名称} 通过证书创建 Secret：\n1kubectl create secret tls tls-secret --cert=1_k1.whuanle.cn_bundle.crt --key=2_k1.whuanle.cn.key 使用 YAML 表示：\n1apiVersion: v1 2data: 3 tls.crt: ... 4 tls.key: ... 5kind: Secret 6metadata: 7 name: tls-secret 8type: kubernetes.io/tls Nginx 配置 Https 证书，使用的便是 crt、key 文件。\nPV \u0026 PVC 详细部署方式：PV \u0026 PVC 声明样例\nK8S 引入了 PV 和 PVC 两个资源对象，将存储实现的细节从其如何被使用中抽象出来，并解耦存储使用者和系统管理员的职责。\nPV和PVC的概念如下：\nPV（PersistentVolume） 在 K8S 中代表一个具体存储类型的卷，其对象中定义了具体存储类型和卷参数。 PVC（PersistentVolumeClaim）是在 K8S 中一种抽象的存储卷类型，代表了某个具体类型存储的数据卷表达。 PV 属于整个 K8S 集群，而 PVC 属于某个命名空间\nPVC与PV是一一对应关系，不能一个PVC挂载多个PV，也不能一个PV挂载多个PVC。 PVC只有绑定了PV之后才能被Pod使用，而PVC绑定PV的过程即是消费PV的过程，这个过程是有一定规则的。为应用配置存储时，需要声明一个 PVC，而 K8S 会通过最佳匹配的方式选择一个满足PVC需求的PV，并与之绑定。\nPV 有两种提供方式：\n静态分配:\n集群管理员预先创建一些 PV。它们携带可供集群用户使用的真实存储的详细信息。 它们存在于Kubernetes API中，可用于消费。 用户创建PVC与PV绑定 动态分配: 通过存储类进行动态创建存储空间。当现有的 PV 都不匹配用户的 PVC 时，K8S 基于 StorageClasses 动态地为 PVC 配置卷。\n",
+  "wordCount" : "2410",
+  "inLanguage": "zh",
+  "datePublished": "2024-03-15T16:09:19+08:00",
+  "dateModified": "2024-03-15T16:09:19+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "xgbt's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/assets/apple-icon.png"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/" title="🏠主页">
+                    <span>🏠主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/search" title="🔍搜索">
+                    <span>🔍搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags" title="🏷️标签">
+                    <span>🏷️标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives" title="📦归档">
+                    <span>📦归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Volume 基础知识
+    </h1>
+    <div class="post-meta"><span title='2024-03-15 16:09:19 +0800 CST'>三月 15, 2024</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+        <div class="toc">
+            <details  open>
+                <summary accesskey="c" title="(Alt + C)">
+                    <span class="details">目录</span>
+                </summary>
+
+                <div class="inner"><ul><ul>
+                        <li>
+                            <a href="#volume-%e4%bd%bf%e7%94%a8%e5%8e%9f%e5%88%99" aria-label="Volume 使用原则">Volume 使用原则</a></li></ul>
+                                
+                        <li>
+                            <a href="#volume-%e7%b1%bb%e5%9e%8b" aria-label="Volume 类型">Volume 类型</a><ul>
+                                    
+                        <li>
+                            <a href="#emptydir" aria-label="emptyDir">emptyDir</a></li>
+                        <li>
+                            <a href="#hostpath" aria-label="hostPath">hostPath</a></li>
+                        <li>
+                            <a href="#configmap" aria-label="configmap">configmap</a></li>
+                        <li>
+                            <a href="#secret" aria-label="secret">secret</a></li>
+                        <li>
+                            <a href="#pv--pvc" aria-label="PV &amp;amp; PVC">PV &amp; PVC</a>
+                        </li>
+                    </ul>
+                    </li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </aside>
+    <script>
+        let activeElement;
+        let elements;
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            checkTocPosition();
+
+            elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+            if (elements.length > 0) {
+                
+                activeElement = elements[0];
+                const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+                document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+            }
+
+            
+            const topLink = document.getElementById('top-link');
+            if (topLink) {
+                topLink.addEventListener('click', (event) => {
+                    
+                    event.preventDefault();
+
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        }, false);
+
+        window.addEventListener('resize', function (event) {
+            checkTocPosition();
+        }, false);
+
+        window.addEventListener('scroll', () => {
+            
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+            
+            if (scrollPosition === 0) {
+                return;
+            }
+
+            
+            if (elements && elements.length > 0) {
+                
+                activeElement = Array.from(elements).find((element) => {
+                    if ((getOffsetTop(element) - scrollPosition) > 0 &&
+                        (getOffsetTop(element) - scrollPosition) < window.innerHeight / 2) {
+                        return element;
+                    }
+                }) || activeElement;
+
+                elements.forEach(element => {
+                    const id = encodeURI(element.getAttribute('id')).toLowerCase();
+                    const tocLink = document.querySelector(`.inner ul li a[href="#${id}"]`);
+                    if (element === activeElement) {
+                        tocLink.classList.add('active');
+
+                        
+                        const tocContainer = document.querySelector('.toc .inner');
+                        const linkOffsetTop = tocLink.offsetTop;
+                        const containerHeight = tocContainer.clientHeight;
+                        const linkHeight = tocLink.clientHeight;
+
+                        
+                        const scrollPosition = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
+                        tocContainer.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+                    } else {
+                        tocLink.classList.remove('active');
+                    }
+                });
+            }
+        }, false);
+
+        const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+        const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+        const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+        function checkTocPosition() {
+            const width = document.body.scrollWidth;
+
+            if (width - main - (toc * 2) - (gap * 4) > 0) {
+                document.getElementById("toc-container").classList.add("wide");
+            } else {
+                document.getElementById("toc-container").classList.remove("wide");
+            }
+        }
+
+        function getOffsetTop(element) {
+            if (!element.getClientRects().length) {
+                return 0;
+            }
+            let rect = element.getBoundingClientRect();
+            let win = element.ownerDocument.defaultView;
+            return rect.top + win.pageYOffset;
+        }
+
+    </script>
+  <div class="post-content"><p>数据卷（Volume）是 Pod 与外部存储设备进行数据传递的通道，也是 Pod 内部容器间、Pod 与Pod 间、Pod 与外部环境进行数据共享的方式。</p>
+<p>Volume 定义了外置存储的细节，并内嵌到 Pod 中作为 Pod 的一部分。其实质是外置存储在Kubernetes 系统的一个资源映射，当负载需要使用外置存储的时候，可以从数据卷（Volume）中查到相关信息并进行存储挂载操作。</p>
+<blockquote>
+<p>Volume 的生命周期和 Pod 一致，Pod 被删除时，Volume也会被删除，Volume 中的数据是否丢失取决于 Volume 的具体类型。</p>
+</blockquote>
+<p>常用的Volume类型分类如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">分类</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">本地存储</td>
+<td style="text-align:center">适用于本地存储的数据卷，例如 HostPath、emptyDir等。本地存储卷的特点是数据保存在集群的特定节点上，并且不能随着应用漂移，节点停机时数据即不再可用。</td>
+</tr>
+<tr>
+<td style="text-align:center">网络存储</td>
+<td style="text-align:center">适用于网络存储的数据卷，例如Ceph、GlusterFS、NFS、iSCSI等。网络存储卷的特点是数据不在集群的某个节点上，而是在远端的存储服务上，使用存储卷时需要将存储服务挂载到本地使用。</td>
+</tr>
+<tr>
+<td style="text-align:center">Secret和ConfigMap</td>
+<td style="text-align:center">Secret和ConfigMap是特殊的数据卷，其数据是集群的一些对象信息，该对象数据以卷的形式被挂载到节点上供应用使用。</td>
+</tr>
+<tr>
+<td style="text-align:center">PVC</td>
+<td style="text-align:center">一种数据卷定义方式，将数据卷抽象成一个独立于Pod的对象，这个对象定义（关联）的存储信息即存储卷对应的真正存储信息，供Kubernetes负载挂载使用。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="volume-使用原则">Volume 使用原则<a hidden class="anchor" aria-hidden="true" href="#volume-使用原则">#</a></h2>
+<ul>
+<li>一个 Pod 可以挂载多个 Volume</li>
+<li>一个 Pod 可以挂载多种类型的 Volume</li>
+<li>每个被 Pod 挂载的 Volume，可以被该 Pod 内不同的容器间共享。</li>
+<li>K8S 环境推荐使用 PVC 和 PV 方式挂载 Volume</li>
+</ul>
+<h1 id="volume-类型">Volume 类型<a hidden class="anchor" aria-hidden="true" href="#volume-类型">#</a></h1>
+<h2 id="emptydir">emptyDir<a hidden class="anchor" aria-hidden="true" href="#emptydir">#</a></h2>
+<p>emptyDir 类型的 Volume 在 Pod 分配到 Node 上时被创建，Kubernetes会在 Node 上自动分配一个目录，因此无需指定宿主机Node上对应的目录文件，该目录的初始内容为空，当 Pod 从 Node 上被删除时，emptyDir 中的数据会被永久删除。</p>
+<blockquote>
+<p>特别的，容器崩溃<strong>不</strong>会导致 Pod 被从节点上移除，因此容器崩溃期间 <code>emptyDir</code> 卷中的数据是安全的。</p>
+</blockquote>
+<p><strong>常见使用场景：</strong></p>
+<ul>
+<li>emptyDir 卷适合用于 Pod 中的容器共享文件。</li>
+<li>缓存空间，例如基于磁盘的归并排序算法。</li>
+<li>为耗时较长的计算任务提供检查点，以便任务能方便地从崩溃前状态恢复执行。</li>
+<li>在 Web 服务器容器服务数据时，保存内容管理器容器获取的文件。</li>
+</ul>
+<p>例如前后端容器，前端容器是辅助进程，不对外提供任何服务，前端文件通过 emptyDir 共享到 Web 的 wwwroot 目录中。由 Web 对外提供 8080 端口服务，用户访问 Web 时，可以访问到前端静态文件。这样前后端可以分开更新和部署，存放前端文件的辅助容器只负责提供静态文件，最终由 Web 后端程序对外提供静态页面和 API。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">pod-demo</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">myapp</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">    </span><span class="nt">tier</span><span class="p">:</span><span class="w"> </span><span class="l">frontend</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">myapp</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">ikubernetes/myapp:v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">    </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">      </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">    </span><span class="c">#在容器内定义挂载存储名称和挂载路径</span><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">html</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">      </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/usr/share/nginx/html/</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">busybox</span><span class="w">
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">busybox:latest</span><span class="w">
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="w">    </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">html</span><span class="w">
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="w">      </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/data/   </span><span class="w"> </span><span class="c">#在容器内定义挂载存储名称和挂载路径</span><span class="w">
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;/bin/sh&#39;</span><span class="p">,</span><span class="s1">&#39;-c&#39;</span><span class="p">,</span><span class="s1">&#39;while true;do echo $(date) &gt;&gt; /data/index.html;sleep 2;done&#39;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span><span class="w">  </span><span class="c">#定义存储卷</span><span class="w">
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">html   </span><span class="w"> </span><span class="c">#定义存储卷名称  </span><span class="w">
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="w">    </span><span class="nt">emptyDir</span><span class="p">:</span><span class="w"> </span>{}<span class="w">  </span><span class="c">#定义存储卷类型</span><span class="w">
+</span></span></span></code></pre></div><h2 id="hostpath">hostPath<a hidden class="anchor" aria-hidden="true" href="#hostpath">#</a></h2>
+<p>hostPath 卷将主机节点文件系统上的文件或目录挂载到 Pod 中，类似 Docker 的 <code>-v</code> 挂载。hostPath 卷依赖于节点上的目录或文件，<strong>不同节点的 Pod 无法共享相同的文件内容。</strong></p>
+<p><strong>常见使用场景:</strong></p>
+<ul>
+<li>挂载宿主机的时区文件到容器内，保持和宿主机时区一致。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln">1</span><span class="cl"><span class="w">          </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">timezone            </span><span class="w"> </span><span class="c"># 卷名称</span><span class="w">
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="w">              </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/localtime </span><span class="w"> </span><span class="c"># 挂载到容器中的路径目录</span><span class="w">
+</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">timezone</span><span class="w">
+</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="w">          </span><span class="nt">hostPath</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="w">            </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/usr/share/zoneinfo/Asia/Shanghai</span><span class="w">
+</span></span></span></code></pre></div><h2 id="configmap">configmap<a hidden class="anchor" aria-hidden="true" href="#configmap">#</a></h2>
+<p>ConfigMap 可以用来存储非机密性的数据到键值对中，这些信息会被存储到 etcd，不会分节点，任何节点都可以使用到。使用时，将其用作环境变量、命令行参数或者存储卷中的配置文件送入到 Pod 中，主要目的是解耦应用程序和配置，这样不必维护那些 <code>.json</code> 等配置文件，也可以避免不小心将带有机密信息的配置文件上传到代码仓库中。</p>
+<p>假设有配置文件 <code>c.txt</code> 如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">enemies=aliens
+</span></span><span class="line"><span class="ln">2</span><span class="cl">lives=3
+</span></span><span class="line"><span class="ln">3</span><span class="cl">enemies.cheat=true
+</span></span><span class="line"><span class="ln">4</span><span class="cl">enemies.cheat.level=noGoodRotten
+</span></span><span class="line"><span class="ln">5</span><span class="cl">secret.code.passphrase=UUDDLRLRBABAS
+</span></span><span class="line"><span class="ln">6</span><span class="cl">secret.code.allowed=true
+</span></span><span class="line"><span class="ln">7</span><span class="cl">secret.code.lives=30
+</span></span></code></pre></div><p><strong>创建 configMap：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 基于单个配置文件创建 ConfigMap</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">kubectl create configmap my-config1 --from-file<span class="o">=</span>c.txt
+</span></span><span class="line"><span class="ln">3</span><span class="cl">
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1"># 基于多个配置文件创建 ConfigMap</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">kubectl create configmap my-config --from-file<span class="o">=</span><span class="nv">key1</span><span class="o">=</span>/path/to/bar/file1.txt --from-file<span class="o">=</span><span class="nv">key2</span><span class="o">=</span>/path/to/bar/file2.txt
+</span></span><span class="line"><span class="ln">6</span><span class="cl">
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="c1"># 基于目录创建 ConfigMap：</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl">kubectl create configmap my-config2 --from-file<span class="o">=</span>config/
+</span></span></code></pre></div><p><strong>在 pod 中挂载 configMap：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">configmap-pod</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">configmap-pod</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">busybox</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">      </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;ls&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">      </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;/etc/config&#34;</span><span class="p">]</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">      </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">config-vol</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">          </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/config</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">config-vol</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">      </span><span class="nt">configMap</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-config</span><span class="w">
+</span></span></span></code></pre></div><h2 id="secret">secret<a hidden class="anchor" aria-hidden="true" href="#secret">#</a></h2>
+<p>Secret 卷用来给 Pod 传递敏感信息，例如密码、密钥等。Secret卷实际上不是用于存储的，Secret 中存储的信息，会以环境变量、文件等的形式显示在 Pod 中。最常用的情况是使用 Secret 为 Ingress 增加 TLS 加密访问。</p>
+<p>Secret 主要包括以下类型：</p>
+<table>
+<thead>
+<tr>
+<th>内置类型</th>
+<th>用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Opaque</code></td>
+<td>用户定义的任意数据</td>
+</tr>
+<tr>
+<td><code>kubernetes.io/service-account-token</code></td>
+<td>服务账号令牌</td>
+</tr>
+<tr>
+<td><code>kubernetes.io/dockercfg</code></td>
+<td><code>~/.dockercfg</code> 文件的序列化形式</td>
+</tr>
+<tr>
+<td><code>kubernetes.io/dockerconfigjson</code></td>
+<td><code>~/.docker/config.json</code> 文件的序列化形式</td>
+</tr>
+<tr>
+<td><code>kubernetes.io/basic-auth</code></td>
+<td>用于基本身份认证的凭据</td>
+</tr>
+<tr>
+<td><code>kubernetes.io/ssh-auth</code></td>
+<td>用于 SSH 身份认证的凭据</td>
+</tr>
+<tr>
+<td><code>kubernetes.io/tls</code></td>
+<td>用于 TLS 客户端或者服务器端的数据</td>
+</tr>
+<tr>
+<td><code>bootstrap.kubernetes.io/token</code></td>
+<td>启动引导令牌数据</td>
+</tr>
+</tbody>
+</table>
+<p><strong>使用 <code>kubectl</code> 命令创建 Secret：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">kubectl create secret <span class="o">{</span>类型<span class="o">}</span> <span class="o">{</span>secret名称<span class="o">}</span>
+</span></span></code></pre></div><p><strong>通过证书创建 Secret：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">kubectl create secret tls tls-secret --cert<span class="o">=</span>1_k1.whuanle.cn_bundle.crt --key<span class="o">=</span>2_k1.whuanle.cn.key
+</span></span></code></pre></div><p>使用 YAML 表示：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln">1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="w">  </span><span class="nt">tls.crt</span><span class="p">:</span><span class="w"> </span><span class="l">...</span><span class="w">
+</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="w">  </span><span class="nt">tls.key</span><span class="p">:</span><span class="w"> </span><span class="l">...</span><span class="w">
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Secret</span><span class="w">
+</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">tls-secret</span><span class="w">
+</span></span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="w"></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/tls</span><span class="w">
+</span></span></span></code></pre></div><p>Nginx 配置 Https 证书，使用的便是 crt、key 文件。</p>
+<h2 id="pv--pvc">PV &amp; PVC<a hidden class="anchor" aria-hidden="true" href="#pv--pvc">#</a></h2>
+<p>详细部署方式：<a href="PV%20&amp;%20PVC%20%E5%A3%B0%E6%98%8E%E6%A0%B7%E4%BE%8B.md">PV &amp; PVC 声明样例</a></p>
+<p>K8S 引入了 PV 和 PVC 两个资源对象，将存储实现的细节从其如何被使用中抽象出来，并解耦存储使用者和系统管理员的职责。</p>
+<p>PV和PVC的概念如下：</p>
+<ul>
+<li>PV（PersistentVolume） 在 K8S 中代表一个具体存储类型的卷，其对象中定义了具体存储类型和卷参数。</li>
+<li>PVC（PersistentVolumeClaim）是在 K8S 中一种抽象的存储卷类型，代表了某个具体类型存储的数据卷表达。</li>
+</ul>
+<blockquote>
+<p>PV 属于整个 K8S 集群，而 PVC 属于某个命名空间</p>
+</blockquote>
+<p><strong>PVC与PV是一一对应关系，不能一个PVC挂载多个PV，也不能一个PV挂载多个PVC。</strong> PVC只有绑定了PV之后才能被Pod使用，而PVC绑定PV的过程即是消费PV的过程，这个过程是有一定规则的。为应用配置存储时，需要声明一个 PVC，而 K8S 会通过最佳匹配的方式选择一个满足PVC需求的PV，并与之绑定。</p>
+<p>PV 有两种提供方式：</p>
+<p><strong>静态分配:</strong></p>
+<ol>
+<li>集群管理员预先创建一些 PV。它们携带可供集群用户使用的真实存储的详细信息。 它们存在于Kubernetes API中，可用于消费。</li>
+<li>用户创建PVC与PV绑定</li>
+</ol>
+<p><strong>动态分配:</strong> 通过存储类进行动态创建存储空间。当现有的 PV 都不匹配用户的 PVC 时，K8S 基于 StorageClasses 动态地为 PVC 配置卷。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="/tags/kubernetes/">Kubernetes</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>理解与使用 Container Capabilities</span>
+  </a>
+  <a class="next" href="/tech/golang/golang-%E6%A0%87%E5%87%86%E5%BA%93-sync/">
+    <span class="title">下一页 »</span>
+    <br>
+    <span>Golang 标准库丨sync</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制！';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

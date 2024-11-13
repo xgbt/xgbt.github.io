@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>K8s 网络模型基础知识 | xgbt&#39;s Blog</title>
+<meta name="keywords" content="Kubernetes">
+<meta name="description" content="Kubernetes 网络的功能： 高度耦合的容器间通信：这个已经被 Pods 和 localhost 通信解决了。 Pod 间通信； Pod 和 Service 对象间通信； 外部和 Service 对象间通信； Kubernetes 本身的网络服务自带了一下功">
+<meta name="author" content="">
+<link rel="canonical" href="/tech/kubernetes/k8s-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/assets/apple-icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="/tech/kubernetes/k8s-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><style>
+@import url('https://fonts.cdnfonts.com/css/code-new-roman');
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
+    rel="stylesheet"><meta property="og:title" content="K8s 网络模型基础知识" />
+<meta property="og:description" content="Kubernetes 网络的功能： 高度耦合的容器间通信：这个已经被 Pods 和 localhost 通信解决了。 Pod 间通信； Pod 和 Service 对象间通信； 外部和 Service 对象间通信； Kubernetes 本身的网络服务自带了一下功" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/tech/kubernetes/k8s-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" /><meta property="article:section" content="tech" />
+<meta property="article:published_time" content="2024-08-24T16:09:19+08:00" />
+<meta property="article:modified_time" content="2024-08-24T16:09:19+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="K8s 网络模型基础知识"/>
+<meta name="twitter:description" content="Kubernetes 网络的功能： 高度耦合的容器间通信：这个已经被 Pods 和 localhost 通信解决了。 Pod 间通信； Pod 和 Service 对象间通信； 外部和 Service 对象间通信； Kubernetes 本身的网络服务自带了一下功"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Tech",
+      "item": "/tech/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "K8s 网络模型基础知识",
+      "item": "/tech/kubernetes/k8s-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "K8s 网络模型基础知识",
+  "name": "K8s 网络模型基础知识",
+  "description": "Kubernetes 网络的功能： 高度耦合的容器间通信：这个已经被 Pods 和 localhost 通信解决了。 Pod 间通信； Pod 和 Service 对象间通信； 外部和 Service 对象间通信； Kubernetes 本身的网络服务自带了一下功",
+  "keywords": [
+    "Kubernetes"
+  ],
+  "articleBody": "Kubernetes 网络的功能：\n高度耦合的容器间通信：这个已经被 Pods 和 localhost 通信解决了。 Pod 间通信； Pod 和 Service 对象间通信； 外部和 Service 对象间通信； Kubernetes 本身的网络服务自带了一下功能：\nNAT: 网络地址转换 Source NAT: 替换数据包的源 IP, 通常为节点的 IP Destination NAT: 替换数据包的目的 IP, 通常为 Pod 的 IP VIP: 一个虚拟 IP, 例如分配给每个 Kubernetes Service 的 IP Kube-proxy: 一个网络守护程序，在每个节点上协调 Service VIP 管理 可参考 https://kubernetes.io/zh/docs/tutorials/services/source-ip/\n1. Pod IP 对于 Docker 中的 container 网络。多个容器共享一个容器的网络接口，实现多个容器共享网络、同一个 IP、同一个 hostname。\nK8S 中 Pod 内多容器共享网络就是这样创建的，Pod 的 IP 是 Docker 创建和分配的容器 IP，这个 IP 是带虚拟网卡的，因此这个 IP 是可以被 ping 的，但是该 IP 只能在当前节点中被访问。\n首先，创建 Pod 时，Pod 会启动一个 pause 容器，该容器创建了一个虚拟网卡，并被 Docker 分配 IP，接着 Pod 的容器会使用 container 网络模式连接到这个 pause 容器中，pause 容器的生命周期跟 Pod 的生命周期一致。\n在工作节点上使用 docker ps -a | grep pause 命令查看 pause 容器：\n1[root@test-60g ~]# minikube ssh 2docker@minikube:~$ docker ps -a |grep pause 367461274c207 registry.k8s.io/pause:3.9 \"/pause\" 25 hours ago Up 25 hours k8s_POD_nginx-7cf478bb58-h6zq9_default_4df3bc0f-7efa-4ef1-9d46-e6b300143eeb_2 4... 不过，Docker 中的容器 IP 是 172.17.0.0 地址段，而 Pod IP 的地址段一般是 10.x.x.x 网络，其中用户自定义 Pod 是 10.32.0.0 地址段。\nPod 的 IP 是 Docker 分配的，为什么其地址不是 172.17.0.0 地址段？\n首先，在部署了 Docker 的机器上，都会有一个名为 docker0 的网桥。\n1docker0: flags=4163 mtu 1500 2 inet 172.17.0.1 netmask 255.255.0.0 broadcast 172.17.255.255 3 inet6 fe80::42:2aff:fe00:6577 prefixlen 64 scopeid 0x20 4 ether 02:42:2a:00:65:77 txqueuelen 0 (Ethernet) 5 RX packets 4404 bytes 155753 (152.1 KiB) 6 RX errors 0 dropped 0 overruns 0 frame 0 7 TX packets 3340 bytes 158865 (155.1 KiB) 8 TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0 docker 的默认网桥叫 docker0，这个网桥的 IP 是 172.17.0.1，基于这个网桥创建的容器的虚拟网卡自然是 172.17.0.0 地址段。\n而如果我们使用 weava 网络插件部署集群，那么使用 ifconfig 命令，可以找到一个 weava 的自定义网桥：\n1weave: flags=4163 mtu 1376 2 inet 10.32.0.1 netmask 255.240.0.0 broadcast 10.47.255.255 3 inet6 fe80::ac45:ebff:fe0a:31ae prefixlen 64 scopeid 0x20 4 ether ae:45:eb:0a:31:ae txqueuelen 1000 (Ethernet) 5 RX packets 2905588 bytes 391313728 (391.3 MB) 6 RX errors 0 dropped 0 overruns 0 frame 0 7 TX packets 3179102 bytes 640814125 (640.8 MB) 8 TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0 通过 Kubernetes 创建的自定义 Pod，会使用这个网桥创建 IP，其 IP 地址跟网络插件创建的网桥有关。\n更多的 Docker 网络知识: https://docs.docker.com/network/bridge/\n跨节点访问 Pod 既然 Pod 的 IP 是 Docker 创建的，而 Docker 创建的 IP 只能在本地服务器上访问，那么怎么才能在别的节点上访问这个 Pod IP？\n网络插件，除了 weave ，还有很多网络插件可以使用，如 calico、flannel。Kubernetes 网络模型中有个叫 CNI 的标准接口，只要实现了这个接口，用啥网络插件都没问题，使用者不需要关心插件是怎么实现的。\nCNI 的主要功能：\n节点上的 Pod 可以不通过 NAT 和其他任何节点上的 Pod 通信(称为扁平化网络)，即节点间 Pod 的互相访问； 节点上的代理（比如：系统守护进程、kubelet）可以和节点上的所有 Pod 通信，即系统组件访问 Pod； 2. Service Service 是 Kubernetes 的对象，它跟网络有关， Service 不是服务提供者，也不是应用程序接口。\nService 是将运行在一组 Pods 上的应用程序，公开为网络服务的抽象方法。\n如果我们使用 Deployment 、Daemon 等部署 Pod，则可为此控制器创建 Service，Service 会监控此 Deployment 上增加或移除 Pod 的操作，自动为所有 Pod 提供网络服务。当然，Service 并不是指向 Deployment、Daemon 的，而是通过 Label 指向相关的 Pod。\n2.1 Service 的定义和创建 我们创建一个 Deployment 对象，包含三个 Pod 实例。\n1kubectl create deployment nginx --image=nginx:latest --replicas=3 接着，为这些 Pod 创建一个 Service。\n1kubectl expose deployment nginx --type=ClusterIP --port=6666 --target-port=80 查看创建的 Service：\n1[root@zqf-master1 ~]# k get svc -o wide 2NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE SELECTOR 3kubernetes ClusterIP 10.96.0.1 443/TCP 17m 4nginx ClusterIP 10.101.6.208 6666/TCP 7s app=nginx 可以看到，Service 会生成一个随机 IP 10.101.6.208，我们为 Pod 映射了一个新的端口为 6666，此端口映射到了 Pod 的 80 端口中，我们可以测试这个 IP 和 端口是否可用：\n1[root@zqf-master1 ~]# curl 10.101.6.208:6666 2\u003c!DOCTYPE html\u003e 3 4 5Welcome to nginx! 6 11 12 13Welcome to nginx! 14If you see this page, the nginx web server is successfully installed and 15working. Further configuration is required.\n16 17For online documentation and support please refer to 18",
+  "wordCount" : "3979",
+  "inLanguage": "zh",
+  "datePublished": "2024-08-24T16:09:19+08:00",
+  "dateModified": "2024-08-24T16:09:19+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/tech/kubernetes/k8s-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "xgbt's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/assets/apple-icon.png"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/" title="🏠主页">
+                    <span>🏠主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/search" title="🔍搜索">
+                    <span>🔍搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags" title="🏷️标签">
+                    <span>🏷️标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives" title="📦归档">
+                    <span>📦归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
+    <h1 class="post-title entry-hint-parent">
+      K8s 网络模型基础知识
+    </h1>
+    <div class="post-meta"><span title='2024-08-24 16:09:19 +0800 CST'>八月 24, 2024</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+        <div class="toc">
+            <details  open>
+                <summary accesskey="c" title="(Alt + C)">
+                    <span class="details">目录</span>
+                </summary>
+
+                <div class="inner"><ul>
+                        <li>
+                            <a href="#1-pod-ip" aria-label="1. Pod IP">1. Pod IP</a><ul>
+                                    
+                        <li>
+                            <a href="#%e8%b7%a8%e8%8a%82%e7%82%b9%e8%ae%bf%e9%97%ae-pod" aria-label="跨节点访问 Pod">跨节点访问 Pod</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#2-service" aria-label="2. Service">2. Service</a><ul>
+                                    
+                        <li>
+                            <a href="#21-service-%e7%9a%84%e5%ae%9a%e4%b9%89%e5%92%8c%e5%88%9b%e5%bb%ba" aria-label="2.1 Service 的定义和创建">2.1 Service 的定义和创建</a></li>
+                        <li>
+                            <a href="#22-service-%e5%a4%96%e9%83%a8%e6%9c%8d%e5%8a%a1%e7%b1%bb%e5%9e%8b" aria-label="2.2 Service 外部服务类型">2.2 Service 外部服务类型</a><ul>
+                                    
+                        <li>
+                            <a href="#221-nodeport" aria-label="2.2.1 NodePort">2.2.1 NodePort</a></li>
+                        <li>
+                            <a href="#222-loadbalancer" aria-label="2.2.2 LoadBalancer">2.2.2 LoadBalancer</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#23-service-%e5%a6%82%e4%bd%95%e9%80%89%e6%8b%a9-pod" aria-label="2.3 Service 如何选择 Pod">2.3 Service 如何选择 Pod</a></li>
+                        <li>
+                            <a href="#24-kube-proxy-%e4%b8%89%e7%a7%8d%e4%bb%a3%e7%90%86%e6%a8%a1%e5%bc%8f" aria-label="2.4 kube-proxy 三种代理模式">2.4 kube-proxy 三种代理模式</a><ul>
+                                    
+                        <li>
+                            <a href="#241-userspace-%e4%bb%a3%e7%90%86%e6%a8%a1%e5%bc%8f" aria-label="2.4.1 userspace 代理模式">2.4.1 userspace 代理模式</a></li>
+                        <li>
+                            <a href="#242-iptables-%e4%bb%a3%e7%90%86%e6%a8%a1%e5%bc%8f" aria-label="2.4.2 iptables 代理模式">2.4.2 iptables 代理模式</a></li>
+                        <li>
+                            <a href="#243-ipvs-%e4%bb%a3%e7%90%86%e6%a8%a1%e5%bc%8f" aria-label="2.4.3 IPVS 代理模式">2.4.3 IPVS 代理模式</a>
+                        </li>
+                    </ul>
+                    </li>
+                    </ul>
+                    </li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </aside>
+    <script>
+        let activeElement;
+        let elements;
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            checkTocPosition();
+
+            elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+            if (elements.length > 0) {
+                
+                activeElement = elements[0];
+                const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+                document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+            }
+
+            
+            const topLink = document.getElementById('top-link');
+            if (topLink) {
+                topLink.addEventListener('click', (event) => {
+                    
+                    event.preventDefault();
+
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        }, false);
+
+        window.addEventListener('resize', function (event) {
+            checkTocPosition();
+        }, false);
+
+        window.addEventListener('scroll', () => {
+            
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+            
+            if (scrollPosition === 0) {
+                return;
+            }
+
+            
+            if (elements && elements.length > 0) {
+                
+                activeElement = Array.from(elements).find((element) => {
+                    if ((getOffsetTop(element) - scrollPosition) > 0 &&
+                        (getOffsetTop(element) - scrollPosition) < window.innerHeight / 2) {
+                        return element;
+                    }
+                }) || activeElement;
+
+                elements.forEach(element => {
+                    const id = encodeURI(element.getAttribute('id')).toLowerCase();
+                    const tocLink = document.querySelector(`.inner ul li a[href="#${id}"]`);
+                    if (element === activeElement) {
+                        tocLink.classList.add('active');
+
+                        
+                        const tocContainer = document.querySelector('.toc .inner');
+                        const linkOffsetTop = tocLink.offsetTop;
+                        const containerHeight = tocContainer.clientHeight;
+                        const linkHeight = tocLink.clientHeight;
+
+                        
+                        const scrollPosition = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
+                        tocContainer.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+                    } else {
+                        tocLink.classList.remove('active');
+                    }
+                });
+            }
+        }, false);
+
+        const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+        const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+        const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+        function checkTocPosition() {
+            const width = document.body.scrollWidth;
+
+            if (width - main - (toc * 2) - (gap * 4) > 0) {
+                document.getElementById("toc-container").classList.add("wide");
+            } else {
+                document.getElementById("toc-container").classList.remove("wide");
+            }
+        }
+
+        function getOffsetTop(element) {
+            if (!element.getClientRects().length) {
+                return 0;
+            }
+            let rect = element.getBoundingClientRect();
+            let win = element.ownerDocument.defaultView;
+            return rect.top + win.pageYOffset;
+        }
+
+    </script>
+  <div class="post-content"><p>Kubernetes 网络的功能：</p>
+<ol>
+<li>高度耦合的容器间通信：这个已经被 Pods 和 <code>localhost</code> 通信解决了。</li>
+<li>Pod 间通信；</li>
+<li>Pod 和 Service 对象间通信；</li>
+<li>外部和 Service 对象间通信；</li>
+</ol>
+<p>Kubernetes 本身的网络服务自带了一下功能：</p>
+<ul>
+<li>NAT: 网络地址转换</li>
+<li>Source NAT: 替换数据包的源 IP, 通常为节点的 IP</li>
+<li>Destination NAT: 替换数据包的目的 IP, 通常为 Pod 的 IP</li>
+<li>VIP: 一个虚拟 IP, 例如分配给每个 Kubernetes Service 的 IP</li>
+<li>Kube-proxy: 一个网络守护程序，在每个节点上协调 Service VIP 管理</li>
+</ul>
+<blockquote>
+<p>可参考 <a href="https://kubernetes.io/zh/docs/tutorials/services/source-ip/">https://kubernetes.io/zh/docs/tutorials/services/source-ip/</a></p>
+</blockquote>
+<h1 id="1-pod-ip">1. Pod IP<a hidden class="anchor" aria-hidden="true" href="#1-pod-ip">#</a></h1>
+<p>对于 Docker 中的 container 网络。多个容器共享一个容器的网络接口，实现多个容器共享网络、同一个 IP、同一个 hostname。</p>
+<p>K8S 中 Pod 内多容器共享网络就是这样创建的，Pod 的 IP 是 Docker 创建和分配的容器 IP，这个 IP 是带虚拟网卡的，因此这个 IP 是可以被 ping 的，但是该 IP 只能在当前节点中被访问。</p>
+<p>首先，<strong>创建 Pod 时，Pod 会启动一个 pause 容器，该容器创建了一个虚拟网卡，并被 Docker 分配 IP，接着 Pod 的容器会使用 container 网络模式连接到这个 pause 容器中，pause 容器的生命周期跟 Pod 的生命周期一致。</strong></p>
+<p>在工作节点上使用 <code>docker ps -a | grep pause</code> 命令查看 pause 容器：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">[</span>root@test-60g ~<span class="o">]</span><span class="c1"># minikube ssh</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">docker@minikube:~$ docker ps -a <span class="p">|</span>grep pause
+</span></span><span class="line"><span class="ln">3</span><span class="cl">67461274c207   registry.k8s.io/pause:3.9   <span class="s2">&#34;/pause&#34;</span>                 <span class="m">25</span> hours ago   Up <span class="m">25</span> hours                           k8s_POD_nginx-7cf478bb58-h6zq9_default_4df3bc0f-7efa-4ef1-9d46-e6b300143eeb_2
+</span></span><span class="line"><span class="ln">4</span><span class="cl">...
+</span></span></code></pre></div><p>不过，Docker 中的容器 IP 是 172.17.0.0 地址段，而 Pod IP 的地址段一般是 10.x.x.x 网络，其中用户自定义 Pod 是 10.32.0.0 地址段。</p>
+<blockquote>
+<p>Pod 的 IP 是 Docker 分配的，为什么其地址不是 172.17.0.0 地址段？</p>
+</blockquote>
+<p>首先，在部署了 Docker 的机器上，都会有一个名为 <code>docker0</code> 的<strong>网桥</strong>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">docker0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+</span></span><span class="line"><span class="ln">2</span><span class="cl">        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        inet6 fe80::42:2aff:fe00:6577  prefixlen 64  scopeid 0x20&lt;link&gt;
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        ether 02:42:2a:00:65:77  txqueuelen 0  (Ethernet)
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        RX packets 4404  bytes 155753 (152.1 KiB)
+</span></span><span class="line"><span class="ln">6</span><span class="cl">        RX errors 0  dropped 0  overruns 0  frame 0
+</span></span><span class="line"><span class="ln">7</span><span class="cl">        TX packets 3340  bytes 158865 (155.1 KiB)
+</span></span><span class="line"><span class="ln">8</span><span class="cl">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span></span></code></pre></div><p>docker 的默认网桥叫 <code>docker0</code>，这个网桥的 IP 是 172.17.0.1，基于这个网桥创建的容器的虚拟网卡自然是 172.17.0.0 地址段。</p>
+<p>而如果我们使用 <code>weava</code> 网络插件部署集群，那么使用 <code>ifconfig</code> 命令，可以找到一个 <code>weava</code> 的自定义网桥：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">weave: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1376
+</span></span><span class="line"><span class="ln">2</span><span class="cl">        inet 10.32.0.1  netmask 255.240.0.0  broadcast 10.47.255.255
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        inet6 fe80::ac45:ebff:fe0a:31ae  prefixlen 64  scopeid 0x20&lt;link&gt;
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        ether ae:45:eb:0a:31:ae  txqueuelen 1000  (Ethernet)
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        RX packets 2905588  bytes 391313728 (391.3 MB)
+</span></span><span class="line"><span class="ln">6</span><span class="cl">        RX errors 0  dropped 0  overruns 0  frame 0
+</span></span><span class="line"><span class="ln">7</span><span class="cl">        TX packets 3179102  bytes 640814125 (640.8 MB)
+</span></span><span class="line"><span class="ln">8</span><span class="cl">        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span></span></code></pre></div><p>通过 Kubernetes 创建的自定义 Pod，会使用这个网桥创建 IP，<strong>其 IP 地址跟网络插件创建的网桥有关。</strong></p>
+<blockquote>
+<p>更多的 Docker 网络知识: <a href="https://docs.docker.com/network/bridge/">https://docs.docker.com/network/bridge/</a></p>
+</blockquote>
+<h2 id="跨节点访问-pod">跨节点访问 Pod<a hidden class="anchor" aria-hidden="true" href="#跨节点访问-pod">#</a></h2>
+<p>既然 Pod 的 IP 是 Docker 创建的，而 Docker 创建的 IP 只能在本地服务器上访问，那么怎么才能在别的节点上访问这个 Pod IP？</p>
+<p><strong>网络插件</strong>，除了 weave ，还有很多网络插件可以使用，如 calico、flannel。Kubernetes 网络模型中有个叫 <code>CNI</code> 的标准接口，只要实现了这个接口，用啥网络插件都没问题，使用者不需要关心插件是怎么实现的。</p>
+<p>CNI 的主要功能：</p>
+<ul>
+<li>节点上的 Pod 可以不通过 NAT 和其他任何节点上的 Pod 通信(称为扁平化网络)，即<strong>节点间 Pod 的互相访问</strong>；</li>
+<li>节点上的代理（比如：系统守护进程、kubelet）可以和节点上的所有 Pod 通信，即<strong>系统组件访问 Pod</strong>；</li>
+</ul>
+<h1 id="2-service">2. Service<a hidden class="anchor" aria-hidden="true" href="#2-service">#</a></h1>
+<p>Service 是 Kubernetes 的对象，它跟网络有关， Service 不是服务提供者，也不是应用程序接口。</p>
+<p>Service 是将运行在一组 Pods 上的应用程序，公开为网络服务的抽象方法。</p>
+<p>如果我们使用 Deployment 、Daemon 等部署 Pod，则可为此控制器创建 Service，Service 会监控此 Deployment 上增加或移除 Pod 的操作，自动为所有 Pod 提供网络服务。当然，Service 并不是指向 Deployment、Daemon 的，而是通过 Label 指向相关的 Pod。</p>
+<h2 id="21-service-的定义和创建">2.1 Service 的定义和创建<a hidden class="anchor" aria-hidden="true" href="#21-service-的定义和创建">#</a></h2>
+<p>我们创建一个 Deployment 对象，包含三个 Pod 实例。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">kubectl create deployment nginx --image<span class="o">=</span>nginx:latest --replicas<span class="o">=</span><span class="m">3</span>
+</span></span></code></pre></div><p>接着，为这些 Pod 创建一个 Service。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">kubectl expose deployment nginx --type<span class="o">=</span>ClusterIP --port<span class="o">=</span><span class="m">6666</span> --target-port<span class="o">=</span><span class="m">80</span>
+</span></span></code></pre></div><p>查看创建的 Service：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">[</span>root@zqf-master1 ~<span class="o">]</span><span class="c1"># k get svc -o wide</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>    AGE   SELECTOR
+</span></span><span class="line"><span class="ln">3</span><span class="cl">kubernetes   ClusterIP   10.96.0.1      &lt;none&gt;        443/TCP    17m   &lt;none&gt;
+</span></span><span class="line"><span class="ln">4</span><span class="cl">nginx        ClusterIP   10.101.6.208   &lt;none&gt;        6666/TCP   7s    <span class="nv">app</span><span class="o">=</span>nginx
+</span></span></code></pre></div><p>可以看到，Service 会生成一个随机 IP <code>10.101.6.208</code>，我们为 Pod 映射了一个新的端口为 6666，此端口映射到了 Pod 的 80 端口中，我们可以测试这个 IP 和 端口是否可用：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="o">[</span>root@zqf-master1 ~<span class="o">]</span><span class="c1"># curl 10.101.6.208:6666</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">&lt;!DOCTYPE html&gt;
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">&lt;html&gt;
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">&lt;head&gt;
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">&lt;title&gt;Welcome to nginx!&lt;/title&gt;
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">&lt;style&gt;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">html <span class="o">{</span> color-scheme: light dark<span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">body <span class="o">{</span> width: 35em<span class="p">;</span> margin: <span class="m">0</span> auto<span class="p">;</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">font-family: Tahoma, Verdana, Arial, sans-serif<span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">&lt;/style&gt;
+</span></span><span class="line"><span class="ln">11</span><span class="cl">&lt;/head&gt;
+</span></span><span class="line"><span class="ln">12</span><span class="cl">&lt;body&gt;
+</span></span><span class="line"><span class="ln">13</span><span class="cl">&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
+</span></span><span class="line"><span class="ln">14</span><span class="cl">&lt;p&gt;If you see this page, the nginx web server is successfully installed and
+</span></span><span class="line"><span class="ln">15</span><span class="cl">working. Further configuration is required.&lt;/p&gt;
+</span></span><span class="line"><span class="ln">16</span><span class="cl">
+</span></span><span class="line"><span class="ln">17</span><span class="cl">&lt;p&gt;For online documentation and support please refer to
+</span></span><span class="line"><span class="ln">18</span><span class="cl">&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&#34;http://nginx.org/&#34;</span>&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
+</span></span><span class="line"><span class="ln">19</span><span class="cl">Commercial support is available at
+</span></span><span class="line"><span class="ln">20</span><span class="cl">&lt;a <span class="nv">href</span><span class="o">=</span><span class="s2">&#34;http://nginx.com/&#34;</span>&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
+</span></span><span class="line"><span class="ln">21</span><span class="cl">
+</span></span><span class="line"><span class="ln">22</span><span class="cl">&lt;p&gt;&lt;em&gt;Thank you <span class="k">for</span> using nginx.&lt;/em&gt;&lt;/p&gt;
+</span></span><span class="line"><span class="ln">23</span><span class="cl">&lt;/body&gt;
+</span></span><span class="line"><span class="ln">24</span><span class="cl">&lt;/html&gt;
+</span></span></code></pre></div><blockquote>
+<p>在没有安装网络插件的前提下，假如有 master、slave 两个节点，Pod 都被部署到 slave 节点上，而 master 节点没有部署此 Pod 的话，master 是访问不了此 Service的。</p>
+</blockquote>
+<p>为了验证这样情况，我们可以消去 master 的污点，使其能够被部署用户自定义的 Pod。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">kubectl taint node zqf-master1 node-role.kubernetes.io/control-plane:NoSchedule-
+</span></span></code></pre></div><p>然后重新部署 Deployment，但是不需要重新部署 Service。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">kubectl delete deployyment nginx
+</span></span><span class="line"><span class="ln">2</span><span class="cl">kubectl create deployment nginx --image=nginx:latest --replicas=3
+</span></span></code></pre></div><p>查看这些 Pod 都被部署到哪里：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">[root@zqf-master1 ~]# k get po -o wide
+</span></span><span class="line"><span class="ln">2</span><span class="cl">NAME                     READY   STATUS              RESTARTS   AGE   IP       NODE          NOMINATED NODE   READINESS GATES
+</span></span><span class="line"><span class="ln">3</span><span class="cl">nginx-56fcf95486-lg4bf   0/1     ContainerCreating   0          5s    &lt;none&gt;   zqf-slave1    &lt;none&gt;           &lt;none&gt;
+</span></span><span class="line"><span class="ln">4</span><span class="cl">nginx-56fcf95486-m5v5b   0/1     ContainerCreating   0          5s    &lt;none&gt;   zqf-master1   &lt;none&gt;           &lt;none&gt;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">nginx-56fcf95486-vjk2p   0/1     ContainerCreating   0          5s    &lt;none&gt;   zqf-slave1    &lt;none&gt;           &lt;none&gt;
+</span></span></code></pre></div><p>现在，master、slave 都部署了 Pod，那么我们在 master 节点上访问此 Service，可以正常访问。</p>
+<hr>
+<p>在 Deployment 对象上创建 Service，会直接关联一个 Deployment 中的所有 Pod，并监控是否有新建或移除 Pod ，无论 Pod 的数量有多少，Service 都可以代理这些 Pod。</p>
+<p>如果我们通过 YAML 定义 Service，其模板如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yml" data-lang="yml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">my-service</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">MyApp</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">    </span>- <span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">6666</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterIP</span><span class="w">
+</span></span></span></code></pre></div><blockquote>
+<p>由于 Service 的 IP 是虚拟的，因此此 IP 是无法 Ping 通的。</p>
+</blockquote>
+<h2 id="22-service-外部服务类型">2.2 Service 外部服务类型<a hidden class="anchor" aria-hidden="true" href="#22-service-外部服务类型">#</a></h2>
+<p>虽然创建了 Service 后，所有的 Pod 可以被一个 IP 地址访问，但是这个 IP 只能在被部署了 Pod 的节点中访问， 不能被集群外访问，这是因为我们创建 Service 的时候，使用了 ClusterIP 类型，<strong>如果是 NodePort 类型，则可以被外界访问到。</strong></p>
+<p>Kubernetes Service 有个 ServiceType ，允许我们指定如何暴露服务，可以将一个 Service 暴露到集群外部，外界可以通过 IP 访问这个 Service。</p>
+<p>Type 有四种类型，其取值说明如下：</p>
+<ul>
+<li><strong>ClusterIP</strong>：通过集群内部 IP 暴露服务，ClusterIP 是 ServiceType 的默认值。</li>
+<li><strong>NodePort</strong>：通过每个节点上的 IP 和静态端口（<code>NodePort</code>）暴露服务。由于其是节点上的 ，所以具有通过节点的公网 IP 访问这个服务。</li>
+<li><strong>LoadBalancer</strong>：使用负载均衡器向外部暴露服务。 外部负载均衡器可以将流量路由到自动创建的 <code>NodePort</code> 服务和 <code>ClusterIP</code> 服务上。需要云平台服务提供商的支持，分配公网 IP 才能使用。</li>
+<li><strong>ExternalName</strong>：通过返回 <code>CNAME</code> 和对应值，可以将服务映射到 <code>externalName</code> 字段的内容（例如，<code>foo.bar.example.com</code>）。</li>
+</ul>
+<blockquote>
+<p>需要使用 kube-dns 1.7 及以上版本或者 CoreDNS 0.0.8 及以上版本才能使用 <code>ExternalName</code> 类型。</p>
+</blockquote>
+<p>ClusterIP、NodePort、LoadBalancer 三者是有关系的，前者是后者的基础。创建一个 NodePort 类型的 Service，必定带有一个 ClusterIP；创建一个 LoadBalancer，必定带有 ClusterIP、NodePort。</p>
+<h3 id="221-nodeport">2.2.1 NodePort<a hidden class="anchor" aria-hidden="true" href="#221-nodeport">#</a></h3>
+<p>将前面创建的 Service 修改为 NodePort 类型</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">kubectl edit service nginx
+</span></span></code></pre></div><p>然后查看 Service 列表：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">[</span>root@zqf-master1 ~<span class="o">]</span><span class="c1"># k get svc -o wide</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>          AGE   SELECTOR
+</span></span><span class="line"><span class="ln">3</span><span class="cl">kubernetes   ClusterIP   10.96.0.1      &lt;none&gt;        443/TCP          33m   &lt;none&gt;
+</span></span><span class="line"><span class="ln">4</span><span class="cl">nginx        NodePort    10.101.6.208   &lt;none&gt;        6666:31292/TCP   16m   <span class="nv">app</span><span class="o">=</span>nginx
+</span></span></code></pre></div><p>此时 Service 会创建一个 随机端口，这个端口映射到每个部署了 Pod 的节点上，样例中是31292，此时外界可以通过使用节点 IP 访问此 Service。</p>
+<p>此时，可以在集群其他机器访问两台节点 IP  <code>http://10.101.5.219:31292/</code> 和 <code>http://10.101.5.220:31292/</code> 可以正常返回 nginx 网页。</p>
+<h3 id="222-loadbalancer">2.2.2 LoadBalancer<a hidden class="anchor" aria-hidden="true" href="#222-loadbalancer">#</a></h3>
+<p>现在 Pod 负载均衡了，但不能只访问一个节点？节点的网络也需要负载均衡，而且节点 IP 这么多，用户总不能记住这么多 IP ？就算使用域名，域名也不能绑定这么多 IP 呀，此时应该使用 LoadBalancer 。</p>
+<hr>
+<p>删除之前的 service ，重新创建。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">kubectl expose deployment nginx --type<span class="o">=</span>LoadBalancer  --port<span class="o">=</span><span class="m">6666</span> --target-port<span class="o">=</span><span class="m">80</span>
+</span></span></code></pre></div><blockquote>
+<p>如果只填写 &ndash;port ，此时映射的端口跟 Pod 端口一致</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">[</span>root@zqf-master1 ~<span class="o">]</span><span class="c1"># k get svc</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">NAME         TYPE           CLUSTER-IP     EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>          AGE
+</span></span><span class="line"><span class="ln">3</span><span class="cl">kubernetes   ClusterIP      10.96.0.1      &lt;none&gt;        443/TCP          54m
+</span></span><span class="line"><span class="ln">4</span><span class="cl">nginx        LoadBalancer   10.106.1.221   &lt;pending&gt;     6666:31960/TCP   19s
+</span></span></code></pre></div><p>当使用 LoadBalancer 暴露服务到集群外部网络时，云基础设施需要时间来创建负载均衡器并获取服务中的 IP 地址。如果使用的是 <code>minikube</code>、<code>kubeadm</code> 等创建的自定义 Kubernetes 集群，没有集成 LoadBalancer ，则会一直处于 <code>&lt;Pending&gt;</code> 状态。</p>
+<h2 id="23-service-如何选择-pod">2.3 Service 如何选择 Pod<a hidden class="anchor" aria-hidden="true" href="#23-service-如何选择-pod">#</a></h2>
+<p>通过命令查看 iptables 配置：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">iptables-save
+</span></span></code></pre></div><p>在终端控制台中查找 <code>random</code> 关键字：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">-A KUBE-SVC-2CMXP7HKUVJN7L6M -m comment --comment <span class="s2">&#34;default/nginx -&gt; 172.16.41.201:80&#34;</span> -m statistic --mode random --probability 0.33333333349 -j KUBE-SEP-KVETUJWAGOYJMI5D
+</span></span><span class="line"><span class="ln">2</span><span class="cl">-A KUBE-SVC-2CMXP7HKUVJN7L6M -m comment --comment <span class="s2">&#34;default/nginx -&gt; 172.16.41.202:80&#34;</span> -m statistic --mode random --probability 0.50000000000 -j KUBE-SEP-OGCI3CVDD3KXHXYJ
+</span></span><span class="line"><span class="ln">3</span><span class="cl">-A KUBE-SVC-2CMXP7HKUVJN7L6M -m comment --comment <span class="s2">&#34;default/nginx -&gt; 172.16.41.203:80&#34;</span> -j KUBE-SEP-PEONUJMSH5W46AFI
+</span></span></code></pre></div><p>有三个 <code>default/nginx</code>， 第一个 pod 被访问的机会是 <code>0.33333...</code>。在剩下的 2/3 的概率中，有 0.5 的概率选择第二个 Pod，剩下的 1/3 概率选择第三个 Pod。这种随机选择的模式称为 <code>iptables</code> 代理模式，也就是 kube-proxy 的默认模式。</p>
+<h2 id="24-kube-proxy-三种代理模式">2.4 kube-proxy 三种代理模式<a hidden class="anchor" aria-hidden="true" href="#24-kube-proxy-三种代理模式">#</a></h2>
+<p>当我们使用命令创建一个 Service 时，可看到每个 Service 都有一个 IP 地址，这是由 kube-proxy 负责为 Service 实现的一种虚拟 IP ，即 <code>ClusterIP</code>。</p>
+<p>kube-proxy 可以为多个 Pod 创建一个统一的代理，在访问 Service 时，自动选择一个 Pod 提供服务，至于如何选择 Pod，kube-proxy 有三种模式。</p>
+<ul>
+<li><code>userspace</code> 代理模式</li>
+<li><code>iptables</code> 代理模式(默认)</li>
+<li><code>IPVS</code> 代理模式（Kubernetes v1.11 ，如果要使用 IPVS，需要修改配置激活）</li>
+</ul>
+<p>在这些代理模式中，客户端可以在不了解 Kubernetes 服务或 Pod 的任何信息的情况下，将 Port 代理到适当的后端。</p>
+<h3 id="241-userspace-代理模式">2.4.1 userspace 代理模式<a hidden class="anchor" aria-hidden="true" href="#241-userspace-代理模式">#</a></h3>
+<p>userspace 模式下， kube-proxy 通过<strong>轮转算法</strong>选择 pod。</p>
+<p>对每个 Service，它会在本地 Node 上打开一个端口(端口号大于 30000)。 任何连接到此端口的请求，都会被代理到 Service 后端的某个 <code>Pod</code> 上。 使用哪个后端 Pod，是 kube-proxy 基于 YAML 的 <code>SessionAffinity</code> 终端来确定的。</p>
+<p>最后，配置 iptables 规则，捕获到达该 Service 的 <code>clusterIP</code> 和 <code>Port</code> 的请求，并重定向到代理端口，代理端口再代理请求到后端 Pod。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">访问 -&gt; clusterIP -&gt; 代理 -&gt; 任一 Pod
+</span></span></code></pre></div><h3 id="242-iptables-代理模式">2.4.2 iptables 代理模式<a hidden class="anchor" aria-hidden="true" href="#242-iptables-代理模式">#</a></h3>
+<p><strong>kube-proxy 默认模式</strong>。iptables 代理模式的策略<strong>随机选择一个 Pod</strong>。</p>
+<p>它会为每个 Service 配置 iptables 规则，捕获所有访问此 Service <code>clusterIP</code> 的请求，进而将请求重定向到 Service 的一组后端中的某个 Pod 上面。 对于每个 Endpoints 对象，它也会配置 iptables 规则，这个规则会选择一个后端组合。</p>
+<p>使用 iptables 处理流量具有较低的系统开销，因为流量由 Linux netfilter 处理， 而无需在用户空间和内核空间之间切换， 这种方法也可能更可靠。</p>
+<p>如果 kube-proxy 在 iptables 模式下运行，如果随机所选的第一个 Pod 没有响应， 则连接会失败，在这种情况下，会自动使用其他后端 Pod 重试 。</p>
+<h3 id="243-ipvs-代理模式">2.4.3 IPVS 代理模式<a hidden class="anchor" aria-hidden="true" href="#243-ipvs-代理模式">#</a></h3>
+<p>与其他代理模式相比，IPVS 模式支持更高的网络流量吞吐量。与 iptables 模式下的 kube-proxy 相比，IPVS 模式下的 kube-proxy 重定向通信的延迟要短，并且在同步代理规则时具有更好的性能。</p>
+<p>IPVS 提供了更多选项来平衡后端 Pod 的流量。 这些是：</p>
+<ul>
+<li><code>rr</code>：轮替（Round-Robin）</li>
+<li><code>lc</code>：最少链接（Least Connection），即打开链接数量最少者优先</li>
+<li><code>dh</code>：目标地址哈希（Destination Hashing）</li>
+<li><code>sh</code>：源地址哈希（Source Hashing）</li>
+<li><code>sed</code>：最短预期延迟（Shortest Expected Delay）</li>
+<li><code>nq</code>：从不排队（Never Queue）</li>
+</ul>
+<blockquote>
+<p>Service 暴露多端口</p>
+</blockquote>
+<p>如果要在 Service 中暴露多个端口，则每个端口都需要设置一个名字。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">    ports:
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    - name: p1
+</span></span><span class="line"><span class="ln">3</span><span class="cl">      port: 2323
+</span></span><span class="line"><span class="ln">4</span><span class="cl">      protocol: TCP
+</span></span><span class="line"><span class="ln">5</span><span class="cl">      targetPort: 81
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    - name: p2
+</span></span><span class="line"><span class="ln">7</span><span class="cl">      port: 6666
+</span></span><span class="line"><span class="ln">8</span><span class="cl">      protocol: TCP
+</span></span><span class="line"><span class="ln">9</span><span class="cl">      targetPort: 82
+</span></span></code></pre></div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="/tags/kubernetes/">Kubernetes</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="/tech/kubernetes/%E5%9F%BA%E4%BA%8E-imagepullsecret-%E4%B8%8B%E8%BD%BD%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E5%88%B6%E5%93%81/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>基于 imagePullSecret 下载私有镜像仓库制品</span>
+  </a>
+  <a class="next" href="/tech/kubernetes/%E4%BD%BF%E7%94%A8-nfs-%E4%BD%9C%E4%B8%BA-k8s-%E5%AD%98%E5%82%A8%E6%8F%92%E4%BB%B6/">
+    <span class="title">下一页 »</span>
+    <br>
+    <span>使用 NFS 作为 K8s 存储插件</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制！';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

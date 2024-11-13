@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Docker 网段与主机网段冲突导致网络中断 | xgbt&#39;s Blog</title>
+<meta name="keywords" content="Ops, Docker">
+<meta name="description" content="问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。 解决方案 查看路由信息 1ifconfig docker0 2 3docker0:">
+<meta name="author" content="">
+<link rel="canonical" href="/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/assets/apple-icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><style>
+@import url('https://fonts.cdnfonts.com/css/code-new-roman');
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
+    rel="stylesheet"><meta property="og:title" content="Docker 网段与主机网段冲突导致网络中断" />
+<meta property="og:description" content="问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。 解决方案 查看路由信息 1ifconfig docker0 2 3docker0:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/" /><meta property="article:section" content="tech" />
+<meta property="article:published_time" content="2023-10-09T16:09:19+08:00" />
+<meta property="article:modified_time" content="2023-10-09T16:09:19+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Docker 网段与主机网段冲突导致网络中断"/>
+<meta name="twitter:description" content="问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。 解决方案 查看路由信息 1ifconfig docker0 2 3docker0:"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Tech",
+      "item": "/tech/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Docker 网段与主机网段冲突导致网络中断",
+      "item": "/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Docker 网段与主机网段冲突导致网络中断",
+  "name": "Docker 网段与主机网段冲突导致网络中断",
+  "description": "问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。 解决方案 查看路由信息 1ifconfig docker0 2 3docker0:",
+  "keywords": [
+    "Ops", "Docker"
+  ],
+  "articleBody": "问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。\n解决方案 查看路由信息 1ifconfig docker0 2 3docker0: flags=4099 mtu 1500 4 inet 172.17.0.1 netmask 255.255.0.0 broadcast 172.17.255.255 5 ether 02:42:90:e0:c1:a0 txqueuelen 0 (Ethernet) 6 RX packets 0 bytes 0 (0.0 B) 7 RX errors 0 dropped 0 overruns 0 frame 0 8 TX packets 0 bytes 0 (0.0 B) 9 TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0 可以看到，docker0 占用的网段为 172.17.0.1/16\n修改 docker 默认网段 1# 停止 docker 服务 2systemctl stop docker 3 4# 删除原有网桥 5ip link del docker0 down 6 7# 修改 docker 网段 8vim /etc/docker/daemon.json 9\"bip\":\"192.168.100.1/24\" 10 11# 重启 docker 服务 12systemctl restart docker 此时再执行 ifconfig docker0 可以看到 docker 的网段已变更。\n参考资料：\nhttps://cloud.tencent.com/developer/article/2242559 ",
+  "wordCount" : "217",
+  "inLanguage": "zh",
+  "datePublished": "2023-10-09T16:09:19+08:00",
+  "dateModified": "2023-10-09T16:09:19+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "xgbt's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/assets/apple-icon.png"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/" title="🏠主页">
+                    <span>🏠主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/search" title="🔍搜索">
+                    <span>🔍搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags" title="🏷️标签">
+                    <span>🏷️标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives" title="📦归档">
+                    <span>📦归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Docker 网段与主机网段冲突导致网络中断
+    </h1>
+    <div class="post-meta"><span title='2023-10-09 16:09:19 +0800 CST'>十月 9, 2023</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+        <div class="toc">
+            <details  open>
+                <summary accesskey="c" title="(Alt + C)">
+                    <span class="details">目录</span>
+                </summary>
+
+                <div class="inner"><ul>
+                        <li>
+                            <a href="#%e9%97%ae%e9%a2%98%e6%8f%8f%e8%bf%b0" aria-label="问题描述">问题描述</a></li>
+                        <li>
+                            <a href="#%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88" aria-label="解决方案">解决方案</a>
+                        </li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </aside>
+    <script>
+        let activeElement;
+        let elements;
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            checkTocPosition();
+
+            elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+            if (elements.length > 0) {
+                
+                activeElement = elements[0];
+                const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+                document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+            }
+
+            
+            const topLink = document.getElementById('top-link');
+            if (topLink) {
+                topLink.addEventListener('click', (event) => {
+                    
+                    event.preventDefault();
+
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        }, false);
+
+        window.addEventListener('resize', function (event) {
+            checkTocPosition();
+        }, false);
+
+        window.addEventListener('scroll', () => {
+            
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+            
+            if (scrollPosition === 0) {
+                return;
+            }
+
+            
+            if (elements && elements.length > 0) {
+                
+                activeElement = Array.from(elements).find((element) => {
+                    if ((getOffsetTop(element) - scrollPosition) > 0 &&
+                        (getOffsetTop(element) - scrollPosition) < window.innerHeight / 2) {
+                        return element;
+                    }
+                }) || activeElement;
+
+                elements.forEach(element => {
+                    const id = encodeURI(element.getAttribute('id')).toLowerCase();
+                    const tocLink = document.querySelector(`.inner ul li a[href="#${id}"]`);
+                    if (element === activeElement) {
+                        tocLink.classList.add('active');
+
+                        
+                        const tocContainer = document.querySelector('.toc .inner');
+                        const linkOffsetTop = tocLink.offsetTop;
+                        const containerHeight = tocContainer.clientHeight;
+                        const linkHeight = tocLink.clientHeight;
+
+                        
+                        const scrollPosition = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
+                        tocContainer.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+                    } else {
+                        tocLink.classList.remove('active');
+                    }
+                });
+            }
+        }, false);
+
+        const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+        const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+        const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+        function checkTocPosition() {
+            const width = document.body.scrollWidth;
+
+            if (width - main - (toc * 2) - (gap * 4) > 0) {
+                document.getElementById("toc-container").classList.add("wide");
+            } else {
+                document.getElementById("toc-container").classList.remove("wide");
+            }
+        }
+
+        function getOffsetTop(element) {
+            if (!element.getClientRects().length) {
+                return 0;
+            }
+            let rect = element.getBoundingClientRect();
+            let win = element.ownerDocument.defaultView;
+            return rect.top + win.pageYOffset;
+        }
+
+    </script>
+  <div class="post-content"><h2 id="问题描述">问题描述<a hidden class="anchor" aria-hidden="true" href="#问题描述">#</a></h2>
+<p>有 IP 地址为 <code>172.24.x.xx/24</code> 的服务器无法 ping 通，原因为 docker 默认网段 <code>172.17.0.0/16</code> 占用了服务器所在网段，导致外部请求无法访问到真实服务器。</p>
+<h2 id="解决方案">解决方案<a hidden class="anchor" aria-hidden="true" href="#解决方案">#</a></h2>
+<ol>
+<li><strong>查看路由信息</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">ifconfig docker0
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">docker0: <span class="nv">flags</span><span class="o">=</span>4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu <span class="m">1500</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        ether 02:42:90:e0:c1:a0  txqueuelen <span class="m">0</span>  <span class="o">(</span>Ethernet<span class="o">)</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">        RX packets <span class="m">0</span>  bytes <span class="m">0</span> <span class="o">(</span>0.0 B<span class="o">)</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">        RX errors <span class="m">0</span>  dropped <span class="m">0</span>  overruns <span class="m">0</span>  frame <span class="m">0</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl">        TX packets <span class="m">0</span>  bytes <span class="m">0</span> <span class="o">(</span>0.0 B<span class="o">)</span>
+</span></span><span class="line"><span class="ln">9</span><span class="cl">        TX errors <span class="m">0</span>  dropped <span class="m">0</span> overruns <span class="m">0</span>  carrier <span class="m">0</span>  collisions <span class="m">0</span>
+</span></span></code></pre></div><p>可以看到，docker0 占用的网段为 172.17.0.1/16</p>
+<ol start="2">
+<li><strong>修改 docker 默认网段</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1"># 停止 docker 服务</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">systemctl stop docker
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"># 删除原有网桥</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">ip link del docker0 down
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1"># 修改 docker 网段</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">vim /etc/docker/daemon.json 
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="s2">&#34;bip&#34;</span>:<span class="s2">&#34;192.168.100.1/24&#34;</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="c1"># 重启 docker 服务</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">systemctl restart docker
+</span></span></code></pre></div><p>此时再执行 <code>ifconfig docker0</code> 可以看到 docker 的网段已变更。</p>
+<p><strong>参考资料：</strong></p>
+<ol>
+<li><a href="https://cloud.tencent.com/developer/article/2242559">https://cloud.tencent.com/developer/article/2242559</a></li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="/tags/ops/">Ops</a></li>
+      <li><a href="/tags/docker/">Docker</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>Jaeger 部署与使用</span>
+  </a>
+  <a class="next" href="/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/">
+    <span class="title">下一页 »</span>
+    <br>
+    <span>修改 Linux DNS 配置</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制！';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

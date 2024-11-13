@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>K8s Pod 基础知识 | xgbt&#39;s Blog</title>
+<meta name="keywords" content="Kubernetes">
+<meta name="description" content="Pod 是 K8s 集群中创建和管理的、最小的可部署的计算单元。K8s 不会直接操作容器，而是通过 Pod 封装了容器，集群通过管控 Pod ，便可控制容器的存储、网络等资">
+<meta name="author" content="">
+<link rel="canonical" href="/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/assets/apple-icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><style>
+@import url('https://fonts.cdnfonts.com/css/code-new-roman');
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
+    rel="stylesheet"><meta property="og:title" content="K8s Pod 基础知识" />
+<meta property="og:description" content="Pod 是 K8s 集群中创建和管理的、最小的可部署的计算单元。K8s 不会直接操作容器，而是通过 Pod 封装了容器，集群通过管控 Pod ，便可控制容器的存储、网络等资" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" /><meta property="article:section" content="tech" />
+<meta property="article:published_time" content="2024-01-31T16:09:19+08:00" />
+<meta property="article:modified_time" content="2024-01-31T16:09:19+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="K8s Pod 基础知识"/>
+<meta name="twitter:description" content="Pod 是 K8s 集群中创建和管理的、最小的可部署的计算单元。K8s 不会直接操作容器，而是通过 Pod 封装了容器，集群通过管控 Pod ，便可控制容器的存储、网络等资"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Tech",
+      "item": "/tech/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "K8s Pod 基础知识",
+      "item": "/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "K8s Pod 基础知识",
+  "name": "K8s Pod 基础知识",
+  "description": "Pod 是 K8s 集群中创建和管理的、最小的可部署的计算单元。K8s 不会直接操作容器，而是通过 Pod 封装了容器，集群通过管控 Pod ，便可控制容器的存储、网络等资",
+  "keywords": [
+    "Kubernetes"
+  ],
+  "articleBody": "Pod 是 K8s 集群中创建和管理的、最小的可部署的计算单元。K8s 不会直接操作容器，而是通过 Pod 封装了容器，集群通过管控 Pod ，便可控制容器的存储、网络等资源，实现资源隔离或共享。\nK8s Pod 中的所有容器共享一个相同的 Linux 命名空间(network、UTS、IPC)，而不是每个容器一个命名空间，这一点与 Docker 不同，因此 Pod 中的多个容器使用相同的网络、主机名称，看到的是同一个 IP 地址。\n不过进程还是按照容器进行隔离。由于 Mount、User 命名空间不共享，因此在容器中，文件系统和用户是隔离的。\n启动流程 在 Kubernetes 中，当创建 Pod 时，会先启动一个 pause 容器，pause 容器创建了网络，然后应用容器以 Container 模式连接到该 pause 容器的网络。\n生命周期 当 Pod 被分配到某个节点时， Pod 会一直在该节点运行，直到停止或被终止，Pod 在整个生命周期中只会被调度一次。\nPod 的整个生命周期可能有四种状态：\nPending，尝试启动容器，如果容器正常启动，则进入下一个阶段； Running，处于运行状态； Succeeded、Failed，正常结束或故障等导致容器结束； Unknown，因为某些原因无法取得 Pod 的状态。 部署方式 Deployment Deployment 管理部署 Pod，维持 Pod 的副本数量以及 Pod 监控和维护。\n1kubectl apply -f nginx.yaml kubectl apply 命令将会把推送的版本与以前的版本进行比较，并应用你所做的更改，并且不会自动覆盖任何你没有指定更改的属性。根据 Kubernetes 官方的文档，应始终使用 kubectl apply 或 kubectl create --save-config 创建资源。\n1kubectl create deployment testnginx --image=nginx:latest --dry-run=client -o yaml --dry-run 取值必须为none、server或client。如果客户端策略，只打印将要发送的对象，而不发送它。如果是服务器策略，提交服务器端请求而不持久化资源。\nReplicaSet Deployment 的 YAML 文件中有 replicas 字段，表示维持多少个 Pod 实例。\n1spec: 2 progressDeadlineSeconds: 600 3 replicas: 1 创建一个 Deployment 时，Deployment 会自动创建一个 ReplicaSet ，ReplicaSet 管理的副本数量跟 YAML 文件中 replicas 字段值一致。\nDaemonSet DaemonSet 确保一个节点只运行一个 Pod。\nDaemonSet 无视节点的排斥性，即节点可以排斥调度器在此节点上部署 Pod，DaemonSet 则会绕过调度器，强行部署。\nDaemonSet 的一些典型用法：\n在每个节点上运行集群守护进程 在每个节点上运行日志收集守护进程 在每个节点上运行监控守护进程 StatefulSet todo 扩容、缩容 scale 使用 kubectl scale 命令直接设置：\n1kubectl scale deployment nginx --replicas=10 autoscale Pod 水平自动扩缩可以基于 CPU 利用率自动扩缩 ReplicationController、Deployment、ReplicaSet 和 StatefulSet 中的 Pod 数量。Pod 自动扩缩不适用于无法扩缩的对象，比如 DaemonSet。\n除了 CPU 利用率，也可以基于其他应程序提供的自定义度量指标 来执行自动扩缩。\n参考资料： https://kubernetes.io/zh/docs/tasks/run-application/horizontal-pod-autoscale/\n1kubectl autoscale deployment nginx --min=10 --max=15 --cpu-percent=80 表示目标 CPU 使用率为 80%(期望指标)，副本数量配置应该为 10 到 15 之间，CPU 是动态缩放 pod 的指标，会根据具体的 CPU 使用率计算副本数量，其计算公式如下。\n1期望副本数 = ceil[当前副本数 * (当前指标 / 期望指标)] 按照算法计算，若当前副本数量为 12，且 CPU 使用率达到 90%，则期望副本数为 12*(90%/80%) = 13.5，那么理论上会部署 14 个 Pod，但是 CPU 再继续增加的话，最多 15 个副本数量。如果在机器管够的情况下，可以去掉 min 和 max 参数。\n比例缩放 比例缩放指的是在上线 Deployment 时，临时运行着应用程序的多个版本(共存)，比例缩放是控制上线时多个 Pod 服务可用数量的方式。\n水平缩放只关心最终的期望 Pod 数量，直接修改副本数和水平缩放，决定最终 Pod 数量有多少个。\n而比例缩放是控制对象上线过程中，新 Pod 的创建速度和旧 Pod 的销毁速度、 Pod 的可用程度，跟上线过程中新旧版本的 Pod 替换数量有关。\n查看上一章中创建的 Deployment 的部分 YAML 如下：\n1spec: 2 progressDeadlineSeconds: 600 3 replicas: 1 4 revisionHistoryLimit: 10 5 selector: 6 matchLabels: 7 app: nginx 8 strategy: 9 rollingUpdate: 10 maxSurge: 25% 11 maxUnavailable: 25% 12 type: RollingUpdate maxUnavailable：最大不可用数量或比例，旧的 Pod 会以这个数量或比例逐渐减少。 maxSurge：最大峰值，新的 Pod 会按照这个数量或比例逐渐创建。 如果想新版本的 Pod 上线速度更快，则可以把 maxSurge 数量或比例设置大一些；为了保证上线过程稳定、服务可用程度高，可以把 maxUnavailable 设置小一些。\nstrategy 可以配置 Pod 是怎么更新的。当我们设置.spec.strategy.type==RollingUpdate时，便会采取滚动更新的方式更新 Pods，此时可以指定 maxUnavailable 和 maxSurge 来控制滚动更新 过程。这个我们之前提到过，就是 Deployment 默认会保证一直有 75% 的 pod处于可用状态，在完成更新前可能有多个版本的 pod 共存。\n标签与选择 label Label 是附加到 Kubernetes 对象上的键值对，例如 Pod 可通过 kubectl describe pods 查询，可以看到每个 Pod 都带有 Labels: app=...。\n1... ... 2Labels: app=nginx 3 pod-template-hash=85b45874d9 4... ... 创建 Deployment 时，如果没有指定 Pod 的 app 标签值，那么一般跟 Deployment 名称一致。\n在 Deployment 中，selector 字段设置了如何查找属于此对象的 Pod。\n1 selector: 2 matchLabels: 3 app: nginx 命令式 label 选择 查询 Pod 所有的 Label：\n1kubectl get pods --show-labels 查找符合条件的 pod\n1kubectl get pods -l app=nginx 2kubectl get pods -l app!=nginx 列出不包含某个标签的 Pod：\n1kubectl get pods -l '!env' 2kubectl get pods -l '!app' 获取同时包含两个标签的 Pod：\n1kubectl get pods -l app,env 标签选择有等值和集合两种，其中等值选择有 =、==、!= 三种符号，= 和 == 无任何区别，所以实际只有 等于 、不等于 两种选择情况。\n在多个需求(多个label)的情况下，可以使用 \u0026\u0026 运算符，表示需要同时符合多个条件，但是选择器不存在 || 这种逻辑或运算符。\n查看符合两个条件的节点：\n1# 多个条件使用 逗号\",\"\" 隔开，而不是 \"\u0026\u0026\"。 2kubectl get nodes -l disktype=ssd,disksize!=big selector 1spec: 2 selector: 3 matchLabels: 4 app: nginx 5 template: 6 metadata: 7 labels: 8 app: nginx spec.template 是定义所有 Pod 的模板，template.metadata 可以为所有 Pod 设置一些元数据，例如 labels。\nspec.selector 定义 Deployment 如何查找要管理的 Pods。matchLabels 中的标签表示集合运算的 in，Pod 只需要包含这些标签，就会被此 Deployment 管理。\n若 matchLabels 还可进一步使用 matchExpressions\n注解 Kubernetes 注解为对象附加任意的非标识的元数据，注解使用 annotations 标识。客户端程序（例如工具和库）能够获取这些元数据信息。\nannotations 由 key/value 组成，类似 label，但是 annotations 支持一些特殊字符，可以用作构建发布镜像时的信息、日志记录等。\n1Annotations: meta.helm.sh/release-name: kubernetes-dashboard 2 meta.helm.sh/release-namespace: kubernetes-dashboard 亲和性、反亲和性 节点亲和性类似于 nodeSelector ，根据节点上的标签约束 Pod 可以调度到哪些节点。\nPod 亲和性有两种别为：\nrequiredDuringSchedulingIgnoredDuringExecution：必须满足 preferredDuringSchedulingIgnoredDuringExecution：尽力满足 1apiVersion: v1 2kind: Pod 3metadata: 4 name: with-node-affinity 5spec: 6 affinity: 7 nodeAffinity: 8 requiredDuringSchedulingIgnoredDuringExecution: 9 nodeSelectorTerms: 10 - matchExpressions: 11 - key: kubernetes.io/e2e-az-name 12 operator: In 13 values: 14 - e2e-az1 15 - e2e-az2 16 preferredDuringSchedulingIgnoredDuringExecution: 17 - weight: 1 18 preference: 19 matchExpressions: 20 - key: another-node-label-key 21 operator: In 22 values: 23 - another-node-label-value 24 containers: 25 - name: with-node-affinity 26 image: k8s.gcr.io/pause:2.0 如果我们设置了多个 nodeSelectorTerms ：\n1requiredDuringSchedulingIgnoredDuringExecution: 2 nodeSelectorTerms: 3 ... 4 nodeSelectorTerms: 则只需要满足其中一种表达式即可调度 Pod 到 节点上。\n我们再回忆一下，节点选择器叫 nodeSelector，而节点亲和性叫 nodeAffinity，它们都可以让 Deployment 等对象部署 Pod 时选择合适的节点，它们都是使用标签(Label)来完成选择工作。\n如果你同时指定了 nodeSelector 和 nodeAffinity ，则两者必须同时满足条件， 才能将 Pod 调度到候选节点上。\n亲和性和反亲和性的 YAML 很复杂，需要使用时查看文档。\nhttps://kubernetes.io/zh/docs/concepts/scheduling-eviction/assign-pod-node\n污点、容忍度 当节点添加一个污点后，除非 Pod 声明能够容忍这个污点，否则 Pod 不会被调度到这个 节点上。\n如果节点存在污点，那么 Pod 可能不会被分配到此节点上；如果节点一开始没有设置污点，然后部署了 Pod，后面节点设置了污点，节点可能会删除已部署的 Pod，这种行为称为驱逐。\n节点污点(taint) 可以排斥一类特定的 Pod，而 容忍度(Toleration)则表示能够容忍这个对象的污点。\n节点的污点可以设置为以下三种效果：\nNoSchedule：不能容忍此污点的 Pod 不会被调度到节点上；不会影响已存在的 pod。 PreferNoSchedule：Kubernetes 会避免将不能容忍此污点的 Pod 安排到节点上。 NoExecute：如果 Pod 已在节点上运行，则会将该 Pod 从节点中逐出；如果尚未在节点上运行，则不会将其调度到此节点上。 当节点设置污点后，无论其效果是哪一种，只要 Pod 没有设置相关的容忍度，Pod 就不会调度到此节点上。\n系统默认污点 尽管一个节点上的污点完全排斥 Pod，但是某些系统创建的 Pod 可以容忍所有 NoExecute 和 NoSchedule 污点，因此不会被逐出。\n例如 master 节点是不会被 Deployment 等分配 Pod 的，因为 master 有个污点，表面它只应该运行kube-system 命名空间中的很多系统 Pod，用户 Pod 会被排斥部署到 master 节点上。\n当然我们通过修改污点，可以让用户的 Pod 部署到 master 节点中。\nmaster 节点上会有一个 node-role.kubernetes.io/master:NoSchedule 的污点，Kubernetes 部署用户的 Pod 时会检查节点是否存在此污点，如果有，则不会在此节点上部署 Pod。\n除了 node-role.kubernetes.io/master ，某些情况下节点控制器会自动给节点添加一个污点。当前内置的污点包括：\nnode.kubernetes.io/not-ready：节点未准备好。这相当于节点状态 Ready 的值为 “False\"。 node.kubernetes.io/unreachable：节点控制器访问不到节点. 这相当于节点状态 Ready 的值为 “Unknown\"。 node.kubernetes.io/out-of-disk：节点磁盘耗尽。 node.kubernetes.io/memory-pressure：节点存在内存压力。 node.kubernetes.io/disk-pressure：节点存在磁盘压力。 node.kubernetes.io/network-unavailable：节点网络不可用。 node.kubernetes.io/unschedulable: 节点不可调度。 node.cloudprovider.kubernetes.io/uninitialized：如果 kubelet 启动时指定了一个 “外部” 云平台驱动， 它将给当前节点添加一个污点将其标志为不可用。在 cloud-controller-manager 的一个控制器初始化这个节点后，kubelet 将删除这个污点。 当节点上的资源不足时，会添加一个污点，排斥后续 Pod 在此 节点上部署，但不会驱逐已存在的 Pod。如果我们的 Pod 对机器资源有要求，可以排斥相关的污点，如果没要求，则需要容忍相关污点。\n容忍度 污点和容忍度相互配合，用来避免 Pod 被分配到不合适的节点上；也可以让真正合适的 Pod 部署到有污点的节点上。\n1// 容忍带有 key1 标签的污点，且无论是什么值。 2tolerations: 3- key: \"key1\" 4 operator: \"Exists\" 5 effect: \"NoSchedule\" 也可以设置带 value 的容忍。\n1tolerations: 2- key: \"key1\" 3 operator: \"Equal\" 4 value: \"value1\" 5 effect: \"NoSchedule\" 如果 Pod 的容忍度设置为以下 YAML：\n1tolerations: 2 operator: \"Exists\" 则表示此 Pod 能够容忍任意的污点，无论节点怎么设置 key、value 、effect ，此 Pod 都不会介意。\n如果要在 master 上也能部署 Pod，则可以修改 Pod 的容忍度：\n1 spec: 2 tolerations: 3 # this toleration is to have the daemonset runnable on master nodes 4 # remove it if your masters can't run pods 5 - key: node-role.kubernetes.io/master 6 effect: NoSchedule 如果 operator 是 Exists 此时不需要填写 value 字段；如果存在 key 为 key1 的 label，且污点效果为 NoSchedule，无论是什么值都容忍。 如果 operator 是 Equal 则它们的 value 应该相等，如果相同的话，则容忍， 如果 effect 留空 则表示只要是 label 为 key1 的节点，都可以容忍。 Jobs、CronJobs Job、Cronjob 它们用于创建一个或多个 Pod，来完成某些任务，它们创建的 Pod 不会长久的运行在节点中。\nJob Job 是用来只运行一次任务的对象，Job 对象以一种可靠的方式运行某 Pod 直到完成，适合用于批处理，例如编译程序、执行运算任务。Job 适合一次完整的流程，完成后即可抛弃的任务。\n当 Job 启动时，Job 会跟踪成功完成的 Pod 的个数，当成功数量达到某个阈值时，Job 会被终结。当 Job 运行过程中，我们 暂停/挂起 Job，Job 会删除正在运行的 Pod，保留已完成的 Pod 数量，当恢复 Job 时，会创建新的 Pod，继续完成任务。\nJob 的结构很简单，下面是一个示例，这个 Job 只有一个镜像，启动后执行 sleep 3 命令，容器会在3秒后自动退出，Job 标记其已经完成。\n1apiVersion: batch/v1 2kind: Job 3metadata: 4 name: busybox 5spec: 6 template: 7 spec: 8 containers: 9 - name: busybox 10 image: busybox 11 command: [\"/bin/sleep\"] 12 args: [\"3\"] 13 restartPolicy: Never 对于这种简单的 Job，称为非并行的，它的特点有：\n只启动一个 Pod，除非该 Pod 失败； 当 Pod 成功终止时，立即视 Job 为完成状态； 完成数 使用.spec.completions 来设置完成数时，Job 控制器所创建的每个 Pod 使用完全相同的 spec 模板。 这意味着任务的所有 Pod 都有相同的命令行，都使用相同的镜像和数据卷，甚至连 环境变量都（几乎）相同。\n我们继续使用上次的 Job 模板，这里增加一个 completions ：\n1apiVersion: batch/v1 2kind: Job 3metadata: 4 name: busybox 5spec: 6 completions: 5 7 template: 8 spec: 9 containers: 10 - name: busybox 11 image: busybox 12 command: [\"/bin/sleep\"] 13 args: [\"3\"] 14 restartPolicy: Never 查看 Job 和 Pod：\n1root@instance-1:~# kubectl get jobs 2NAME COMPLETIONS DURATION AGE 3busybox 5/5 36s 38s 4root@instance-2:~# kubectl get pods 5NAME READY STATUS RESTARTS AGE 6busybox-rfhcj 0/1 Completed 0 9s 7busybox-stkbg 0/1 Completed 0 23s 8busybox-xk6sb 0/1 Completed 0 30s 9busybox-z6h9x 0/1 Completed 0 40s 10busybox-zqgcb 0/1 Completed 0 16s Pod 的创建是串行的，每次只运行一个 Pod，当一个 Pod 处于 Completed 状态时，创建下一个 Pod。当有 5 个 Pod 处于 Completed 状态时，此 Job 标记完成。\n并行 1kubectl get job busybox -o yaml 2... ... 3spec: 4 backoffLimit: 6 5 completions: 5 6 parallelism: 1 7 selector: 8 ... ... 可以看到 parallelism=1，是控制并行度的字段，由于这个字段默认为 1，所以这个 Job 每次只能运行一个 Pod。\nspec.completions 和 spec.parallelism，这两个属性都不设置时，均取默认值 1。\n带类型的 Job Job 中的 Pod 都是一样的，因此如果要 Job 处理不同的工作任务，则需要外界帮忙。\n举个例子，平台是一个电商系统，消息队列中有评论、订单等五类消息，那么应该设计五种程序去处理这些消息，但是 Pod 只有一种。此时可以设置原子性的任务领取中心，Job 启动 Pod 后，Pod 便向任务中心领取任务类型，领取到后，开始工作。\n那么 Job 中的 Pod 可能是这样完成工作的：\n![[Pasted image 20230827163440.png]]\n在 Job 创建的 Pod 中，会有个名为 JOB_COMPLETION_INDEX 的环境变量，此环境变量标识了 Pod 的索引，Pod 可以通过此索引标识自己的身份。\n示例 YAML 如下：\n1apiVersion: batch/v1 2kind: Job 3metadata: 4 name: busybox 5spec: 6 parallelism: 1 7 completions: 5 8 completionMode: Indexed 9 template: 10 spec: 11 containers: 12 - name: busybox 13 image: busybox 14 command: [\"env\"] 15 restartPolicy: Never completionMode: Indexed 表明当前 Pod 是带索引的，如果 completionMode: NonIndexed 则不带索引。\n索引会按照 0，1，2，3 这样递增。\n执行 kubectl apply -f job.yaml 启动此 Job，会发现：\n1root@master:~# kubectl get pods 2NAME READY STATUS RESTARTS AGE 3busybox-0-j8gvz 0/1 Completed 0 29s 4busybox-1-k4kfx 0/1 Completed 0 25s 5busybox-2-zplxl 0/1 Completed 0 14s 6busybox-3-pj4jk 0/1 Completed 0 10s 7busybox-4-q5fq9 0/1 Completed 0 6s Job 终止和清理 如果我们不希望 Job 运行太长时间，可以为 Job 的 .spec.activeDeadlineSeconds 设置一个秒数值。 在 Job 的整个生命期，无论 Job 创建了多少个 Pod。 一旦 Job 运行时间达到 activeDeadlineSeconds 秒，其所有运行中的 Pod 都会被终止，并且 Job 的状态更新为 type: Failed 及 reason: DeadlineExceeded。\nYAML 示例：\n1apiVersion: batch/v1 2kind: Job 3metadata: 4 name: busybox 5spec: 6 completions: 5 7 activeDeadlineSeconds: 2 8 template: 9 spec: 10 containers: 11 - name: busybox 12 image: busybox 13 command: [\"/bin/sleep\"] 14 args: [\"3\"] 15 restartPolicy: Never CronJob CronJobs 对于创建周期性的、反复重复的任务很有用，例如执行数据备份或者发送邮件。 CronJobs 也可以用来计划在指定时间时来执行的独立任务，例如计划当集群看起来很空闲时 执行某个 Job。\n可供实验的 YAML 示例如下：\n1apiVersion: batch/v1beta1 2kind: CronJob 3metadata: 4 name: hello 5spec: 6 schedule: \"*/1 * * * *\" 7 jobTemplate: 8 spec: 9 template: 10 spec: 11 containers: 12 - name: hello 13 image: busybox 14 imagePullPolicy: IfNotPresent 15 command: 16 - /bin/sh 17 - -c 18 - date; echo Hello from the Kubernetes cluster 19 restartPolicy: OnFailure 此 CronJob 会每分钟执行一次。\n",
+  "wordCount" : "5769",
+  "inLanguage": "zh",
+  "datePublished": "2024-01-31T16:09:19+08:00",
+  "dateModified": "2024-01-31T16:09:19+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "xgbt's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/assets/apple-icon.png"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/" title="🏠主页">
+                    <span>🏠主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/search" title="🔍搜索">
+                    <span>🔍搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags" title="🏷️标签">
+                    <span>🏷️标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives" title="📦归档">
+                    <span>📦归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
+    <h1 class="post-title entry-hint-parent">
+      K8s Pod 基础知识
+    </h1>
+    <div class="post-meta"><span title='2024-01-31 16:09:19 +0800 CST'>一月 31, 2024</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+        <div class="toc">
+            <details  open>
+                <summary accesskey="c" title="(Alt + C)">
+                    <span class="details">目录</span>
+                </summary>
+
+                <div class="inner"><ul>
+                        <li>
+                            <a href="#%e5%90%af%e5%8a%a8%e6%b5%81%e7%a8%8b" aria-label="启动流程">启动流程</a></li>
+                        <li>
+                            <a href="#%e7%94%9f%e5%91%bd%e5%91%a8%e6%9c%9f" aria-label="生命周期">生命周期</a></li>
+                        <li>
+                            <a href="#%e9%83%a8%e7%bd%b2%e6%96%b9%e5%bc%8f" aria-label="部署方式">部署方式</a><ul>
+                                    
+                        <li>
+                            <a href="#deployment" aria-label="Deployment">Deployment</a></li>
+                        <li>
+                            <a href="#replicaset" aria-label="ReplicaSet">ReplicaSet</a></li>
+                        <li>
+                            <a href="#daemonset" aria-label="DaemonSet">DaemonSet</a></li>
+                        <li>
+                            <a href="#statefulset-todo" aria-label="StatefulSet todo">StatefulSet todo</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#%e6%89%a9%e5%ae%b9%e7%bc%a9%e5%ae%b9" aria-label="扩容、缩容">扩容、缩容</a><ul>
+                                    
+                        <li>
+                            <a href="#scale" aria-label="scale">scale</a></li>
+                        <li>
+                            <a href="#autoscale" aria-label="autoscale">autoscale</a></li>
+                        <li>
+                            <a href="#%e6%af%94%e4%be%8b%e7%bc%a9%e6%94%be" aria-label="比例缩放">比例缩放</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#%e6%a0%87%e7%ad%be%e4%b8%8e%e9%80%89%e6%8b%a9" aria-label="标签与选择">标签与选择</a><ul>
+                                    
+                        <li>
+                            <a href="#label" aria-label="label">label</a><ul>
+                                    
+                        <li>
+                            <a href="#%e5%91%bd%e4%bb%a4%e5%bc%8f-label-%e9%80%89%e6%8b%a9" aria-label="命令式 label 选择">命令式 label 选择</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#selector" aria-label="selector">selector</a></li>
+                        <li>
+                            <a href="#%e6%b3%a8%e8%a7%a3" aria-label="注解">注解</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#%e4%ba%b2%e5%92%8c%e6%80%a7%e5%8f%8d%e4%ba%b2%e5%92%8c%e6%80%a7" aria-label="亲和性、反亲和性">亲和性、反亲和性</a></li>
+                        <li>
+                            <a href="#%e6%b1%a1%e7%82%b9%e5%ae%b9%e5%bf%8d%e5%ba%a6" aria-label="污点、容忍度">污点、容忍度</a><ul>
+                                    
+                        <li>
+                            <a href="#%e7%b3%bb%e7%bb%9f%e9%bb%98%e8%ae%a4%e6%b1%a1%e7%82%b9" aria-label="系统默认污点">系统默认污点</a></li>
+                        <li>
+                            <a href="#%e5%ae%b9%e5%bf%8d%e5%ba%a6" aria-label="容忍度">容忍度</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#jobscronjobs" aria-label="Jobs、CronJobs">Jobs、CronJobs</a><ul>
+                                    
+                        <li>
+                            <a href="#job" aria-label="Job">Job</a><ul>
+                                    
+                        <li>
+                            <a href="#%e5%ae%8c%e6%88%90%e6%95%b0" aria-label="完成数">完成数</a></li>
+                        <li>
+                            <a href="#%e5%b9%b6%e8%a1%8c" aria-label="并行">并行</a></li>
+                        <li>
+                            <a href="#%e5%b8%a6%e7%b1%bb%e5%9e%8b%e7%9a%84-job" aria-label="带类型的 Job">带类型的 Job</a></li>
+                        <li>
+                            <a href="#job-%e7%bb%88%e6%ad%a2%e5%92%8c%e6%b8%85%e7%90%86" aria-label="Job 终止和清理">Job 终止和清理</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#cronjob" aria-label="CronJob">CronJob</a>
+                        </li>
+                    </ul>
+                    </li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </aside>
+    <script>
+        let activeElement;
+        let elements;
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            checkTocPosition();
+
+            elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+            if (elements.length > 0) {
+                
+                activeElement = elements[0];
+                const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+                document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+            }
+
+            
+            const topLink = document.getElementById('top-link');
+            if (topLink) {
+                topLink.addEventListener('click', (event) => {
+                    
+                    event.preventDefault();
+
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        }, false);
+
+        window.addEventListener('resize', function (event) {
+            checkTocPosition();
+        }, false);
+
+        window.addEventListener('scroll', () => {
+            
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+            
+            if (scrollPosition === 0) {
+                return;
+            }
+
+            
+            if (elements && elements.length > 0) {
+                
+                activeElement = Array.from(elements).find((element) => {
+                    if ((getOffsetTop(element) - scrollPosition) > 0 &&
+                        (getOffsetTop(element) - scrollPosition) < window.innerHeight / 2) {
+                        return element;
+                    }
+                }) || activeElement;
+
+                elements.forEach(element => {
+                    const id = encodeURI(element.getAttribute('id')).toLowerCase();
+                    const tocLink = document.querySelector(`.inner ul li a[href="#${id}"]`);
+                    if (element === activeElement) {
+                        tocLink.classList.add('active');
+
+                        
+                        const tocContainer = document.querySelector('.toc .inner');
+                        const linkOffsetTop = tocLink.offsetTop;
+                        const containerHeight = tocContainer.clientHeight;
+                        const linkHeight = tocLink.clientHeight;
+
+                        
+                        const scrollPosition = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
+                        tocContainer.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+                    } else {
+                        tocLink.classList.remove('active');
+                    }
+                });
+            }
+        }, false);
+
+        const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+        const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+        const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+        function checkTocPosition() {
+            const width = document.body.scrollWidth;
+
+            if (width - main - (toc * 2) - (gap * 4) > 0) {
+                document.getElementById("toc-container").classList.add("wide");
+            } else {
+                document.getElementById("toc-container").classList.remove("wide");
+            }
+        }
+
+        function getOffsetTop(element) {
+            if (!element.getClientRects().length) {
+                return 0;
+            }
+            let rect = element.getBoundingClientRect();
+            let win = element.ownerDocument.defaultView;
+            return rect.top + win.pageYOffset;
+        }
+
+    </script>
+  <div class="post-content"><p>Pod 是 K8s 集群中创建和管理的、最小的可部署的计算单元。K8s 不会直接操作容器，而是通过 Pod 封装了容器，集群通过管控 Pod ，便可控制容器的存储、网络等资源，实现资源隔离或共享。</p>
+<p>K8s Pod 中的所有容器共享一个相同的 Linux 命名空间(network、UTS、IPC)，而不是每个容器一个命名空间，这一点与 Docker 不同，因此 Pod 中的多个容器使用相同的网络、主机名称，看到的是同一个 IP 地址。</p>
+<p>不过进程还是按照容器进行隔离。由于 Mount、User 命名空间不共享，因此在容器中，<strong>文件系统和用户是隔离的</strong>。</p>
+<h1 id="启动流程">启动流程<a hidden class="anchor" aria-hidden="true" href="#启动流程">#</a></h1>
+<p>在 Kubernetes 中，当创建 Pod 时，会先启动一个 pause 容器，pause 容器创建了网络，然后应用容器以 Container 模式连接到该 pause 容器的网络。</p>
+<h1 id="生命周期">生命周期<a hidden class="anchor" aria-hidden="true" href="#生命周期">#</a></h1>
+<p>当 Pod 被分配到某个节点时， Pod 会一直在该节点运行，直到停止或被终止，Pod 在整个生命周期中只会被调度一次。</p>
+<p>Pod 的整个生命周期可能有四种状态：</p>
+<ul>
+<li>Pending，尝试启动容器，如果容器正常启动，则进入下一个阶段；</li>
+<li>Running，处于运行状态；</li>
+<li>Succeeded、Failed，正常结束或故障等导致容器结束；</li>
+<li>Unknown，因为某些原因无法取得 Pod 的状态。</li>
+</ul>
+<h1 id="部署方式">部署方式<a hidden class="anchor" aria-hidden="true" href="#部署方式">#</a></h1>
+<h2 id="deployment">Deployment<a hidden class="anchor" aria-hidden="true" href="#deployment">#</a></h2>
+<p>Deployment 管理部署 Pod，维持 Pod 的副本数量以及 Pod 监控和维护。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">kubectl apply -f nginx.yaml
+</span></span></code></pre></div><blockquote>
+<p>kubectl apply 命令将会把推送的版本与以前的版本进行比较，并应用你所做的更改，<strong>并且不会自动覆盖任何你没有指定更改的属性</strong>。根据 Kubernetes 官方的文档，应始终使用 <code>kubectl apply</code> 或 <code>kubectl create --save-config</code> 创建资源。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">kubectl create deployment testnginx --image<span class="o">=</span>nginx:latest --dry-run<span class="o">=</span>client -o yaml
+</span></span></code></pre></div><blockquote>
+<p><code>--dry-run</code> 取值必须为none、server或client。如果客户端策略，只打印将要发送的对象，而不发送它。如果是服务器策略，提交服务器端请求而不持久化资源。</p>
+</blockquote>
+<h2 id="replicaset">ReplicaSet<a hidden class="anchor" aria-hidden="true" href="#replicaset">#</a></h2>
+<p>Deployment 的 YAML 文件中有 replicas 字段，表示维持多少个 Pod 实例。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">spec:
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  progressDeadlineSeconds: <span class="m">600</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  replicas: <span class="m">1</span>
+</span></span></code></pre></div><p>创建一个 Deployment 时，Deployment 会自动创建一个 ReplicaSet ，ReplicaSet 管理的副本数量跟 YAML 文件中 replicas 字段值一致。</p>
+<h2 id="daemonset">DaemonSet<a hidden class="anchor" aria-hidden="true" href="#daemonset">#</a></h2>
+<p>DaemonSet 确保一个节点只运行一个 Pod。</p>
+<p>DaemonSet 无视节点的排斥性，即节点可以排斥调度器在此节点上部署 Pod，DaemonSet 则会绕过调度器，强行部署。</p>
+<p>DaemonSet 的一些典型用法：</p>
+<ul>
+<li>在每个节点上运行集群守护进程</li>
+<li>在每个节点上运行日志收集守护进程</li>
+<li>在每个节点上运行监控守护进程</li>
+</ul>
+<h2 id="statefulset-todo">StatefulSet todo<a hidden class="anchor" aria-hidden="true" href="#statefulset-todo">#</a></h2>
+<h1 id="扩容缩容">扩容、缩容<a hidden class="anchor" aria-hidden="true" href="#扩容缩容">#</a></h1>
+<h2 id="scale">scale<a hidden class="anchor" aria-hidden="true" href="#scale">#</a></h2>
+<p>使用 <code>kubectl scale</code> 命令直接设置：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">kubectl scale deployment nginx --replicas=10
+</span></span></code></pre></div><h2 id="autoscale">autoscale<a hidden class="anchor" aria-hidden="true" href="#autoscale">#</a></h2>
+<p>Pod 水平自动扩缩可以基于 CPU 利用率自动扩缩 ReplicationController、Deployment、ReplicaSet 和 StatefulSet 中的 Pod 数量。Pod 自动扩缩不适用于无法扩缩的对象，比如 DaemonSet。</p>
+<p>除了 CPU 利用率，也可以基于其他应程序提供的自定义度量指标 来执行自动扩缩。</p>
+<blockquote>
+<p><strong>参考资料：</strong> <a href="https://kubernetes.io/zh/docs/tasks/run-application/horizontal-pod-autoscale/">https://kubernetes.io/zh/docs/tasks/run-application/horizontal-pod-autoscale/</a></p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">kubectl autoscale deployment nginx --min<span class="o">=</span><span class="m">10</span> --max<span class="o">=</span><span class="m">15</span> --cpu-percent<span class="o">=</span><span class="m">80</span>
+</span></span></code></pre></div><p>表示目标 CPU 使用率为 <code>80%</code>(期望指标)，副本数量配置应该为 10 到 15 之间，CPU 是动态缩放 pod 的指标，会根据具体的 CPU 使用率计算副本数量，其计算公式如下。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">期望副本数 = ceil[当前副本数 * (当前指标 / 期望指标)]
+</span></span></code></pre></div><p>按照算法计算，若当前副本数量为 12，且 CPU 使用率达到 90%，则期望副本数为 <code>12*(90%/80%)</code> = 13.5，那么理论上会部署 14 个 Pod，但是 CPU 再继续增加的话，最多 15 个副本数量。如果在机器管够的情况下，可以去掉 <code>min</code> 和 <code>max</code> 参数。</p>
+<h2 id="比例缩放">比例缩放<a hidden class="anchor" aria-hidden="true" href="#比例缩放">#</a></h2>
+<p>比例缩放指的是在上线 Deployment 时，临时运行着应用程序的多个版本(共存)，比例缩放是控制上线时多个 Pod 服务可用数量的方式。</p>
+<p>水平缩放只关心最终的期望 Pod 数量，直接修改副本数和水平缩放，决定最终 Pod 数量有多少个。</p>
+<p>而比例缩放是控制对象上线过程中，新 Pod 的创建速度和旧 Pod 的销毁速度、 Pod 的可用程度，跟上线过程中新旧版本的 Pod 替换数量有关。</p>
+<p>查看上一章中创建的 Deployment 的部分 YAML 如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-YAML" data-lang="YAML"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w">  </span><span class="nt">progressDeadlineSeconds</span><span class="p">:</span><span class="w"> </span><span class="m">600</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">revisionHistoryLimit</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">  </span><span class="nt">strategy</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">    </span><span class="nt">rollingUpdate</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">      </span><span class="nt">maxSurge</span><span class="p">:</span><span class="w"> </span><span class="m">25</span><span class="l">%</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">      </span><span class="nt">maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="m">25</span><span class="l">%</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">RollingUpdate</span><span class="w">
+</span></span></span></code></pre></div><ul>
+<li>maxUnavailable：最大不可用数量或比例，旧的 Pod 会以这个数量或比例逐渐减少。</li>
+<li>maxSurge：最大峰值，新的 Pod 会按照这个数量或比例逐渐创建。</li>
+</ul>
+<blockquote>
+<p>如果想新版本的 Pod 上线速度更快，则可以把 <code>maxSurge</code> 数量或比例设置大一些；为了保证上线过程稳定、服务可用程度高，可以把 <code>maxUnavailable</code> 设置小一些。</p>
+</blockquote>
+<p><code>strategy</code> 可以配置 Pod 是怎么更新的。当我们设置<code>.spec.strategy.type==RollingUpdate</code>时，便会采取滚动更新的方式更新 Pods，此时可以指定 <code>maxUnavailable</code> 和 <code>maxSurge</code> 来控制滚动更新 过程。这个我们之前提到过，就是 Deployment 默认会保证一直有 75% 的 pod处于可用状态，在完成更新前可能有多个版本的 pod 共存。</p>
+<h1 id="标签与选择">标签与选择<a hidden class="anchor" aria-hidden="true" href="#标签与选择">#</a></h1>
+<h2 id="label">label<a hidden class="anchor" aria-hidden="true" href="#label">#</a></h2>
+<p>Label 是附加到 Kubernetes 对象上的键值对，例如 Pod 可通过 <code>kubectl describe pods</code> 查询，可以看到每个 Pod 都带有 <code>Labels: app=...</code>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">... ...
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Labels:       app=nginx
+</span></span><span class="line"><span class="ln">3</span><span class="cl">              pod-template-hash=85b45874d9
+</span></span><span class="line"><span class="ln">4</span><span class="cl">... ...
+</span></span></code></pre></div><p>创建 Deployment 时，如果没有指定 Pod 的 app 标签值，那么一般跟 Deployment 名称一致。</p>
+<p>在 Deployment 中，selector 字段设置了如何查找属于此对象的 Pod。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln">1</span><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span></code></pre></div><h3 id="命令式-label-选择">命令式 label 选择<a hidden class="anchor" aria-hidden="true" href="#命令式-label-选择">#</a></h3>
+<p><strong>查询 Pod 所有的 Label：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">kubectl get pods --show-labels
+</span></span></code></pre></div><p><strong>查找符合条件的 pod</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">kubectl get pods -l app=nginx
+</span></span><span class="line"><span class="ln">2</span><span class="cl">kubectl get pods -l app!=nginx
+</span></span></code></pre></div><p><strong>列出不包含某个标签的 Pod：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">kubectl get pods -l &#39;!env&#39;
+</span></span><span class="line"><span class="ln">2</span><span class="cl">kubectl get pods -l &#39;!app&#39;
+</span></span></code></pre></div><p><strong>获取同时包含两个标签的 Pod：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">kubectl get pods -l app,env
+</span></span></code></pre></div><p>标签选择有等值和集合两种，其中等值选择有 <code>=</code>、<code>==</code>、<code>!=</code> 三种符号，<code>=</code> 和 <code>==</code> 无任何区别，所以实际只有 <code>等于</code> 、<code>不等于</code> 两种选择情况。</p>
+<p>在多个需求(多个label)的情况下，可以使用 <code>&amp;&amp;</code> 运算符，表示需要同时符合多个条件，但是选择器不存在 <code>||</code> 这种逻辑或运算符。</p>
+<p><strong>查看符合两个条件的节点：</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl"># 多个条件使用 逗号&#34;,&#34;&#34; 隔开，而不是 &#34;&amp;&amp;&#34;。
+</span></span><span class="line"><span class="ln">2</span><span class="cl">kubectl get nodes -l disktype=ssd,disksize!=big
+</span></span></code></pre></div><h2 id="selector">selector<a hidden class="anchor" aria-hidden="true" href="#selector">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">spec:
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  selector:
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    matchLabels:
+</span></span><span class="line"><span class="ln">4</span><span class="cl">      app: nginx
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  template:
+</span></span><span class="line"><span class="ln">6</span><span class="cl">    metadata:
+</span></span><span class="line"><span class="ln">7</span><span class="cl">      labels:
+</span></span><span class="line"><span class="ln">8</span><span class="cl">        app: nginx
+</span></span></code></pre></div><ul>
+<li>
+<p><code>spec.template</code> 是定义所有 Pod 的模板，<code>template.metadata</code> 可以为所有 Pod 设置一些元数据，例如 <code>labels</code>。</p>
+</li>
+<li>
+<p><code>spec.selector</code> 定义 Deployment 如何查找要管理的 Pods。<code>matchLabels</code> 中的标签表示集合运算的 <code>in</code>，Pod 只需要包含这些标签，就会被此 Deployment 管理。</p>
+</li>
+</ul>
+<p>若 <code>matchLabels</code> 还可进一步使用 <code>matchExpressions</code></p>
+<h2 id="注解">注解<a hidden class="anchor" aria-hidden="true" href="#注解">#</a></h2>
+<p>Kubernetes 注解为对象附加任意的非标识的元数据，注解使用 annotations 标识。客户端程序（例如工具和库）能够获取这些元数据信息。</p>
+<p>annotations 由 key/value 组成，类似 label，但是 annotations 支持一些特殊字符，可以用作构建发布镜像时的信息、日志记录等。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="ln">1</span><span class="cl">Annotations:    meta.helm.sh/release-name: kubernetes-dashboard
+</span></span><span class="line"><span class="ln">2</span><span class="cl">                meta.helm.sh/release-namespace: kubernetes-dashboard
+</span></span></code></pre></div><h1 id="亲和性反亲和性">亲和性、反亲和性<a hidden class="anchor" aria-hidden="true" href="#亲和性反亲和性">#</a></h1>
+<p>节点亲和性类似于 nodeSelector ，根据节点上的标签约束 Pod 可以调度到哪些节点。</p>
+<p>Pod 亲和性有两种别为：</p>
+<ul>
+<li>requiredDuringSchedulingIgnoredDuringExecution：必须满足</li>
+<li>preferredDuringSchedulingIgnoredDuringExecution：尽力满足</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">with-node-affinity</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="w">  </span><span class="nt">affinity</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="w">    </span><span class="nt">nodeAffinity</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="w">      </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="w">        </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="w">        </span>- <span class="nt">matchExpressions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="w">          </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/e2e-az-name</span><span class="w">
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="w">            </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l">In</span><span class="w">
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="w">            </span><span class="nt">values</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="w">            </span>- <span class="l">e2e-az1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="w">            </span>- <span class="l">e2e-az2</span><span class="w">
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="w">      </span><span class="nt">preferredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="w">      </span>- <span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="w">        </span><span class="nt">preference</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="w">          </span><span class="nt">matchExpressions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="w">          </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">another-node-label-key</span><span class="w">
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="w">            </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l">In</span><span class="w">
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="w">            </span><span class="nt">values</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="w">            </span>- <span class="l">another-node-label-value</span><span class="w">
+</span></span></span><span class="line"><span class="ln">24</span><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">with-node-affinity</span><span class="w">
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">k8s.gcr.io/pause:2.0</span><span class="w">
+</span></span></span></code></pre></div><p>如果我们设置了多个 nodeSelectorTerms ：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">requiredDuringSchedulingIgnoredDuringExecution:
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  nodeSelectorTerms:
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  ...
+</span></span><span class="line"><span class="ln">4</span><span class="cl">  nodeSelectorTerms:
+</span></span></code></pre></div><p>则<strong>只需要满足其中一种表达式即可调度 Pod 到 节点上</strong>。</p>
+<p>我们再回忆一下，节点选择器叫 <code>nodeSelector</code>，而节点亲和性叫 <code>nodeAffinity</code>，它们都可以让 Deployment 等对象部署 Pod 时选择合适的节点，它们都是使用标签(Label)来完成选择工作。</p>
+<p>如果你同时指定了 <code>nodeSelector</code> 和 <code>nodeAffinity</code> ，则两者必须同时满足条件， 才能将 Pod 调度到候选节点上。</p>
+<blockquote>
+<p>亲和性和反亲和性的 YAML 很复杂，需要使用时查看文档。</p>
+<p><a href="https://kubernetes.io/zh/docs/concepts/scheduling-eviction/assign-pod-node">https://kubernetes.io/zh/docs/concepts/scheduling-eviction/assign-pod-node</a></p>
+</blockquote>
+<h1 id="污点容忍度">污点、容忍度<a hidden class="anchor" aria-hidden="true" href="#污点容忍度">#</a></h1>
+<p>当节点添加一个污点后，除非 Pod 声明能够容忍这个污点，否则 Pod 不会被调度到这个 节点上。</p>
+<p>如果节点存在污点，那么 Pod 可能不会被分配到此节点上；如果节点一开始没有设置污点，然后部署了 Pod，后面节点设置了污点，<strong>节点可能会删除已部署的 Pod</strong>，这种行为称为<strong>驱逐</strong>。</p>
+<p>节点污点(taint) 可以排斥一类特定的 Pod，而 容忍度(Toleration)则表示能够容忍这个对象的污点。</p>
+<p><strong>节点的污点可以设置为以下三种效果：</strong></p>
+<ul>
+<li><code>NoSchedule</code>：不能容忍此污点的 Pod 不会被调度到节点上；不会影响已存在的 pod。</li>
+<li><code>PreferNoSchedule</code>：Kubernetes 会避免将不能容忍此污点的 Pod 安排到节点上。</li>
+<li><code>NoExecute</code>：如果 Pod 已在节点上运行，则会将该 Pod 从节点中逐出；如果尚未在节点上运行，则不会将其调度到此节点上。</li>
+</ul>
+<blockquote>
+<p>当节点设置污点后，无论其效果是哪一种，只要 Pod 没有设置相关的容忍度，Pod 就不会调度到此节点上。</p>
+</blockquote>
+<h2 id="系统默认污点">系统默认污点<a hidden class="anchor" aria-hidden="true" href="#系统默认污点">#</a></h2>
+<p>尽管一个节点上的污点完全排斥 Pod，但是某些系统创建的 Pod 可以容忍所有 <code>NoExecute</code> 和 <code>NoSchedule</code> 污点，因此不会被逐出。</p>
+<p>例如 master 节点是不会被 Deployment 等分配 Pod 的，因为 master 有个污点，表面它只应该运行<code>kube-system</code> 命名空间中的很多系统 Pod，用户 Pod 会被排斥部署到 master 节点上。</p>
+<p>当然我们通过修改污点，可以让用户的 Pod 部署到 master 节点中。</p>
+<p>master 节点上会有一个 <code>node-role.kubernetes.io/master:NoSchedule</code> 的污点，Kubernetes 部署用户的 Pod 时会检查节点是否存在此污点，如果有，则不会在此节点上部署 Pod。</p>
+<p>除了 <code>node-role.kubernetes.io/master</code> ，某些情况下节点控制器会自动给节点添加一个污点。当前内置的污点包括：</p>
+<ul>
+<li><code>node.kubernetes.io/not-ready</code>：节点未准备好。这相当于节点状态 <code>Ready</code> 的值为 &ldquo;<code>False</code>&quot;。</li>
+<li><code>node.kubernetes.io/unreachable</code>：节点控制器访问不到节点. 这相当于节点状态 <code>Ready</code> 的值为 &ldquo;<code>Unknown</code>&quot;。</li>
+<li><code>node.kubernetes.io/out-of-disk</code>：节点磁盘耗尽。</li>
+<li><code>node.kubernetes.io/memory-pressure</code>：节点存在内存压力。</li>
+<li><code>node.kubernetes.io/disk-pressure</code>：节点存在磁盘压力。</li>
+<li><code>node.kubernetes.io/network-unavailable</code>：节点网络不可用。</li>
+<li><code>node.kubernetes.io/unschedulable</code>: 节点不可调度。</li>
+<li><code>node.cloudprovider.kubernetes.io/uninitialized</code>：如果 kubelet 启动时指定了一个 &ldquo;外部&rdquo; 云平台驱动， 它将给当前节点添加一个污点将其标志为不可用。在 cloud-controller-manager 的一个控制器初始化这个节点后，kubelet 将删除这个污点。</li>
+</ul>
+<p>当节点上的资源不足时，会添加一个污点，排斥后续 Pod 在此 节点上部署，但不会驱逐已存在的 Pod。如果我们的 Pod 对机器资源有要求，可以排斥相关的污点，如果没要求，则需要容忍相关污点。</p>
+<h2 id="容忍度">容忍度<a hidden class="anchor" aria-hidden="true" href="#容忍度">#</a></h2>
+<p>污点和容忍度相互配合，用来避免 Pod 被分配到不合适的节点上；也可以让真正合适的 Pod 部署到有污点的节点上。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">// 容忍带有 key1 标签的污点，且无论是什么值。
+</span></span><span class="line"><span class="ln">2</span><span class="cl">tolerations:
+</span></span><span class="line"><span class="ln">3</span><span class="cl">- key: &#34;key1&#34;
+</span></span><span class="line"><span class="ln">4</span><span class="cl">  operator: &#34;Exists&#34;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  effect: &#34;NoSchedule&#34;
+</span></span></code></pre></div><p>也可以设置带 value 的容忍。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">tolerations:
+</span></span><span class="line"><span class="ln">2</span><span class="cl">- key: &#34;key1&#34;
+</span></span><span class="line"><span class="ln">3</span><span class="cl">  operator: &#34;Equal&#34;
+</span></span><span class="line"><span class="ln">4</span><span class="cl">  value: &#34;value1&#34;
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  effect: &#34;NoSchedule&#34;
+</span></span></code></pre></div><p>如果 Pod 的容忍度设置为以下 YAML：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">tolerations:
+</span></span><span class="line"><span class="ln">2</span><span class="cl">  operator: &#34;Exists&#34;
+</span></span></code></pre></div><p>则表示此 Pod 能够容忍任意的污点，无论节点怎么设置 <code>key</code>、<code>value</code> 、<code>effect</code> ，此 Pod 都不会介意。</p>
+<p>如果要在 master 上也能部署 Pod，则可以修改 Pod 的容忍度：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">    spec:
+</span></span><span class="line"><span class="ln">2</span><span class="cl">      tolerations:
+</span></span><span class="line"><span class="ln">3</span><span class="cl">      # this toleration is to have the daemonset runnable on master nodes
+</span></span><span class="line"><span class="ln">4</span><span class="cl">      # remove it if your masters can&#39;t run pods
+</span></span><span class="line"><span class="ln">5</span><span class="cl">      - key: node-role.kubernetes.io/master
+</span></span><span class="line"><span class="ln">6</span><span class="cl">        effect: NoSchedule
+</span></span></code></pre></div><ul>
+<li>如果 <code>operator</code> 是 <code>Exists</code>
+此时不需要填写 <code>value</code> 字段；如果存在 key 为 key1 的 label，且污点效果为 <code>NoSchedule</code>，无论是什么值都容忍。</li>
+<li>如果 <code>operator</code> 是 <code>Equal</code>
+则它们的 <code>value</code> 应该相等，如果相同的话，则容忍，</li>
+<li>如果 <code>effect</code> 留空
+则表示只要是 label 为 <code>key1</code> 的节点，都可以容忍。</li>
+</ul>
+<h1 id="jobscronjobs">Jobs、CronJobs<a hidden class="anchor" aria-hidden="true" href="#jobscronjobs">#</a></h1>
+<p>Job、Cronjob 它们用于创建一个或多个 Pod，来完成某些任务，它们创建的 Pod 不会长久的运行在节点中。</p>
+<h2 id="job">Job<a hidden class="anchor" aria-hidden="true" href="#job">#</a></h2>
+<p>Job 是用来只运行一次任务的对象，Job 对象以一种可靠的方式运行某 Pod 直到完成，适合用于批处理，例如编译程序、执行运算任务。Job 适合一次完整的流程，完成后即可抛弃的任务。</p>
+<p>当 Job 启动时，Job 会跟踪成功完成的 Pod 的个数，当成功数量达到某个阈值时，Job 会被终结。当 Job 运行过程中，我们 暂停/挂起 Job，Job 会删除正在运行的 Pod，保留已完成的 Pod 数量，当恢复 Job 时，会创建新的 Pod，继续完成任务。</p>
+<p>Job 的结构很简单，下面是一个示例，这个 Job 只有一个镜像，启动后执行 <code>sleep 3</code> 命令，容器会在3秒后自动退出，Job 标记其已经完成。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">apiVersion: batch/v1
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">kind: Job
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">metadata:
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  name: busybox
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">spec:
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  template:
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">    spec: 
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">      containers:
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">      - name: busybox
+</span></span><span class="line"><span class="ln">10</span><span class="cl">        image: busybox
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        command: [&#34;/bin/sleep&#34;]
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        args: [&#34;3&#34;]
+</span></span><span class="line"><span class="ln">13</span><span class="cl">      restartPolicy: Never
+</span></span></code></pre></div><p>对于这种简单的 Job，称为非并行的，它的特点有：</p>
+<ul>
+<li>只启动一个 Pod，除非该 Pod 失败；</li>
+<li>当 Pod 成功终止时，立即视 Job 为完成状态；</li>
+</ul>
+<h3 id="完成数">完成数<a hidden class="anchor" aria-hidden="true" href="#完成数">#</a></h3>
+<p>使用<code>.spec.completions</code> 来设置完成数时，Job 控制器所创建的每个 Pod 使用完全相同的 <code>spec</code> 模板。 这意味着任务的所有 Pod 都有相同的命令行，都使用相同的镜像和数据卷，甚至连 环境变量都（几乎）相同。</p>
+<p>我们继续使用上次的 Job 模板，这里增加一个 <code>completions</code> ：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">apiVersion: batch/v1
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">kind: Job
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">metadata:
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  name: busybox
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">spec:
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  completions: 5 
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">  template:
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    spec: 
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">      containers:
+</span></span><span class="line"><span class="ln">10</span><span class="cl">      - name: busybox
+</span></span><span class="line"><span class="ln">11</span><span class="cl">        image: busybox
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        command: [&#34;/bin/sleep&#34;]
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        args: [&#34;3&#34;]
+</span></span><span class="line"><span class="ln">14</span><span class="cl">      restartPolicy: Never
+</span></span></code></pre></div><p>查看 Job 和 Pod：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">root@instance-1:~# kubectl get jobs
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">NAME      COMPLETIONS   DURATION   AGE
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">busybox   5/5           36s        38s
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">root@instance-2:~# kubectl get pods
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">NAME                          READY   STATUS      RESTARTS   AGE
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">busybox-rfhcj                 0/1     Completed   0          9s
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">busybox-stkbg                 0/1     Completed   0          23s
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">busybox-xk6sb                 0/1     Completed   0          30s
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">busybox-z6h9x                 0/1     Completed   0          40s
+</span></span><span class="line"><span class="ln">10</span><span class="cl">busybox-zqgcb                 0/1     Completed   0          16s
+</span></span></code></pre></div><blockquote>
+<p>Pod 的创建是串行的，每次只运行一个 Pod，当一个 Pod 处于 Completed 状态时，创建下一个 Pod。当有 5 个 Pod 处于 Completed 状态时，此 Job 标记完成。</p>
+</blockquote>
+<h3 id="并行">并行<a hidden class="anchor" aria-hidden="true" href="#并行">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">kubectl get job busybox -o yaml
+</span></span><span class="line"><span class="ln">2</span><span class="cl">... ...
+</span></span><span class="line"><span class="ln">3</span><span class="cl">spec:
+</span></span><span class="line"><span class="ln">4</span><span class="cl">  backoffLimit: 6
+</span></span><span class="line"><span class="ln">5</span><span class="cl">  completions: 5
+</span></span><span class="line"><span class="ln">6</span><span class="cl">  parallelism: 1
+</span></span><span class="line"><span class="ln">7</span><span class="cl">  selector:
+</span></span><span class="line"><span class="ln">8</span><span class="cl">  ... ...
+</span></span></code></pre></div><p>可以看到 <code>parallelism=1</code>，是控制并行度的字段，由于这个字段默认为 1，所以这个 Job 每次只能运行一个 Pod。</p>
+<blockquote>
+<p><code>spec.completions</code> 和 <code>spec.parallelism</code>，这两个属性都不设置时，均取默认值 1。</p>
+</blockquote>
+<h3 id="带类型的-job">带类型的 Job<a hidden class="anchor" aria-hidden="true" href="#带类型的-job">#</a></h3>
+<p>Job 中的 Pod 都是一样的，因此如果要 Job 处理不同的工作任务，则需要外界帮忙。</p>
+<p>举个例子，平台是一个电商系统，消息队列中有评论、订单等五类消息，那么应该设计五种程序去处理这些消息，但是 Pod 只有一种。此时可以设置原子性的任务领取中心，Job 启动 Pod 后，Pod 便向任务中心领取任务类型，领取到后，开始工作。</p>
+<p>那么 Job 中的 Pod 可能是这样完成工作的：</p>
+<p>![[Pasted image 20230827163440.png]]</p>
+<p>在 Job 创建的 Pod 中，会有个名为 <code>JOB_COMPLETION_INDEX</code> 的环境变量，此环境变量标识了 Pod 的索引，Pod 可以通过此索引标识自己的身份。</p>
+<p>示例 YAML 如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">apiVersion: batch/v1
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">kind: Job
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">metadata:
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  name: busybox
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">spec:
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  parallelism: 1
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">  completions: 5
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">  completionMode: Indexed
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">  template:
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    spec:
+</span></span><span class="line"><span class="ln">11</span><span class="cl">      containers:
+</span></span><span class="line"><span class="ln">12</span><span class="cl">      - name: busybox
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        image: busybox
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        command: [&#34;env&#34;]
+</span></span><span class="line"><span class="ln">15</span><span class="cl">      restartPolicy: Never
+</span></span></code></pre></div><blockquote>
+<p><code>completionMode: Indexed</code> 表明当前 Pod 是带索引的，如果 <code>completionMode: NonIndexed</code> 则不带索引。</p>
+<p>索引会按照 0，1，2，3 这样递增。</p>
+</blockquote>
+<p>执行 <code>kubectl apply -f job.yaml</code> 启动此 Job，会发现：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">root@master:~# kubectl get pods
+</span></span><span class="line"><span class="ln">2</span><span class="cl">NAME                       READY   STATUS             RESTARTS          AGE
+</span></span><span class="line"><span class="ln">3</span><span class="cl">busybox-0-j8gvz            0/1     Completed          0                 29s
+</span></span><span class="line"><span class="ln">4</span><span class="cl">busybox-1-k4kfx            0/1     Completed          0                 25s
+</span></span><span class="line"><span class="ln">5</span><span class="cl">busybox-2-zplxl            0/1     Completed          0                 14s
+</span></span><span class="line"><span class="ln">6</span><span class="cl">busybox-3-pj4jk            0/1     Completed          0                 10s
+</span></span><span class="line"><span class="ln">7</span><span class="cl">busybox-4-q5fq9            0/1     Completed          0                 6s
+</span></span></code></pre></div><h3 id="job-终止和清理">Job 终止和清理<a hidden class="anchor" aria-hidden="true" href="#job-终止和清理">#</a></h3>
+<p>如果我们不希望 Job 运行太长时间，可以为 Job 的 <code>.spec.activeDeadlineSeconds</code> 设置一个秒数值。 在 Job 的整个生命期，无论 Job 创建了多少个 Pod。 一旦 Job 运行时间达到 <code>activeDeadlineSeconds</code> 秒，其所有运行中的 Pod 都会被终止，并且 Job 的状态更新为 <code>type: Failed</code> 及 <code>reason: DeadlineExceeded</code>。</p>
+<p>YAML 示例：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">apiVersion: batch/v1
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">kind: Job
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">metadata:
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  name: busybox
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">spec:
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  completions: 5 
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">  activeDeadlineSeconds: 2
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">  template:
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    spec: 
+</span></span><span class="line"><span class="ln">10</span><span class="cl">      containers:
+</span></span><span class="line"><span class="ln">11</span><span class="cl">      - name: busybox
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        image: busybox
+</span></span><span class="line"><span class="ln">13</span><span class="cl">        command: [&#34;/bin/sleep&#34;]
+</span></span><span class="line"><span class="ln">14</span><span class="cl">        args: [&#34;3&#34;]
+</span></span><span class="line"><span class="ln">15</span><span class="cl">      restartPolicy: Never
+</span></span></code></pre></div><h2 id="cronjob">CronJob<a hidden class="anchor" aria-hidden="true" href="#cronjob">#</a></h2>
+<p>CronJobs 对于创建周期性的、反复重复的任务很有用，例如执行数据备份或者发送邮件。 CronJobs 也可以用来计划在指定时间时来执行的独立任务，例如计划当集群看起来很空闲时 执行某个 Job。</p>
+<p>可供实验的 YAML 示例如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln"> 1</span><span class="cl">apiVersion: batch/v1beta1
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">kind: CronJob
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">metadata:
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">  name: hello
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">spec:
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">  schedule: &#34;*/1 * * * *&#34;
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">  jobTemplate:
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">    spec:
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">      template:
+</span></span><span class="line"><span class="ln">10</span><span class="cl">        spec:
+</span></span><span class="line"><span class="ln">11</span><span class="cl">          containers:
+</span></span><span class="line"><span class="ln">12</span><span class="cl">          - name: hello
+</span></span><span class="line"><span class="ln">13</span><span class="cl">            image: busybox
+</span></span><span class="line"><span class="ln">14</span><span class="cl">            imagePullPolicy: IfNotPresent
+</span></span><span class="line"><span class="ln">15</span><span class="cl">            command:
+</span></span><span class="line"><span class="ln">16</span><span class="cl">            - /bin/sh
+</span></span><span class="line"><span class="ln">17</span><span class="cl">            - -c
+</span></span><span class="line"><span class="ln">18</span><span class="cl">            - date; echo Hello from the Kubernetes cluster
+</span></span><span class="line"><span class="ln">19</span><span class="cl">          restartPolicy: OnFailure
+</span></span></code></pre></div><blockquote>
+<p>此 CronJob 会每分钟执行一次。</p>
+</blockquote>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="/tags/kubernetes/">Kubernetes</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="/tech/golang/golang-defer/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>Golang Defer</span>
+  </a>
+  <a class="next" href="/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/">
+    <span class="title">下一页 »</span>
+    <br>
+    <span>CVE-2008-5161 OpenSSH CBC模式信息泄露漏洞</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制！';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Golang Code Review Comments | xgbt&#39;s Blog</title>
+<meta name="keywords" content="Golang">
+<meta name="description" content="参考资料： https://go.dev/wiki/CodeReviewComments https://go.dev/wiki/CommonMistakes Review Comments 使用 gofmt 或者 goimports 自动格式化代码 记录声明的注释应该是完整的句子，注释应以所描述事物的名称开头并以句点结束。 1// Request represents a request to run a command. 2type Request">
+<meta name="author" content="">
+<link rel="canonical" href="/tech/golang/golang-code-review-comments/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/assets/apple-icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="/tech/golang/golang-code-review-comments/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><style>
+@import url('https://fonts.cdnfonts.com/css/code-new-roman');
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
+    rel="stylesheet"><meta property="og:title" content="Golang Code Review Comments" />
+<meta property="og:description" content="参考资料： https://go.dev/wiki/CodeReviewComments https://go.dev/wiki/CommonMistakes Review Comments 使用 gofmt 或者 goimports 自动格式化代码 记录声明的注释应该是完整的句子，注释应以所描述事物的名称开头并以句点结束。 1// Request represents a request to run a command. 2type Request" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/tech/golang/golang-code-review-comments/" /><meta property="article:section" content="tech" />
+<meta property="article:published_time" content="2023-05-06T16:09:19+08:00" />
+<meta property="article:modified_time" content="2023-05-06T16:09:19+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Golang Code Review Comments"/>
+<meta name="twitter:description" content="参考资料： https://go.dev/wiki/CodeReviewComments https://go.dev/wiki/CommonMistakes Review Comments 使用 gofmt 或者 goimports 自动格式化代码 记录声明的注释应该是完整的句子，注释应以所描述事物的名称开头并以句点结束。 1// Request represents a request to run a command. 2type Request"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Tech",
+      "item": "/tech/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Golang Code Review Comments",
+      "item": "/tech/golang/golang-code-review-comments/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Golang Code Review Comments",
+  "name": "Golang Code Review Comments",
+  "description": "参考资料： https://go.dev/wiki/CodeReviewComments https://go.dev/wiki/CommonMistakes Review Comments 使用 gofmt 或者 goimports 自动格式化代码 记录声明的注释应该是完整的句子，注释应以所描述事物的名称开头并以句点结束。 1// Request represents a request to run a command. 2type Request",
+  "keywords": [
+    "Golang"
+  ],
+  "articleBody": "参考资料：\nhttps://go.dev/wiki/CodeReviewComments https://go.dev/wiki/CommonMistakes Review Comments 使用 gofmt 或者 goimports 自动格式化代码 记录声明的注释应该是完整的句子，注释应以所描述事物的名称开头并以句点结束。 1// Request represents a request to run a command. 2type Request struct { ... 3 4// Encode writes the JSON encoding of req to w. 5func Encode(w io.Writer, req *Request) { ... context.Context 类型的值携带跨 API 和进程边界的安全凭证、跟踪信息、截止日期和取消信号。Go 程序沿着从传入 RPC 和 HTTP 请求到传出请求的整个函数调用链显式传递上下文。大多数使用 Context 的函数都将它作为第一个参数： 1func F(ctx context.Context, /* other arguments */) {} 注意，不要将 Context 成员添加到结构类型中；而是向需要传递该类型的每个方法添加一个 ctx 参数。\n避免使用 math/rand 生成密钥。首先，如果不加种子，秘钥结果完全可以预测，即使使用 time.Nanoseconds() 作为种子，生成的秘钥也只有几位不同。推荐使用 crypto/rand 包中的 Read() 生成秘钥。 1import ( 2 \"crypto/rand\" 3 // \"encoding/base64\" 4 // \"encoding/hex\" 5 \"fmt\" 6) 7 8func Key() string { 9 buf := make([]byte, 16) 10 _, err := rand.Read(buf) 11 if err != nil { 12 panic(err) // out of randomness, should never happen 13 } 14 return fmt.Sprintf(\"%x\", buf) 15 // or hex.EncodeToString(buf) 16 // or base64.StdEncoding.EncodeToString(buf) 17} 以下两种声明切片的方式，前者声明了一个 nil 切片，而后者声明了空切片，两者的 len() 和 cap() 都为 0，通常情况下 nil 切片更好， nil 切片底层指针地址为 0 。 1var t []string 1t := []string{} 2t := make([]string, 0) 例外，在编码 JSON 对象时，推荐使用非 nil 但零长度的切片 ，nil 切片会被编码为 null，而 []string{} 会被编码为 JSON 数组 []。\n不要使用 panic 进行的错误处理， 而是使用 error 和多返回值。 生成协程时，请明确该协程是否结束、何时结束。 Goroutine 可能会因阻塞通道发送或接收而发生泄漏：即使阻塞的通道无法访问，GC 也不会终止 Goroutine。 除非出现重名情况，否则避免重命名 import。 大部分情况下的包名称不需要重命名，如果发生冲突，最好重命名本地或特定项目的 import 。 尽量使正常的代码路径保持最小的缩进，并缩进错误处理。例如： 不推荐：\n1if err != nil { 2 // error handling 3} else { 4 // normal code 5} 推荐：\n1if err != nil { 2 // error handling 3 return // or continue, etc. 4} 5// normal code 首字母缩写词，具有一致的大小写。 例如，“URL” 应写为\"URL\"或\"url\"，而不是\"Url\"；使用 “ServeHTTP” 而不是 “ServeHttp”；使用 “xmlHTTPRequest” 或\"XMLHTTPRequest\"；使用 “appID” 而不是 “appId”。由 protocol buffer 生成的代码不受此规则的约束。人类编写的代码比机器编写的代码具有更高的标准。\n根据实际情况确定函数返回格式。 例如当函数返回相同类型的 2 个或 3 个参数，或者返回值的含义较难区分，那么推荐在函数返回格式前添加变量名称。\n不推荐：\n1func (f *Foo) Location() (float64, float64, error) 推荐：\n1// Location returns f's latitude and longitude. 2// Negative values mean south and west, respectively. 3func (f *Foo) Location() (lat, long float64, err error) 避免仅仅为了节省几个字节而将指针作为函数参数传递。 如果一个函数自始至终，仅将其参数 x 引用为 *x，那这个传入的参数不应该是指针而是值。将指针作为参数的情况例如：传递指向字符串的指针 *string 或指向接口值的指针 *io.Reader，这两个例子中，指针所指向的值本身是固定大小的，因此可以直接传递。但不适用于指针指向大型结构体，包括不适用于可能增长的小型结构体。\n方法接收器的命名应简短并保持一致：通常用 1 到 2 个字母缩写其类型（“client\"缩写为\"c\"或\"cl”）。不要使用通用名称，如 “me”、“this “或 “self”，这些面向对象语言的典型标识符会赋予方法特殊的含义，而在 Go 中，方法的接收器只是另一个参数。\n通常使用指针接收器，对于基本类型的值或者确定不变的小型结构体可以使用值接收器。\n如果接收者是一个map、func 或 chan，不要使用指向它们的指针；如果接收者是一个 slice 并且该方法不会重新切片或重新分配该 slice，则不要使用指向它的指针。 如果该方法需要改变接收者，则接收者必须是指针。 如果接收者是包含sync.Mutex或类似同步字段的结构，则接收者必须是指针，以避免复制。 如果接收器是大型结构体或数组，则指针接收器效率更高。 相比异步函数，推荐使用同步函数。 同步函数更容易推断函数中协程的生命周期，避免泄漏和数据竞争，也更易于测试：调用者可以传递输入并检查输出，而无需轮询或同步。 Common Mistakes 使用循环变量的引用 Go语言中，循环变量只是一个变量，在每次循环过程中被赋予不同的值。但如果使用不当可能会出现问题。\n1func main() { 2\tvar out []*int 3\tfor i := 0; i \u003c 3; i++ { 4\tout = append(out, \u0026i) 5\t} 6\tfmt.Println(\"Values:\", *out[0], *out[1], *out[2]) 7\tfmt.Println(\"Addresses:\", out[0], out[1], out[2]) 8} 输出结果为：\n1Values: 3 3 3 2Addresses: 0xc0000a0000 0xc0000a0000 0xc0000a0000 原因： 每次循环，Golang 将 i 的地址追加到切片 out 中，但自始至终只有一个 i ，所以循环结束后 i 上的值为最后一次循环赋给 i 的值。\n解决方法： 将循环变量赋值到新变量中。\n1for i := 0; i \u003c 3; i++ { 2\ti := i 3\tout = append(out, \u0026i) 4\t} 输出结果为：\n1Values: 0 1 2 2Addresses: 0xc00001a0b8 0xc00001a0c0 0xc00001a0c8 原因： i := i 将循环变量 i 复制到一个新变量中，该新变量的作用域为 for 循环主体块，也称为 i。每次循环迭代中都会创建这样一个新变量。\n虽然这个例子看起来有点明显，但在其他一些情况下，同样的意外行为可能会更加隐蔽。例如，循环变量可以是数组，而引用可以是片段：\n上述样例较为明显，实际情况下这种错误可能更加隐蔽，例如，循环变量为数组，其引用为切片。\n1func main() { 2\tvar out [][]int 3\tfor _, i := range [][1]int{{1}, {2}, {3}} { 4\tout = append(out, i[:]) 5\t} 6\tfmt.Println(\"Values:\", out) 7} 输出结果为：\n1Values: [[3] [3] [3]] 当在 Goroutine 中使用循环变量时，也会出现同样的问题（下一节）。\n在循环变量上使用 goroutines 在 Go 中使用循环时，我们会尝试使用 goroutine 并行处理数据。例如可以使用闭包：\n1func main() { 2\tvalues := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10} 3\tfor _, val := range values { 4\tgo func() { 5\tfmt.Println(val) 6\t}() 7\t} 8 9\t// wait 10 second 10\ttime.Sleep(10 * time.Second) 11} 上述代码不会按顺序打印的每个值，因为所有闭包函数都绑定了同一个变量，运行此代码时，因为 goroutine 可能要等到循环结束后才会开始执行，所以只会打印最后一个元素10。\n1$ go run test.go 210 310 410 510 610 710 810 910 1010 1110 编写闭包循环的正确方式是：\n1func main() { 2\tvalues := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10} 3\tfor _, val := range values { 4\tgo func(v int) { 5\tfmt.Println(v) 6\t}(val) 7\t} 8 9\t// wait for goroutines to finish 10\tvar input string 11\tfmt.Scanln(\u0026input) 12 13} 将 val 作为参数添加到闭包中，每次迭代时对 val 进行求值，并将其置于 goroutine 的堆栈中，因此每个切片元素在最终执行时可供 goroutine 使用。\n1$ go run test.go 24 31 42 53 67 75 86 98 109 1110 下列代码使用公共索引变量 i 创建单独的 val，也可以产生我们想要的结果：\n1func main() { 2\tvalues := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10} 3\tfor i := range values { 4\tval := values[i] 5\tgo func() { 6\tfmt.Println(val) 7\t}() 8\t} 9 10\t// wait for goroutines to finish 11\tvar input string 12\tfmt.Scanln(\u0026input) 13 14} 14 21 32 43 57 65 76 88 99 1010 注意，如果不将此闭包作为 goroutine 执行，代码将按预期运行。以下示例打印 1 到 10 之间的整数。\n1for i := 1; i \u003c= 10; i++ { 2\tfunc() { 3\tfmt.Println(i) 4\t}() 5} 11 22 33 44 55 66 77 88 99 1010 其中，闭包函数会在变量i更改之前执行完毕，因此最终按顺序输出1到10。 https://go.dev/doc/faq#closures_and_goroutines\n",
+  "wordCount" : "2657",
+  "inLanguage": "zh",
+  "datePublished": "2023-05-06T16:09:19+08:00",
+  "dateModified": "2023-05-06T16:09:19+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/tech/golang/golang-code-review-comments/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "xgbt's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/assets/apple-icon.png"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/" title="🏠主页">
+                    <span>🏠主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/search" title="🔍搜索">
+                    <span>🔍搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags" title="🏷️标签">
+                    <span>🏷️标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives" title="📦归档">
+                    <span>📦归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Golang Code Review Comments
+    </h1>
+    <div class="post-meta"><span title='2023-05-06 16:09:19 +0800 CST'>五月 6, 2023</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+        <div class="toc">
+            <details  open>
+                <summary accesskey="c" title="(Alt + C)">
+                    <span class="details">目录</span>
+                </summary>
+
+                <div class="inner"><ul>
+                        <li>
+                            <a href="#review-comments" aria-label="Review Comments">Review Comments</a></li>
+                        <li>
+                            <a href="#common-mistakes" aria-label="Common Mistakes">Common Mistakes</a><ul>
+                                    
+                        <li>
+                            <a href="#%e4%bd%bf%e7%94%a8%e5%be%aa%e7%8e%af%e5%8f%98%e9%87%8f%e7%9a%84%e5%bc%95%e7%94%a8" aria-label="使用循环变量的引用">使用循环变量的引用</a></li>
+                        <li>
+                            <a href="#%e5%9c%a8%e5%be%aa%e7%8e%af%e5%8f%98%e9%87%8f%e4%b8%8a%e4%bd%bf%e7%94%a8-goroutines" aria-label="在循环变量上使用 goroutines">在循环变量上使用 goroutines</a>
+                        </li>
+                    </ul>
+                    </li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </aside>
+    <script>
+        let activeElement;
+        let elements;
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            checkTocPosition();
+
+            elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+            if (elements.length > 0) {
+                
+                activeElement = elements[0];
+                const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+                document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+            }
+
+            
+            const topLink = document.getElementById('top-link');
+            if (topLink) {
+                topLink.addEventListener('click', (event) => {
+                    
+                    event.preventDefault();
+
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        }, false);
+
+        window.addEventListener('resize', function (event) {
+            checkTocPosition();
+        }, false);
+
+        window.addEventListener('scroll', () => {
+            
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+            
+            if (scrollPosition === 0) {
+                return;
+            }
+
+            
+            if (elements && elements.length > 0) {
+                
+                activeElement = Array.from(elements).find((element) => {
+                    if ((getOffsetTop(element) - scrollPosition) > 0 &&
+                        (getOffsetTop(element) - scrollPosition) < window.innerHeight / 2) {
+                        return element;
+                    }
+                }) || activeElement;
+
+                elements.forEach(element => {
+                    const id = encodeURI(element.getAttribute('id')).toLowerCase();
+                    const tocLink = document.querySelector(`.inner ul li a[href="#${id}"]`);
+                    if (element === activeElement) {
+                        tocLink.classList.add('active');
+
+                        
+                        const tocContainer = document.querySelector('.toc .inner');
+                        const linkOffsetTop = tocLink.offsetTop;
+                        const containerHeight = tocContainer.clientHeight;
+                        const linkHeight = tocLink.clientHeight;
+
+                        
+                        const scrollPosition = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
+                        tocContainer.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+                    } else {
+                        tocLink.classList.remove('active');
+                    }
+                });
+            }
+        }, false);
+
+        const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+        const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+        const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+        function checkTocPosition() {
+            const width = document.body.scrollWidth;
+
+            if (width - main - (toc * 2) - (gap * 4) > 0) {
+                document.getElementById("toc-container").classList.add("wide");
+            } else {
+                document.getElementById("toc-container").classList.remove("wide");
+            }
+        }
+
+        function getOffsetTop(element) {
+            if (!element.getClientRects().length) {
+                return 0;
+            }
+            let rect = element.getBoundingClientRect();
+            let win = element.ownerDocument.defaultView;
+            return rect.top + win.pageYOffset;
+        }
+
+    </script>
+  <div class="post-content"><p><strong>参考资料：</strong></p>
+<ol>
+<li><a href="https://go.dev/wiki/CodeReviewComments">https://go.dev/wiki/CodeReviewComments</a></li>
+<li><a href="https://go.dev/wiki/CommonMistakes">https://go.dev/wiki/CommonMistakes</a></li>
+</ol>
+<hr>
+<h1 id="review-comments">Review Comments<a hidden class="anchor" aria-hidden="true" href="#review-comments">#</a></h1>
+<ol>
+<li>使用 <strong>gofmt</strong> 或者  goimports 自动格式化代码</li>
+<li>记录声明的<strong>注释应该是完整的句子</strong>，注释应以所描述事物的名称开头并以句点结束。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="ln">1</span><span class="cl"><span class="o">//</span> <span class="n">Request</span> <span class="n">represents</span> <span class="n">a</span> <span class="n">request</span> <span class="n">to</span> <span class="n">run</span> <span class="n">a</span> <span class="n">command</span><span class="o">.</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="n">type</span> <span class="n">Request</span> <span class="n">struct</span> <span class="p">{</span> <span class="o">...</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="o">//</span> <span class="n">Encode</span> <span class="n">writes</span> <span class="n">the</span> <span class="n">JSON</span> <span class="n">encoding</span> <span class="n">of</span> <span class="n">req</span> <span class="n">to</span> <span class="n">w</span><span class="o">.</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="k">func</span> <span class="n">Encode</span><span class="p">(</span><span class="n">w</span> <span class="n">io</span><span class="o">.</span><span class="n">Writer</span><span class="p">,</span> <span class="n">req</span> <span class="o">*</span><span class="n">Request</span><span class="p">)</span> <span class="p">{</span> <span class="o">...</span>
+</span></span></code></pre></div><ol start="3">
+<li>context.Context 类型的值携带跨 API 和进程边界的安全凭证、跟踪信息、截止日期和取消信号。Go 程序沿着从传入 RPC 和 HTTP 请求到传出请求的整个函数调用链显式传递上下文。<strong>大多数使用 Context 的函数都将它作为第一个参数</strong>：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">func</span> <span class="nf">F</span><span class="p">(</span><span class="nx">ctx</span> <span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span> <span class="cm">/* other arguments */</span><span class="p">)</span> <span class="p">{}</span>
+</span></span></code></pre></div><p>注意，不要将 Context 成员添加到结构类型中；而是向需要传递该类型的每个方法添加一个 ctx 参数。</p>
+<ol start="4">
+<li>避免使用 <code>math/rand</code> 生成密钥。首先，如果不加种子，秘钥结果完全可以预测，即使使用 <code>time.Nanoseconds()</code> 作为种子，生成的秘钥也只有几位不同。<strong>推荐使用 <code>crypto/rand</code> 包中的 <code>Read()</code> 生成秘钥。</strong></li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kn">import</span> <span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="s">&#34;crypto/rand&#34;</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="c1">// &#34;encoding/base64&#34;
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"></span>    <span class="c1">// &#34;encoding/hex&#34;
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"></span>    <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="kd">func</span> <span class="nf">Key</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="nx">buf</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">rand</span><span class="p">.</span><span class="nf">Read</span><span class="p">(</span><span class="nx">buf</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>  <span class="c1">// out of randomness, should never happen
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%x&#34;</span><span class="p">,</span> <span class="nx">buf</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="c1">// or hex.EncodeToString(buf)
+</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="c1"></span>    <span class="c1">// or base64.StdEncoding.EncodeToString(buf)
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><ol start="5">
+<li>以下两种声明切片的方式，前者声明了一个 nil 切片，而后者声明了空切片，两者的 len() 和 cap() 都为 0，<strong>通常情况下 nil 切片更好</strong>， nil 切片底层指针地址为 0 。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">var</span> <span class="nx">t</span> <span class="p">[]</span><span class="kt">string</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">t</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="nx">t</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span></span></code></pre></div><p>例外，<strong>在编码 JSON 对象时，推荐使用非 nil 但零长度的切片</strong> ，nil 切片会被编码为 null，而 []string{} 会被编码为 JSON 数组 []。</p>
+<ol start="6">
+<li><strong>不要使用 panic 进行的错误处理，</strong> 而是使用 error 和多返回值。</li>
+<li><strong>生成协程时，请明确该协程是否结束、何时结束。</strong> Goroutine 可能会因阻塞通道发送或接收而发生泄漏：即使阻塞的通道无法访问，GC 也不会终止 Goroutine。</li>
+<li><strong>除非出现重名情况，否则避免重命名 import。</strong> 大部分情况下的包名称不需要重命名，如果发生冲突，最好重命名本地或特定项目的 import 。</li>
+<li>尽量使正常的代码路径保持最小的缩进，并缩进错误处理。例如：</li>
+</ol>
+<p>不推荐：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="c1">// error handling
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="c1">// normal code
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span></code></pre></div><p>推荐：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="c1">// error handling
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="c1">// or continue, etc.
+</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="c1">// normal code
+</span></span></span></code></pre></div><ol start="10">
+<li>
+<p><strong>首字母缩写词，具有一致的大小写。</strong> 例如，&ldquo;URL&rdquo; 应写为&quot;URL&quot;或&quot;url&quot;，而不是&quot;Url&quot;；使用 &ldquo;ServeHTTP&rdquo; 而不是 &ldquo;ServeHttp&rdquo;；使用 &ldquo;xmlHTTPRequest&rdquo; 或&quot;XMLHTTPRequest&quot;；使用 &ldquo;appID&rdquo; 而不是 &ldquo;appId&rdquo;。由 protocol buffer 生成的代码不受此规则的约束。人类编写的代码比机器编写的代码具有更高的标准。</p>
+</li>
+<li>
+<p><strong>根据实际情况确定函数返回格式。</strong> 例如当函数返回相同类型的 2 个或 3 个参数，或者返回值的含义较难区分，那么推荐在函数返回格式前添加变量名称。</p>
+</li>
+</ol>
+<p>不推荐：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">Foo</span><span class="p">)</span> <span class="nf">Location</span><span class="p">()</span> <span class="p">(</span><span class="kt">float64</span><span class="p">,</span> <span class="kt">float64</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
+</span></span></code></pre></div><p>推荐：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// Location returns f&#39;s latitude and longitude.
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1">// Negative values mean south and west, respectively.
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">Foo</span><span class="p">)</span> <span class="nf">Location</span><span class="p">()</span> <span class="p">(</span><span class="nx">lat</span><span class="p">,</span> <span class="nx">long</span> <span class="kt">float64</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span>
+</span></span></code></pre></div><ol start="12">
+<li>
+<p><strong>避免仅仅为了节省几个字节而将指针作为函数参数传递。</strong> 如果一个函数自始至终，仅将其参数 <code>x</code> 引用为 <code>*x</code>，那这个传入的参数不应该是指针而是值。将指针作为参数的情况例如：传递指向字符串的指针 <code>*string</code> 或指向接口值的指针 <code>*io.Reader</code>，这两个例子中，<strong>指针所指向的值本身是固定大小的，因此可以直接传递</strong>。但不适用于指针指向大型结构体，包括不适用于可能增长的小型结构体。</p>
+</li>
+<li>
+<p><strong>方法接收器的命名应简短并保持一致</strong>：通常用 1 到 2 个字母缩写其类型（&ldquo;client&quot;缩写为&quot;c&quot;或&quot;cl&rdquo;）。不要使用通用名称，如 &ldquo;me&rdquo;、&ldquo;this &ldquo;或 &ldquo;self&rdquo;，这些面向对象语言的典型标识符会赋予方法特殊的含义，而在 Go 中，方法的接收器只是另一个参数。</p>
+</li>
+<li>
+<p><strong>通常使用指针接收器，对于基本类型的值或者确定不变的小型结构体可以使用值接收器。</strong></p>
+</li>
+</ol>
+<ul>
+<li>如果接收者是一个map、func 或 chan，不要使用指向它们的指针；如果接收者是一个 slice 并且该方法不会重新切片或重新分配该 slice，则不要使用指向它的指针。</li>
+<li>如果该方法需要改变接收者，则接收者必须是指针。</li>
+<li>如果接收者是包含sync.Mutex或类似同步字段的结构，则接收者必须是指针，以避免复制。</li>
+<li>如果接收器是大型结构体或数组，则指针接收器效率更高。</li>
+</ul>
+<ol start="15">
+<li><strong>相比异步函数，推荐使用同步函数。</strong> 同步函数更容易推断函数中协程的生命周期，避免泄漏和数据竞争，也更易于测试：调用者可以传递输入并检查输出，而无需轮询或同步。</li>
+</ol>
+<h1 id="common-mistakes">Common Mistakes<a hidden class="anchor" aria-hidden="true" href="#common-mistakes">#</a></h1>
+<h2 id="使用循环变量的引用">使用循环变量的引用<a hidden class="anchor" aria-hidden="true" href="#使用循环变量的引用">#</a></h2>
+<p>Go语言中，循环变量只是一个变量，在每次循环过程中被赋予不同的值。但如果使用不当可能会出现问题。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">	<span class="kd">var</span> <span class="nx">out</span> <span class="p">[]</span><span class="o">*</span><span class="kt">int</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">		<span class="nx">out</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">out</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Values:&#34;</span><span class="p">,</span> <span class="o">*</span><span class="nx">out</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">*</span><span class="nx">out</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">*</span><span class="nx">out</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Addresses:&#34;</span><span class="p">,</span> <span class="nx">out</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nx">out</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">out</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>输出结果为：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">Values: <span class="m">3</span> <span class="m">3</span> <span class="m">3</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Addresses: 0xc0000a0000 0xc0000a0000 0xc0000a0000
+</span></span></code></pre></div><p><strong>原因：</strong> 每次循环，Golang 将 <code>i</code> 的地址追加到切片 <code>out</code> 中，但自始至终只有一个 <code>i</code> ，所以循环结束后 <code>i</code> 上的值为最后一次循环赋给 <code>i</code> 的值。</p>
+<p><strong>解决方法：</strong> 将循环变量赋值到新变量中。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">		<span class="nx">i</span> <span class="o">:=</span> <span class="nx">i</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">		<span class="nx">out</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">out</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">	<span class="p">}</span>
+</span></span></code></pre></div><p>输出结果为：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">Values: <span class="m">0</span> <span class="m">1</span> <span class="m">2</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Addresses: 0xc00001a0b8 0xc00001a0c0 0xc00001a0c8
+</span></span></code></pre></div><p><strong>原因：</strong> <code>i := i</code> 将循环变量 i 复制到一个新变量中，该新变量的作用域为 <code>for</code> 循环主体块，也称为 <code>i</code>。每次循环迭代中都会创建这样一个新变量。</p>
+<p>虽然这个例子看起来有点明显，但在其他一些情况下，同样的意外行为可能会更加隐蔽。例如，循环变量可以是数组，而引用可以是片段：</p>
+<p>上述样例较为明显，实际情况下这种错误可能更加隐蔽，例如，循环变量为数组，其引用为切片。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">	<span class="kd">var</span> <span class="nx">out</span> <span class="p">[][]</span><span class="kt">int</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="p">[][</span><span class="mi">1</span><span class="p">]</span><span class="kt">int</span><span class="p">{{</span><span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="mi">3</span><span class="p">}}</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">		<span class="nx">out</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">out</span><span class="p">,</span> <span class="nx">i</span><span class="p">[:])</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Values:&#34;</span><span class="p">,</span> <span class="nx">out</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>输出结果为：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">Values: <span class="o">[[</span>3<span class="o">]</span> <span class="o">[</span>3<span class="o">]</span> <span class="o">[</span>3<span class="o">]]</span>
+</span></span></code></pre></div><p>当在 Goroutine 中使用循环变量时，也会出现同样的问题（下一节）。</p>
+<h2 id="在循环变量上使用-goroutines">在循环变量上使用 goroutines<a hidden class="anchor" aria-hidden="true" href="#在循环变量上使用-goroutines">#</a></h2>
+<p>在 Go 中使用循环时，我们会尝试使用 goroutine 并行处理数据。例如可以使用闭包：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="nx">values</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">values</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">		<span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="p">}()</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="c1">// wait 10 second
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"></span>	<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>上述代码不会按顺序打印的每个值，因为所有闭包函数都绑定了同一个变量，运行此代码时，因为 goroutine 可能要等到循环结束后才会开始执行，所以只会打印最后一个元素10。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln"> 1</span><span class="cl">$ go run test.go 
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="m">10</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="m">10</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="m">10</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="m">10</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="m">10</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="m">10</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="m">10</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="m">10</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="m">10</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="m">10</span>
+</span></span></code></pre></div><p>编写闭包循环的正确方式是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="nx">values</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">values</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">		<span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="nx">v</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="p">}(</span><span class="nx">val</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="c1">// wait for goroutines to finish
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"></span>	<span class="kd">var</span> <span class="nx">input</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Scanln</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">input</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>将 <code>val</code> 作为参数添加到闭包中，每次迭代时对 <code>val</code> 进行求值，并将其置于 goroutine 的堆栈中，因此每个切片元素在最终执行时可供 goroutine 使用。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln"> 1</span><span class="cl">$ go run test.go 
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="m">4</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="m">1</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="m">2</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="m">3</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="m">7</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="m">5</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="m">6</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="m">8</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="m">9</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="m">10</span>
+</span></span></code></pre></div><hr>
+<p>下列代码使用公共索引变量 <code>i</code> 创建单独的 <code>val</code>，也可以产生我们想要的结果：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="nx">values</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">values</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">		<span class="nx">val</span> <span class="o">:=</span> <span class="nx">values</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">		<span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">		<span class="p">}()</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="c1">// wait for goroutines to finish
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="c1"></span>	<span class="kd">var</span> <span class="nx">input</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Scanln</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">input</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="m">4</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="m">1</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="m">2</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="m">3</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="m">7</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="m">5</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="m">6</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="m">8</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="m">9</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="m">10</span>
+</span></span></code></pre></div><hr>
+<p><strong>注意</strong>，如果不将此闭包作为 goroutine 执行，代码将按预期运行。以下示例打印 1 到 10 之间的整数。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">	<span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">	<span class="p">}()</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="m">1</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="m">2</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="m">3</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="m">4</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="m">5</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="m">6</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="m">7</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="m">8</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="m">9</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="m">10</span>
+</span></span></code></pre></div><p>其中，闭包函数会在变量i更改之前执行完毕，因此最终按顺序输出1到10。 <a href="https://go.dev/doc/faq#closures_and_goroutines">https://go.dev/doc/faq#closures_and_goroutines</a></p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="/tags/golang/">Golang</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="/tech/golang/golang-channel-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>Golang Channel 使用场景</span>
+  </a>
+  <a class="next" href="/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">
+    <span class="title">下一页 »</span>
+    <br>
+    <span>Golang 错误处理</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制！';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

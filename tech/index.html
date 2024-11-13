@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Tech | xgbt&#39;s Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="Tech - xgbt&#39;s Blog">
+<meta name="author" content="">
+<link rel="canonical" href="/tech/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/assets/apple-icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" type="application/rss+xml" href="/tech/index.xml">
+<link rel="alternate" hreflang="zh" href="/tech/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><style>
+@import url('https://fonts.cdnfonts.com/css/code-new-roman');
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
+    rel="stylesheet"><meta property="og:title" content="Tech" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tech/" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Tech"/>
+<meta name="twitter:description" content=""/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Tech",
+      "item": "/tech/"
+    }
+  ]
+}
+</script>
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/" title="🏠主页">
+                    <span>🏠主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/search" title="🔍搜索">
+                    <span>🔍搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags" title="🏷️标签">
+                    <span>🏷️标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives" title="📦归档">
+                    <span>📦归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="/">主页</a></div>
+  <h1>
+    Tech
+  </h1>
+</header>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Kubernetes 1.29.6 高可用集群部署
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>架构设计 OS: AlmaLinux 9.1 节点名 IP 地址 zqf-Master01 10.101.5.110 zqf-Master02 10.101.5.111 zqf-Master03 10.101.5.112 zqf-Worker01 10.101.5.113 zqf-Worker02 10.101.5.114 zqf-Worker03 10.101.5.115 zqf-Worker04 10.101.5.116 1. 所有节点操作 1.1 基础配置 1.1.1 配置镜像源 1sed -e &#39;s|^mirrorlist=|#mirrorlist=|g&#39; \ 2 -e &#39;s|^#\s*baseurl=https://repo.almalinux.org/almalinux|baseurl=https://mirrors.zju.edu.cn/almalinux|g&#39; \ 3 -i.bak \ 4 /etc/yum.repos.d/almalinux-*.repo 1dnf makecache 1.1.2 配置主机名 1hostnamectl set-hostname &amp;l...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-11-13 01:09:19 +0800 CST'>十一月 13, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to Kubernetes 1.29.6 高可用集群部署" href="/tech/kubernetes/kubernetes-1.29.6-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">基于 Kubeadm 手动更新证书
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>检查证书是否过期 1kubeadm certs check-expiration 该命令显示 /etc/kubernetes/pki 文件夹中的客户端证书以及 kubeadm（admin.conf、controller-manager.con...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-10-15 16:09:19 +0800 CST'>十月 15, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to 基于 Kubeadm 手动更新证书" href="/tech/kubernetes/%E5%9F%BA%E4%BA%8E-kubeadm-%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%96%B0%E8%AF%81%E4%B9%A6/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">基于 imagePullSecret 下载私有镜像仓库制品
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Docker 登录私有仓库 首先配置私有仓库免 ssl 验证 1{ 2 &#34;insecure-registries&#34;: [&#34;szharbor.xxx.cn&#34;] 3} 输入用户名密码并登录 1docker login szharbor.xxx.cn 查看登录成功后的 Docker 认证文件 1cat ~/.docker/config.json 1{ 2 &#34;auths&#34;: { 3 &#34;szharbor.xxx.cn&#34;: { 4 &#34;auth&#34;: &#34;cm...nVVM=&#34; 5 } 6 } 7} 压缩，...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-09-15 16:09:19 +0800 CST'>九月 15, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to 基于 imagePullSecret 下载私有镜像仓库制品" href="/tech/kubernetes/%E5%9F%BA%E4%BA%8E-imagepullsecret-%E4%B8%8B%E8%BD%BD%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E5%88%B6%E5%93%81/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">K8s 网络模型基础知识
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>Kubernetes 网络的功能： 高度耦合的容器间通信：这个已经被 Pods 和 localhost 通信解决了。 Pod 间通信； Pod 和 Service 对象间通信； 外部和 Service 对象间通信； Kubernetes 本身的网络服务自带了一下功...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-24 16:09:19 +0800 CST'>八月 24, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to K8s 网络模型基础知识" href="/tech/kubernetes/k8s-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">使用 NFS 作为 K8s 存储插件
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>1. 基础配置 首先，在所有 master 节点和 worker 节点上安装 nfs-utils. 1sudo yum -y install nfs-utils 2systemctl enable nfs-utils 2. NFS Server 配置 服务端安装 nfs-utils 和 rpcbind 1sudo yum -y install nfs-utils rpcbind 2systemctl enable nfs-utils 3systemctl enable rpcbind 创建共享目录 1mkdir /hc-data/nfs **创建并修改...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-24 16:09:19 +0800 CST'>八月 24, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to 使用 NFS 作为 K8s 存储插件" href="/tech/kubernetes/%E4%BD%BF%E7%94%A8-nfs-%E4%BD%9C%E4%B8%BA-k8s-%E5%AD%98%E5%82%A8%E6%8F%92%E4%BB%B6/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Nginx 实现 GPT 流式传输
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>核心参数 1proxy_buffering off; 该指令使 Nginx 不缓冲来自上游服务器的响应，而是立即将其发送给客户端。适合需要实时或流式传输数据的场景非常有用，比如实时聊天、流媒体等...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-05-29 16:09:19 +0800 CST'>五月 29, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to Nginx 实现 GPT 流式传输" href="/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">K8s 下线节点流程
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>将节点设置为不可调度，防止新的Pod调度到该节点上。 1kubectl cordon &lt;节点名&gt; 排空节点上的Pod 1 kubectl drain &lt;节点名&gt; --ignore-daemonsets --delete-emptydir-data &amp;ndash...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-04-14 16:09:19 +0800 CST'>四月 14, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to K8s 下线节点流程" href="/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">K8s 启用 ipvs 模式
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>安装 ipvs 1# 安装 ipvs 相关软件包 2yum install ipvsadm ipset sysstat conntrack libseccomp 3 4# 载入模块 5modprobe -- ip_vs 6modprobe -- ip_vs_rr 7modprobe -- ip_vs_wrr 8modprobe -- ip_vs_sh 9modprobe -- nf_conntrack 10 11# 创建ipvs.conf，设置内核模块的自动载入。 12cat &lt;&lt;EOF &gt; /etc/modules-load.d/ipvs.conf...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-04-13 16:09:19 +0800 CST'>四月 13, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to K8s 启用 ipvs 模式" href="/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">K8s 修改 NodePort 默认范围
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>K8S 集群中 NodePort 默认范围为 30000-32767。 若要修改此范围，依次修改 Master 节点上的 /etc/kubernetes/manifests/kube-apiserver.yaml 文件。 1# 备份配置文件 2cp kube-apiserver.yaml kube-apiserver.yaml.bak 3vi kube-apiserver.yaml 4..... 5 Host Port: &lt;none&gt; 6 Command: 7 kube-apiserver 8 - --service-cluster-ip-range=10.96.0.0/12 9# 插入...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-03-21 16:09:19 +0800 CST'>三月 21, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to K8s 修改 NodePort 默认范围" href="/tech/kubernetes/k8s-%E4%BF%AE%E6%94%B9-nodeport-%E9%BB%98%E8%AE%A4%E8%8C%83%E5%9B%B4/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">MQTT QoS 简介
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>什么是 QoS 使用 MQTT 协议的设备一般运行在网络受限的环境下，只依靠底层TCP 传输协议并不能完全保证消息的可靠到达。 因此，MQTT 提供了 QoS（Qua...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-03-20 16:09:19 +0800 CST'>三月 20, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to MQTT QoS 简介" href="/tech/mqtt-qos--%E7%AE%80%E4%BB%8B/"></a>
+</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="/tech/page/2/">下一页&nbsp;&nbsp;»
+    </a>
+  </nav>
+</footer>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

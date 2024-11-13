@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>基于 Velero 备份与恢复 K8s 集群 | xgbt&#39;s Blog</title>
+<meta name="keywords" content="Kubernetes">
+<meta name="description" content="Velero 安装步骤 客户端 https://github.com/vmware-tanzu/velero/releases 下载并安装最新版本二进制客户端。 1cp velero /usr/local/bin &amp;&amp; chmod &#43;x /usr/local/bin/velero 2 3velero version 4Client: 5 Version: v1.13.2 6 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 7&lt;error getting server version: no matches for kind &#34;ServerStatusRequest&#34; in version &#34;velero.io/v1&#34;&gt; 服务端 准备好秘钥文件 credentials-velero ，即 MinIO 的">
+<meta name="author" content="">
+<link rel="canonical" href="/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/assets/apple-icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><style>
+@import url('https://fonts.cdnfonts.com/css/code-new-roman');
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
+    rel="stylesheet"><meta property="og:title" content="基于 Velero 备份与恢复 K8s 集群" />
+<meta property="og:description" content="Velero 安装步骤 客户端 https://github.com/vmware-tanzu/velero/releases 下载并安装最新版本二进制客户端。 1cp velero /usr/local/bin &amp;&amp; chmod &#43;x /usr/local/bin/velero 2 3velero version 4Client: 5 Version: v1.13.2 6 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 7&lt;error getting server version: no matches for kind &#34;ServerStatusRequest&#34; in version &#34;velero.io/v1&#34;&gt; 服务端 准备好秘钥文件 credentials-velero ，即 MinIO 的" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/" /><meta property="article:section" content="tech" />
+
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="基于 Velero 备份与恢复 K8s 集群"/>
+<meta name="twitter:description" content="Velero 安装步骤 客户端 https://github.com/vmware-tanzu/velero/releases 下载并安装最新版本二进制客户端。 1cp velero /usr/local/bin &amp;&amp; chmod &#43;x /usr/local/bin/velero 2 3velero version 4Client: 5 Version: v1.13.2 6 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 7&lt;error getting server version: no matches for kind &#34;ServerStatusRequest&#34; in version &#34;velero.io/v1&#34;&gt; 服务端 准备好秘钥文件 credentials-velero ，即 MinIO 的"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Tech",
+      "item": "/tech/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "基于 Velero 备份与恢复 K8s 集群",
+      "item": "/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "基于 Velero 备份与恢复 K8s 集群",
+  "name": "基于 Velero 备份与恢复 K8s 集群",
+  "description": "Velero 安装步骤 客户端 https://github.com/vmware-tanzu/velero/releases 下载并安装最新版本二进制客户端。 1cp velero /usr/local/bin \u0026amp;\u0026amp; chmod +x /usr/local/bin/velero 2 3velero version 4Client: 5 Version: v1.13.2 6 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 7\u0026lt;error getting server version: no matches for kind \u0026#34;ServerStatusRequest\u0026#34; in version \u0026#34;velero.io/v1\u0026#34;\u0026gt; 服务端 准备好秘钥文件 credentials-velero ，即 MinIO 的",
+  "keywords": [
+    "Kubernetes"
+  ],
+  "articleBody": "Velero 安装步骤 客户端 https://github.com/vmware-tanzu/velero/releases\n下载并安装最新版本二进制客户端。\n1cp velero /usr/local/bin \u0026\u0026 chmod +x /usr/local/bin/velero 2 3velero version 4Client: 5 Version: v1.13.2 6 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 7",
+  "wordCount" : "866",
+  "inLanguage": "zh",
+  "datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "xgbt's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/assets/apple-icon.png"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/" title="🏠主页">
+                    <span>🏠主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/search" title="🔍搜索">
+                    <span>🔍搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags" title="🏷️标签">
+                    <span>🏷️标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives" title="📦归档">
+                    <span>📦归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
+    <h1 class="post-title entry-hint-parent">
+      基于 Velero 备份与恢复 K8s 集群
+    </h1>
+    <div class="post-meta">
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+        <div class="toc">
+            <details  open>
+                <summary accesskey="c" title="(Alt + C)">
+                    <span class="details">目录</span>
+                </summary>
+
+                <div class="inner"><ul>
+                        <li>
+                            <a href="#velero-%e5%ae%89%e8%a3%85%e6%ad%a5%e9%aa%a4" aria-label="Velero 安装步骤">Velero 安装步骤</a><ul>
+                                    
+                        <li>
+                            <a href="#%e5%ae%a2%e6%88%b7%e7%ab%af" aria-label="客户端">客户端</a></li>
+                        <li>
+                            <a href="#%e6%9c%8d%e5%8a%a1%e7%ab%af" aria-label="服务端">服务端</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#velero-%e4%bd%bf%e7%94%a8" aria-label="Velero 使用">Velero 使用</a><ul>
+                                    
+                        <li>
+                            <a href="#%e5%a4%87%e4%bb%bd" aria-label="备份">备份</a></li>
+                        <li>
+                            <a href="#%e6%81%a2%e5%a4%8d" aria-label="恢复">恢复</a></li>
+                        <li>
+                            <a href="#%e5%85%b6%e4%bb%96%e5%91%bd%e4%bb%a4" aria-label="其他命令">其他命令</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#%e8%bf%81%e7%a7%bb" aria-label="迁移">迁移</a></li>
+                        <li>
+                            <a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99" aria-label="参考资料">参考资料</a>
+                        </li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </aside>
+    <script>
+        let activeElement;
+        let elements;
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            checkTocPosition();
+
+            elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+            if (elements.length > 0) {
+                
+                activeElement = elements[0];
+                const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+                document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+            }
+
+            
+            const topLink = document.getElementById('top-link');
+            if (topLink) {
+                topLink.addEventListener('click', (event) => {
+                    
+                    event.preventDefault();
+
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        }, false);
+
+        window.addEventListener('resize', function (event) {
+            checkTocPosition();
+        }, false);
+
+        window.addEventListener('scroll', () => {
+            
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+            
+            if (scrollPosition === 0) {
+                return;
+            }
+
+            
+            if (elements && elements.length > 0) {
+                
+                activeElement = Array.from(elements).find((element) => {
+                    if ((getOffsetTop(element) - scrollPosition) > 0 &&
+                        (getOffsetTop(element) - scrollPosition) < window.innerHeight / 2) {
+                        return element;
+                    }
+                }) || activeElement;
+
+                elements.forEach(element => {
+                    const id = encodeURI(element.getAttribute('id')).toLowerCase();
+                    const tocLink = document.querySelector(`.inner ul li a[href="#${id}"]`);
+                    if (element === activeElement) {
+                        tocLink.classList.add('active');
+
+                        
+                        const tocContainer = document.querySelector('.toc .inner');
+                        const linkOffsetTop = tocLink.offsetTop;
+                        const containerHeight = tocContainer.clientHeight;
+                        const linkHeight = tocLink.clientHeight;
+
+                        
+                        const scrollPosition = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
+                        tocContainer.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+                    } else {
+                        tocLink.classList.remove('active');
+                    }
+                });
+            }
+        }, false);
+
+        const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+        const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+        const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+        function checkTocPosition() {
+            const width = document.body.scrollWidth;
+
+            if (width - main - (toc * 2) - (gap * 4) > 0) {
+                document.getElementById("toc-container").classList.add("wide");
+            } else {
+                document.getElementById("toc-container").classList.remove("wide");
+            }
+        }
+
+        function getOffsetTop(element) {
+            if (!element.getClientRects().length) {
+                return 0;
+            }
+            let rect = element.getBoundingClientRect();
+            let win = element.ownerDocument.defaultView;
+            return rect.top + win.pageYOffset;
+        }
+
+    </script>
+  <div class="post-content"><h1 id="velero-安装步骤">Velero 安装步骤<a hidden class="anchor" aria-hidden="true" href="#velero-安装步骤">#</a></h1>
+<h2 id="客户端">客户端<a hidden class="anchor" aria-hidden="true" href="#客户端">#</a></h2>
+<p><a href="https://github.com/vmware-tanzu/velero/releases">https://github.com/vmware-tanzu/velero/releases</a></p>
+<p>下载并安装最新版本二进制客户端。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">cp velero /usr/local/bin <span class="o">&amp;&amp;</span> chmod +x /usr/local/bin/velero
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl">velero version
+</span></span><span class="line"><span class="ln">4</span><span class="cl">Client:
+</span></span><span class="line"><span class="ln">5</span><span class="cl">        Version: v1.13.2
+</span></span><span class="line"><span class="ln">6</span><span class="cl">        Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6
+</span></span><span class="line"><span class="ln">7</span><span class="cl">&lt;error getting server version: no matches <span class="k">for</span> kind <span class="s2">&#34;ServerStatusRequest&#34;</span> in version <span class="s2">&#34;velero.io/v1&#34;</span>&gt;
+</span></span></code></pre></div><h2 id="服务端">服务端<a hidden class="anchor" aria-hidden="true" href="#服务端">#</a></h2>
+<ol>
+<li>准备好秘钥文件 <code>credentials-velero</code> ，即 MinIO 的用户名密码。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="ln">1</span><span class="cl">[default]
+</span></span><span class="line"><span class="ln">2</span><span class="cl">aws_access_key_id=&lt;access key id&gt;
+</span></span><span class="line"><span class="ln">3</span><span class="cl">aws_secret_access_key=&lt;secret access key&gt;
+</span></span></code></pre></div><ol start="2">
+<li>使用 <code>velero install</code> 安装服务端</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln"> 1</span><span class="cl">velero install <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="se"></span>  --provider aws <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="se"></span>  --image velero/velero:v1.13.2 <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="se"></span>  --plugins velero/velero-plugin-for-aws:v1.9.2 <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="se"></span>  --bucket velero <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="se"></span>  --secret-file ./credentials-velero <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="se"></span>  --use-node-agent <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="se"></span>  --use-volume-snapshots<span class="o">=</span><span class="nb">false</span> <span class="se">\
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="se"></span>  --namespace velero <span class="se">\
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="se"></span>  --backup-location-config <span class="nv">region</span><span class="o">=</span>minio,s3ForcePathStyle<span class="o">=</span><span class="s2">&#34;true&#34;</span>,s3Url<span class="o">=</span>http://10.101.6.118:9000 <span class="se">\
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="se"></span>  --wait
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="ln">1</span><span class="cl">velero  version
+</span></span><span class="line"><span class="ln">2</span><span class="cl">Client:
+</span></span><span class="line"><span class="ln">3</span><span class="cl">        Version: v1.13.2
+</span></span><span class="line"><span class="ln">4</span><span class="cl">        Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6
+</span></span><span class="line"><span class="ln">5</span><span class="cl">Server:
+</span></span><span class="line"><span class="ln">6</span><span class="cl">        Version: v1.13.2
+</span></span></code></pre></div><h1 id="velero-使用">Velero 使用<a hidden class="anchor" aria-hidden="true" href="#velero-使用">#</a></h1>
+<h2 id="备份">备份<a hidden class="anchor" aria-hidden="true" href="#备份">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln">1</span><span class="cl">velero create backup NAME [flags]
+</span></span></code></pre></div><p><strong>backup选项：</strong></p>
+<ul>
+<li><code>--exclude-namespaces stringArray</code> : 要从备份中排除的名称空间</li>
+<li><code>--exclude-resources stringArray</code>: 要从备份中排除的资源，如<code>storageclasses.storage.k8s.io</code></li>
+<li><code>--include-cluster-resources optionalBool[=true]</code>: 包含集群资源类型</li>
+<li><code>--include-namespaces stringArray</code>: 要包含在备份中的名称空间(默认&rsquo;*')</li>
+<li><code>--include-resources stringArray</code>: 备份中要包括的资源</li>
+<li><code>--labels mapStringString</code>: 给这个备份加上标签</li>
+<li><code>-o, --output string</code>: 指定输出格式，支持&rsquo;table&rsquo;、&lsquo;json&rsquo;和&rsquo;yaml&rsquo;；</li>
+<li><code>-l, --selector labelSelector</code>: 对指定标签的资源进行备份</li>
+<li><code>--snapshot-volumes optionalBool[=true]</code>: 对 PV 创建快照</li>
+<li><code>--storage-location string</code>: 指定备份的位置</li>
+<li><code>--ttl duration</code>: 备份数据多久删掉</li>
+<li><code>--volume-snapshot-locations strings</code>: 指定快照的位置，也就是哪一个公有云驱动</li>
+</ul>
+<p>通常，直接使用默认命令即可。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">velero backup create &lt;name&gt;
+</span></span></code></pre></div><p><strong>查看备份列表</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">velero backup get
+</span></span></code></pre></div><p><strong>定时备份</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 创建定时备份计划</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">velero schedule create k8s-daily --schedule<span class="o">=</span><span class="s2">&#34;0 1 * * *&#34;</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1"># 查看定时备份计划</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">velero schedule get
+</span></span></code></pre></div><h2 id="恢复">恢复<a hidden class="anchor" aria-hidden="true" href="#恢复">#</a></h2>
+<p><code>velero restore</code> 的行为不是覆盖，是恢复，不会覆盖已有的资源，只恢复当前集群中不存在的资源。<strong>已有的资源不会回滚到之前的版本</strong>，如需要回滚，需在restore之前提前删除现有的资源。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">velero restore create --from-backup &lt;name&gt;
+</span></span></code></pre></div><h2 id="其他命令">其他命令<a hidden class="anchor" aria-hidden="true" href="#其他命令">#</a></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1"># 查看备份位置</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">velero get backup-locations
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">NAME      PROVIDER   BUCKET/PREFIX   PHASE       LAST VALIDATED                  ACCESS MODE   DEFAULT
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">default   aws        finley007       Available   2022-03-10 22:23:28 +0800 CST   ReadWrite     <span class="nb">true</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1"># 查看已有恢复</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">velero get restores
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"># 查看 velero 插件</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">velero get plugins
+</span></span><span class="line"><span class="ln">12</span><span class="cl">
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1"># 删除 velero 备份</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">velero backup delete nginx-backup
+</span></span><span class="line"><span class="ln">15</span><span class="cl">
+</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="c1"># 持久卷备份</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">velero backup create nginx-backup-volume --snapshot-volumes --include-namespaces nginx-example
+</span></span><span class="line"><span class="ln">18</span><span class="cl">
+</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="c1"># 持久卷恢复</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">velero restore create --from-backup nginx-backup-volume --restore-volumes
+</span></span><span class="line"><span class="ln">21</span><span class="cl">
+</span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="c1"># 创建集群所有namespaces备份，但排除 velero,metallb-system 命名空间</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">velero backup create all-ns-backup --snapshot-volumes<span class="o">=</span><span class="nb">false</span> --exclude-namespaces velero,metallb-system
+</span></span><span class="line"><span class="ln">24</span><span class="cl">
+</span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="c1"># 周期性定时备份</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="c1"># 每日3点进行备份</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">velero schedule create &lt;SCHEDULE NAME&gt; --schedule <span class="s2">&#34;0 3 * * *&#34;</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">
+</span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="c1"># 每日3点进行备份，备份保留48小时，默认保留30天</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">velero schedule create &lt;SCHEDULE NAME&gt; --schedule <span class="s2">&#34;0 3 * * *&#34;</span> --ttl <span class="m">48</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl">
+</span></span><span class="line"><span class="ln">32</span><span class="cl"><span class="c1"># 每6小时进行一次备份</span>
+</span></span><span class="line"><span class="ln">33</span><span class="cl">velero create schedule &lt;SCHEDULE NAME&gt; --schedule<span class="o">=</span><span class="s2">&#34;@every 6h&#34;</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl">
+</span></span><span class="line"><span class="ln">35</span><span class="cl"><span class="c1"># 每日对 web namespace 进行一次备份</span>
+</span></span><span class="line"><span class="ln">36</span><span class="cl">velero create schedule &lt;SCHEDULE NAME&gt; --schedule<span class="o">=</span><span class="s2">&#34;@every 24h&#34;</span> --include-namespaces web
+</span></span></code></pre></div><h1 id="迁移">迁移<a hidden class="anchor" aria-hidden="true" href="#迁移">#</a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1"># 在集群1上做一个备份：</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">$ velero backup create &lt;BACKUP-NAME&gt; --snapshot-volumes
+</span></span><span class="line"><span class="ln">3</span><span class="cl">
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1"># 在集群2上做一个恢复：</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">$ velero restore create --from-backup &lt;BACKUP-NAME&gt; --restore-volumes
+</span></span><span class="line"><span class="ln">6</span><span class="cl">
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="c1"># velero 清理</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl">$ kubectl delete namespace/velero clusterrolebinding/velero
+</span></span><span class="line"><span class="ln">9</span><span class="cl">$ kubectl delete crds -l <span class="nv">component</span><span class="o">=</span>velero
+</span></span></code></pre></div><h1 id="参考资料">参考资料<a hidden class="anchor" aria-hidden="true" href="#参考资料">#</a></h1>
+<ol>
+<li><a href="https://www.cnblogs.com/wubolive/p/17345716.html">https://www.cnblogs.com/wubolive/p/17345716.html</a></li>
+<li><a href="https://mafeifan.com/DevOps/K8s/k8s-%E5%9F%BA%E7%A1%80-%E4%BD%BF%E7%94%A8Velero%E5%A4%87%E4%BB%BD%E6%81%A2%E5%A4%8D%E9%9B%86%E7%BE%A4.html">https://mafeifan.com/DevOps/K8s/k8s-%E5%9F%BA%E7%A1%80-%E4%BD%BF%E7%94%A8Velero%E5%A4%87%E4%BB%BD%E6%81%A2%E5%A4%8D%E9%9B%86%E7%BE%A4.html</a></li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="/tags/kubernetes/">Kubernetes</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>Golang 错误处理</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制！';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

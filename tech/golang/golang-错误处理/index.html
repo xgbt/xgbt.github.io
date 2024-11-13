@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Golang 错误处理 | xgbt&#39;s Blog</title>
+<meta name="keywords" content="Golang">
+<meta name="description" content="1. panic 与 error 1.1 panic panic 会中止程序执行进入异常处理逻辑，panic可以在当前函数或者调用链向上的任何一层被defer recover 捕获处理，没被捕获的panic会">
+<meta name="author" content="">
+<link rel="canonical" href="/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/assets/apple-icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><style>
+@import url('https://fonts.cdnfonts.com/css/code-new-roman');
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
+    rel="stylesheet"><meta property="og:title" content="Golang 错误处理" />
+<meta property="og:description" content="1. panic 与 error 1.1 panic panic 会中止程序执行进入异常处理逻辑，panic可以在当前函数或者调用链向上的任何一层被defer recover 捕获处理，没被捕获的panic会" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" /><meta property="article:section" content="tech" />
+<meta property="article:published_time" content="2023-02-11T16:09:19+08:00" />
+<meta property="article:modified_time" content="2023-02-11T16:09:19+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Golang 错误处理"/>
+<meta name="twitter:description" content="1. panic 与 error 1.1 panic panic 会中止程序执行进入异常处理逻辑，panic可以在当前函数或者调用链向上的任何一层被defer recover 捕获处理，没被捕获的panic会"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Tech",
+      "item": "/tech/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Golang 错误处理",
+      "item": "/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Golang 错误处理",
+  "name": "Golang 错误处理",
+  "description": "1. panic 与 error 1.1 panic panic 会中止程序执行进入异常处理逻辑，panic可以在当前函数或者调用链向上的任何一层被defer recover 捕获处理，没被捕获的panic会",
+  "keywords": [
+    "Golang"
+  ],
+  "articleBody": "1. panic 与 error 1.1 panic panic 会中止程序执行进入异常处理逻辑，panic可以在当前函数或者调用链向上的任何一层被defer recover 捕获处理，没被捕获的panic会使程序打印堆栈后异常退出。\npanic很少在代码中出现，一般用来表示除0、内存不足、强制类型转换失败等语言层级的异常，如果出现意味着程序员本身的实现问题，所以程序员一般不会着重考虑和防御它们。\n1.2 error error会显得更平凡，所有满足error这个interface的值都可以当做一个合法的错误：\n1type error interface { 2 // 输出对该错误的文本描述 3 Error() string 4} 在Go语言中，error是一个值，运行时不会用特殊的逻辑对待它，不处理它不会让程序打印堆栈异常退出。\nerror会在代码中大量出现，表示连接超时、JSON解析失败、文件不存在等用户层级的错误，往往和业务直接相关，程序需要着重考虑它们。\n1.3 总结 panic：不着重考虑，没有明确的抛出位置； error：着重考虑，抛出位置固定而明显，只要函数返回值元组中最后一个是error类型，用户就需要考虑防御和处理。 换句话说，Go语言中error是值这个特征在鼓励用户考虑和处理每个错误，写出鲁棒的程序。\n2. “好”的错误 例如，有个天气API服务，它在收到请求时会先查询Redis中有没有对应缓存，如果没有缓存再请求外部服务，最后返回结果给调用方。\n有一天，调用方说接口不工作了，你查了日志，错误信息是 context deadline exceeded，这个错误意味着代码里有地方发生了超时，可是在哪里呢？是缓存还是外部API？\n好的错误是有根本原因和调用链上下文的错误，这样的错误容易排查，如果你看到的错误信息是这样的：\n1reading cache: redis GET: context deadline exceeded 或者带有调用堆栈的：\n1context deadline exceeded 2goroutine 1 [running]: 3main.Example(0x19010001) 4 /Users/hello/main.go 5 temp/main.go:8 +0x64 6main.main() 7 /Users/bill/main.go 8 temp/main.go:4 +0x32 那么排错工作都会容易得多。\n比起堆栈，人工添加的文本错误上下文更易于阅读，有着更高的信息密度，而且看到的人就算没有接触相关代码也有可能理解错误原因。\n3. 为错误提供文本上下文 Go 1.13中新增了fmt.Errorf()用于为错误提供上下文，errors标准库新增Is(), As(), Unwrap()用于便利化错误的鉴别和比较。\nfmt.Errorf()的用法如下：\n1reading cache: redis GET: context deadline exceeded 这个错误信息从左到右层层递进，每层fmt.Errorf()叙述自己想要做的事情，然后用:分隔下一层，下一层用%w指代。\n下面这段伪代码中，FindWeather()调用ReadCache()，请试想ReadCache()报错时，FindWeather()调用者收到的错误：\n1func FindWeather(city string) (weather string, err error) { 2\tweather, err = ReadCache(city) 3\tif err != nil { 4\terr = fmt.Errorf(\"reading cache: %w\", err) 5\treturn 6\t} 7\t8\tif weather != \"\" { 9\t// cache hit 10\treturn 11\t} 12\t13\t// cache missed, query for data source and update cache 14\t// ... 15} 16 17func ReadCache(city string) (weather string, err error) { 18\tcacheKey := \"city-\" + city 19\tweather, err = cache.Get(cacheKey) 20\tif err == redis.Nil { 21\t// cache missed 22\terr = nil 23\treturn 24\t} else if err != nil { 25\terr = fmt.Errorf(\"redis Get: %w\", err) 26\treturn 27\t} 28\t29\treturn 30} Go语言的静态分析工具能检查出代码中忘记处理的错误，不规范的错误上下文格式等（%d,%f, %v, %w, %x分不清），一般使用它们的合集版本golangci-lint.\n3.1 其他为错误添加上下文的方式 如果有必要，也可以使用其他为错误添加上下文的方案\n使用pkg/errors为错误添加堆栈； 如果是HTTP服务，使用panic和recover中间件，知乎的实现就是个例子，我猜想上下文也是以堆栈的方式呈现。 参考资料 https://nanmu.me/zh-cn/posts/2021/error-handling-in-go/ https://go.dev/blog/defer-panic-and-recover https://go.dev/blog/errors-are-values ",
+  "wordCount" : "1338",
+  "inLanguage": "zh",
+  "datePublished": "2023-02-11T16:09:19+08:00",
+  "dateModified": "2023-02-11T16:09:19+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "xgbt's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/assets/apple-icon.png"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/" title="🏠主页">
+                    <span>🏠主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/search" title="🔍搜索">
+                    <span>🔍搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags" title="🏷️标签">
+                    <span>🏷️标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives" title="📦归档">
+                    <span>📦归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Golang 错误处理
+    </h1>
+    <div class="post-meta"><span title='2023-02-11 16:09:19 +0800 CST'>二月 11, 2023</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+        <div class="toc">
+            <details  open>
+                <summary accesskey="c" title="(Alt + C)">
+                    <span class="details">目录</span>
+                </summary>
+
+                <div class="inner"><ul>
+                        <li>
+                            <a href="#1-panic-%e4%b8%8e-error" aria-label="1. panic 与 error">1. panic 与 error</a><ul>
+                                    
+                        <li>
+                            <a href="#11-panic" aria-label="1.1 panic">1.1 panic</a></li>
+                        <li>
+                            <a href="#12-error" aria-label="1.2 error">1.2 error</a></li>
+                        <li>
+                            <a href="#13-%e6%80%bb%e7%bb%93" aria-label="1.3 总结">1.3 总结</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#2-%e5%a5%bd%e7%9a%84%e9%94%99%e8%af%af" aria-label="2. “好”的错误">2. “好”的错误</a></li>
+                        <li>
+                            <a href="#3-%e4%b8%ba%e9%94%99%e8%af%af%e6%8f%90%e4%be%9b%e6%96%87%e6%9c%ac%e4%b8%8a%e4%b8%8b%e6%96%87" aria-label="3. 为错误提供文本上下文">3. 为错误提供文本上下文</a><ul>
+                                    
+                        <li>
+                            <a href="#31-%e5%85%b6%e4%bb%96%e4%b8%ba%e9%94%99%e8%af%af%e6%b7%bb%e5%8a%a0%e4%b8%8a%e4%b8%8b%e6%96%87%e7%9a%84%e6%96%b9%e5%bc%8f" aria-label="3.1 其他为错误添加上下文的方式">3.1 其他为错误添加上下文的方式</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99" aria-label="参考资料">参考资料</a>
+                        </li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </aside>
+    <script>
+        let activeElement;
+        let elements;
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            checkTocPosition();
+
+            elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+            if (elements.length > 0) {
+                
+                activeElement = elements[0];
+                const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+                document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+            }
+
+            
+            const topLink = document.getElementById('top-link');
+            if (topLink) {
+                topLink.addEventListener('click', (event) => {
+                    
+                    event.preventDefault();
+
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        }, false);
+
+        window.addEventListener('resize', function (event) {
+            checkTocPosition();
+        }, false);
+
+        window.addEventListener('scroll', () => {
+            
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+            
+            if (scrollPosition === 0) {
+                return;
+            }
+
+            
+            if (elements && elements.length > 0) {
+                
+                activeElement = Array.from(elements).find((element) => {
+                    if ((getOffsetTop(element) - scrollPosition) > 0 &&
+                        (getOffsetTop(element) - scrollPosition) < window.innerHeight / 2) {
+                        return element;
+                    }
+                }) || activeElement;
+
+                elements.forEach(element => {
+                    const id = encodeURI(element.getAttribute('id')).toLowerCase();
+                    const tocLink = document.querySelector(`.inner ul li a[href="#${id}"]`);
+                    if (element === activeElement) {
+                        tocLink.classList.add('active');
+
+                        
+                        const tocContainer = document.querySelector('.toc .inner');
+                        const linkOffsetTop = tocLink.offsetTop;
+                        const containerHeight = tocContainer.clientHeight;
+                        const linkHeight = tocLink.clientHeight;
+
+                        
+                        const scrollPosition = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
+                        tocContainer.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+                    } else {
+                        tocLink.classList.remove('active');
+                    }
+                });
+            }
+        }, false);
+
+        const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+        const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+        const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+        function checkTocPosition() {
+            const width = document.body.scrollWidth;
+
+            if (width - main - (toc * 2) - (gap * 4) > 0) {
+                document.getElementById("toc-container").classList.add("wide");
+            } else {
+                document.getElementById("toc-container").classList.remove("wide");
+            }
+        }
+
+        function getOffsetTop(element) {
+            if (!element.getClientRects().length) {
+                return 0;
+            }
+            let rect = element.getBoundingClientRect();
+            let win = element.ownerDocument.defaultView;
+            return rect.top + win.pageYOffset;
+        }
+
+    </script>
+  <div class="post-content"><h1 id="1-panic-与-error">1. panic 与 error<a hidden class="anchor" aria-hidden="true" href="#1-panic-与-error">#</a></h1>
+<h2 id="11-panic">1.1 panic<a hidden class="anchor" aria-hidden="true" href="#11-panic">#</a></h2>
+<p><strong>panic 会中止程序执行进入异常处理逻辑</strong>，panic可以在当前函数或者调用链向上的任何一层被defer recover 捕获处理，没被捕获的panic会使程序打印堆栈后异常退出。</p>
+<p>panic很少在代码中出现，一般用来表示<strong>除0、内存不足、强制类型转换失败</strong>等语言层级的异常，如果出现意味着程序员本身的实现问题，所以程序员一般不会着重考虑和防御它们。</p>
+<h2 id="12-error">1.2 error<a hidden class="anchor" aria-hidden="true" href="#12-error">#</a></h2>
+<p>error会显得更平凡，所有满足error这个interface的值都可以当做一个合法的错误：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">type</span> <span class="kt">error</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="c1">// 输出对该错误的文本描述
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span>    <span class="nf">Error</span><span class="p">()</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>在Go语言中，error是<a href="https://go.dev/blog/errors-are-values">一个值</a>，运行时不会用特殊的逻辑对待它，不处理它不会让程序打印堆栈异常退出。</p>
+<p>error会在代码中大量出现，表示<strong>连接超时、JSON解析失败、文件不存在等用户层级的错误，往往和业务直接相关</strong>，程序需要着重考虑它们。</p>
+<h2 id="13-总结">1.3 总结<a hidden class="anchor" aria-hidden="true" href="#13-总结">#</a></h2>
+<ul>
+<li>panic：不着重考虑，没有明确的抛出位置；</li>
+<li>error：着重考虑，抛出位置固定而明显，只要函数返回值元组中最后一个是error类型，用户就需要考虑防御和处理。</li>
+</ul>
+<p>换句话说，Go语言中error是值这个特征在鼓励用户考虑和处理每个错误，写出鲁棒的程序。</p>
+<h1 id="2-好的错误">2. “好”的错误<a hidden class="anchor" aria-hidden="true" href="#2-好的错误">#</a></h1>
+<p>例如，有个天气API服务，它在收到请求时会先查询Redis中有没有对应缓存，如果没有缓存再请求外部服务，最后返回结果给调用方。</p>
+<p>有一天，调用方说接口不工作了，你查了日志，错误信息是 <code>context deadline exceeded</code>，这个错误意味着代码里有地方发生了超时，可是在哪里呢？是缓存还是外部API？</p>
+<p>好的错误是有根本原因和调用链上下文的错误，这样的错误容易排查，如果你看到的错误信息是这样的：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">reading</span> <span class="nx">cache</span><span class="p">:</span> <span class="nx">redis</span> <span class="nx">GET</span><span class="p">:</span> <span class="nx">context</span> <span class="nx">deadline</span> <span class="nx">exceeded</span>
+</span></span></code></pre></div><p>或者带有调用堆栈的：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">context</span> <span class="nx">deadline</span> <span class="nx">exceeded</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="nx">goroutine</span> <span class="mi">1</span> <span class="p">[</span><span class="nx">running</span><span class="p">]:</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="nx">main</span><span class="p">.</span><span class="nf">Example</span><span class="p">(</span><span class="mh">0x19010001</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">           <span class="o">/</span><span class="nx">Users</span><span class="o">/</span><span class="nx">hello</span><span class="o">/</span><span class="nx">main</span><span class="p">.</span><span class="k">go</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">           <span class="nx">temp</span><span class="o">/</span><span class="nx">main</span><span class="p">.</span><span class="k">go</span><span class="p">:</span><span class="mi">8</span> <span class="o">+</span><span class="mh">0x64</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="nx">main</span><span class="p">.</span><span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl">           <span class="o">/</span><span class="nx">Users</span><span class="o">/</span><span class="nx">bill</span><span class="o">/</span><span class="nx">main</span><span class="p">.</span><span class="k">go</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl">           <span class="nx">temp</span><span class="o">/</span><span class="nx">main</span><span class="p">.</span><span class="k">go</span><span class="p">:</span><span class="mi">4</span> <span class="o">+</span><span class="mh">0x32</span>
+</span></span></code></pre></div><p>那么排错工作都会容易得多。</p>
+<p>比起堆栈，人工添加的文本错误上下文更易于阅读，有着更高的信息密度，而且看到的人就算没有接触相关代码也有可能理解错误原因。</p>
+<h1 id="3-为错误提供文本上下文">3. 为错误提供文本上下文<a hidden class="anchor" aria-hidden="true" href="#3-为错误提供文本上下文">#</a></h1>
+<p>Go 1.13中新增了<a href="https://pkg.go.dev/fmt#Errorf"><code>fmt.Errorf()</code></a>用于为错误提供上下文，<a href="https://pkg.go.dev/errors">errors</a>标准库新增<code>Is()</code>, <code>As()</code>, <code>Unwrap()</code>用于便利化错误的鉴别和比较。</p>
+<p><code>fmt.Errorf()</code>的用法如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">reading</span> <span class="nx">cache</span><span class="p">:</span> <span class="nx">redis</span> <span class="nx">GET</span><span class="p">:</span> <span class="nx">context</span> <span class="nx">deadline</span> <span class="nx">exceeded</span>
+</span></span></code></pre></div><p>这个错误信息从左到右层层递进，每层<code>fmt.Errorf()</code>叙述自己想要做的事情，然后用<code>:</code>分隔下一层，下一层用<code>%w</code>指代。</p>
+<p>下面这段伪代码中，<code>FindWeather()</code>调用<code>ReadCache()</code>，请试想<code>ReadCache()</code>报错时，<code>FindWeather()</code>调用者收到的错误：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="nf">FindWeather</span><span class="p">(</span><span class="nx">city</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="nx">weather</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="nx">weather</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nf">ReadCache</span><span class="p">(</span><span class="nx">city</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">		<span class="nx">err</span> <span class="p">=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;reading cache: %w&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">	<span class="k">if</span> <span class="nx">weather</span> <span class="o">!=</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">		<span class="c1">// cache hit
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"></span>		<span class="k">return</span> 
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">	
+</span></span><span class="line"><span class="ln">13</span><span class="cl">	<span class="c1">// cache missed, query for data source and update cache
+</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="c1"></span>	<span class="c1">// ...
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">
+</span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="kd">func</span> <span class="nf">ReadCache</span><span class="p">(</span><span class="nx">city</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="nx">weather</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">	<span class="nx">cacheKey</span> <span class="o">:=</span> <span class="s">&#34;city-&#34;</span> <span class="o">+</span> <span class="nx">city</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">	<span class="nx">weather</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">cache</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">cacheKey</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="nx">redis</span><span class="p">.</span><span class="nx">Nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">		<span class="c1">// cache missed
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="c1"></span>		<span class="nx">err</span> <span class="p">=</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">		<span class="k">return</span> 
+</span></span><span class="line"><span class="ln">24</span><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">		<span class="nx">err</span> <span class="p">=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;redis Get: %w&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">	
+</span></span><span class="line"><span class="ln">29</span><span class="cl">	<span class="k">return</span> 
+</span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Go语言的静态分析工具能检查出代码中忘记处理的错误，不规范的错误上下文格式等（<code>%d</code>,<code>%f</code>, <code>%v</code>, <code>%w</code>, <code>%x</code>分不清），一般使用它们的合集版本<a href="https://github.com/golangci/golangci-lint">golangci-lint</a>.</p>
+<h2 id="31-其他为错误添加上下文的方式">3.1 其他为错误添加上下文的方式<a hidden class="anchor" aria-hidden="true" href="#31-其他为错误添加上下文的方式">#</a></h2>
+<p>如果有必要，也可以使用其他为错误添加上下文的方案</p>
+<ul>
+<li><a href="https://pkg.go.dev/github.com/pkg/errors#hdr-Retrieving_the_stack_trace_of_an_error_or_wrapper">使用pkg/errors为错误添加堆栈</a>；</li>
+<li>如果是HTTP服务，使用panic和recover中间件，<a href="https://zhuanlan.zhihu.com/p/48039838">知乎的实现</a>就是个例子，我猜想上下文也是以堆栈的方式呈现。</li>
+</ul>
+<h1 id="参考资料">参考资料<a hidden class="anchor" aria-hidden="true" href="#参考资料">#</a></h1>
+<ol>
+<li><a href="https://nanmu.me/zh-cn/posts/2021/error-handling-in-go/">https://nanmu.me/zh-cn/posts/2021/error-handling-in-go/</a></li>
+<li><a href="https://go.dev/blog/defer-panic-and-recover">https://go.dev/blog/defer-panic-and-recover</a></li>
+<li><a href="https://go.dev/blog/errors-are-values">https://go.dev/blog/errors-are-values</a></li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="/tags/golang/">Golang</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="/tech/golang/golang-code-review-comments/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>Golang Code Review Comments</span>
+  </a>
+  <a class="next" href="/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/">
+    <span class="title">下一页 »</span>
+    <br>
+    <span>基于 Velero 备份与恢复 K8s 集群</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制！';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

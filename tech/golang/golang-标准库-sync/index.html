@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Golang 标准库丨sync | xgbt&#39;s Blog</title>
+<meta name="keywords" content="Golang">
+<meta name="description" content="1. WaitGroup WaitGroup 等待一组 Goroutine 完成。主 Goroutine 调用 Add(delta) 来设置要等待的 Goroutine 的数量。然后每个 Goroutine 运行并在完成时调用 Done()。同时，可以使用 Wait() 来阻塞，直到所有 Goroutine 完成。 1type">
+<meta name="author" content="">
+<link rel="canonical" href="/tech/golang/golang-%E6%A0%87%E5%87%86%E5%BA%93-sync/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/assets/apple-icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="/tech/golang/golang-%E6%A0%87%E5%87%86%E5%BA%93-sync/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><style>
+@import url('https://fonts.cdnfonts.com/css/code-new-roman');
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
+    rel="stylesheet"><meta property="og:title" content="Golang 标准库丨sync" />
+<meta property="og:description" content="1. WaitGroup WaitGroup 等待一组 Goroutine 完成。主 Goroutine 调用 Add(delta) 来设置要等待的 Goroutine 的数量。然后每个 Goroutine 运行并在完成时调用 Done()。同时，可以使用 Wait() 来阻塞，直到所有 Goroutine 完成。 1type" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/tech/golang/golang-%E6%A0%87%E5%87%86%E5%BA%93-sync/" /><meta property="article:section" content="tech" />
+<meta property="article:published_time" content="2024-02-13T16:09:19+08:00" />
+<meta property="article:modified_time" content="2024-02-13T16:09:19+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Golang 标准库丨sync"/>
+<meta name="twitter:description" content="1. WaitGroup WaitGroup 等待一组 Goroutine 完成。主 Goroutine 调用 Add(delta) 来设置要等待的 Goroutine 的数量。然后每个 Goroutine 运行并在完成时调用 Done()。同时，可以使用 Wait() 来阻塞，直到所有 Goroutine 完成。 1type"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Tech",
+      "item": "/tech/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Golang 标准库丨sync",
+      "item": "/tech/golang/golang-%E6%A0%87%E5%87%86%E5%BA%93-sync/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Golang 标准库丨sync",
+  "name": "Golang 标准库丨sync",
+  "description": "1. WaitGroup WaitGroup 等待一组 Goroutine 完成。主 Goroutine 调用 Add(delta) 来设置要等待的 Goroutine 的数量。然后每个 Goroutine 运行并在完成时调用 Done()。同时，可以使用 Wait() 来阻塞，直到所有 Goroutine 完成。 1type",
+  "keywords": [
+    "Golang"
+  ],
+  "articleBody": "1. WaitGroup WaitGroup 等待一组 Goroutine 完成。主 Goroutine 调用 Add(delta) 来设置要等待的 Goroutine 的数量。然后每个 Goroutine 运行并在完成时调用 Done()。同时，可以使用 Wait() 来阻塞，直到所有 Goroutine 完成。\n1type WaitGroup struct { 2\tnoCopy noCopy 3 4\t// 64-bit value: high 32 bits are counter, low 32 bits are waiter count. 5\t// 64-bit atomic operations require 64-bit alignment, but 32-bit 6\t// compilers do not ensure it. So we allocate 12 bytes and then use 7\t// the aligned 8 bytes in them as state, and the other 4 as storage 8\t// for the sema. 9\tstate1 [3]uint32 10} wg.Add(delta int)：Add 将 delta（可能为负）添加到 WaitGroup 计数器。如果计数器变为 0，所有在 Wait 时阻塞的 Goroutine 将被释放。如果计数器变成负值，Add 会 panic。 wg.Done()：当 WaitGroup 同步等待组中的某个 Goroutine 执行完毕后，设置这个 WaitGroup 的 counter 数值减 1，其实就是调用了 Add(-1)。 wg.Wait()：表示让当前的 Goroutine 等待，进入阻塞状态。一直到 WaitGroup 的计数器为 0，才能解除阻塞，这个 Goroutine 才能继续执行。 总之，WaitGroup 让某个协程等待其它若干协程都先完成它们各自的任务。\n1func main() { 2\tconst N = 5 3\tvar values [N]int64 4\tvar wg sync.WaitGroup 5\tfor i := 0; i \u003c N; i++ { 6\ti := i 7\twg.Add(1) 8\tgo func() { 9\tvalues[i] = 50 + rand.Int63n(50) 10\tfmt.Println(\"Done:\", i) 11\twg.Done() // \u003c=\u003e wg.Add(-1) 12\t}() 13\t} 14 15\twg.Wait() 16\t// 所有的元素都保证被初始化了。 17\tfmt.Println(\"values:\", values) 18} 2. Once Once 是只执行一次的对象。Once 使用后不能复制。\n1type Once struct { 2 // done indicates whether the action has been performed. 3 // It is first in the struct because it is used in the hot path. 4 // The hot path is inlined at every call site. 5 // Placing done first allows more compact instructions on some architectures (amd64/386), 6 // and fewer instructions (to calculate offset) on other architectures. 7 done uint32 8 m Mutex 9} Once 只有一个 Do(f func()) 方法，该方法只有一个类型为func()的参数。\n1func (o *Once) Do(f func()) { 2\tif atomic.LoadUint32(\u0026o.done) == 0 { 3\t// Outlined slow-path to allow inlining of the fast-path. 4\to.doSlow(f) 5\t} 6} 对一个可寻址的sync.Once值 o，o.Do() 方法调用可以在多个协程中被多次并发地执行，方法调用的实参应该为同一个函数值。最终，有且只有一个调用的实参函数被调用。被调用的实参函数内的代码将在任何o.Do()方法返回调用之前被执行。\n简单来说，sync.Once被用来确保一段代码在一个并发程序中被执行且仅被执行一次，常用于单例模式。\n1func main() { 2\tvar once sync.Once 3\tonceBody := func() { 4\tfmt.Println(\"Only Once\") 5\t} 6\tdoneChan := make(chan bool) 7\tfor i := 0; i \u003c 10; i++ { 8\tgo func() { 9\tonce.Do(onceBody) 10\tdoneChan \u003c- true 11\t}() 12\t} 13 14\tfor i := 0; i \u003c 10; i++ { 15\t\u003c- doneChan 16\t} 17} 18 19// Only Once 3. Mutex Go 语言包中的 sync 包提供了两种锁类型：sync.Mutex 和 sync.RWMutex。\nMutex 是最简单的一种锁类型 —— 互斥锁，同时也比较暴力，当一个 Goroutine 获得了 Mutex 后，其他 Goroutine 就只能等到该 Goroutine 释放 Mutex。\n互斥锁是传统并发编程对共享资源进行访问控制的主要手段，它由标准库 sync 中的 Mutex 结构体类型表示。sync.Mutex 类型只有两个公开的指针方法：Lock 和 Unlock。\nLock 锁定当前的共享资源 Unlock 进行解锁 1// A Mutex is a mutual exclusion lock. 2// The zero value for a Mutex is an unlocked mutex. 3// 4// A Mutex must not be copied after first use. 5type Mutex struct { 6 state int32 7 sema uint32 8} 9 10// Lock locks m. 11// If the lock is already in use, the calling goroutine 12// blocks until the mutex is available. 13func (m *Mutex) Lock() { 14\t// Fast path: grab unlocked mutex. 15\tif atomic.CompareAndSwapInt32(\u0026m.state, 0, mutexLocked) { 16\tif race.Enabled { 17\trace.Acquire(unsafe.Pointer(m)) 18\t} 19\treturn 20\t} 21\t// Slow path (outlined so that the fast path can be inlined) 22\tm.lockSlow() 23} 24 25// Unlock unlocks m. 26// It is a run-time error if m is not locked on entry to Unlock. 27// 28// A locked Mutex is not associated with a particular goroutine. 29// It is allowed for one goroutine to lock a Mutex and then 30// arrange for another goroutine to unlock it. 31func (m *Mutex) Unlock() { 32\tif race.Enabled { 33\t_ = m.state 34\trace.Release(unsafe.Pointer(m)) 35\t} 36 37\t// Fast path: drop lock bit. 38\tnew := atomic.AddInt32(\u0026m.state, -mutexLocked) 39\tif new != 0 { 40\t// Outlined slow path to allow inlining the fast path. 41\t// To hide unlockSlow during tracing we skip one extra frame when tracing GoUnblock. 42\tm.unlockSlow(new) 43\t} 44} 3.1 RWMutex RWMutex 是读写锁，该锁可以由任意数量的读者或单个写者持有。RWMutex 的零值是未锁定的互斥锁。RWMutex 被第一次使用后不得复制。\n如果一个 Goroutine 持有一个 RWMutex 的读锁并且另一个 Goroutine 可能会调用 Lock，那么在前面的读锁被释放之前，任何 Goroutine 都不应该期望能够获取读锁。\n特别的，禁止递归占有读锁，这是为了确保锁最终会被释放；被阻塞的 Lock 调用会将新的读者排除在获取锁之外。\nrwm.RLock()：上读锁 rwm.RUnlock()：解读锁 rwm.Lock()：上锁 rwm.Unlock()：解锁 总结为如下三条：\n同时只能有一个 Goroutine 能够获得写锁 同时可以有任意多个 Gorouinte 获得读锁 同时只能存在写锁或读锁（读和写互斥） 因此，RWMutex 经常用于读远远多于写的场景。\n4. Map sync.Map 对于多个 Goroutine 并发使用是安全的，无需额外的锁定或协调。Load、Store 和 Delete 在分摊常数时间内运行。\nsync.Map 针对两种常见用例进行了优化：\n当给定 key 的条目只写入一次但读取多次 当多个 Goroutine 读取、写入和覆盖不相交的 key 集的条目 在这两种情况下，与使用单独的 Mutex 或 RWMutex 配对的 Go map 相比，使用 Map 可以显着减少锁的竞争。\n1type Map struct { 2\tmu Mutex 3\tread atomic.Value // readOnly 4\tdirty map[interface{}]*entry 5\tmisses int 6} m.Load(k) (v, ok)：并发安全的 get。 m.Store(k, v)：并发安全的 put。 m.Delete(k)：并发安全的 delete。 m.LoadAndDelete(k) (v, loaded)：LoadAndDelete 删除键的值，如果之前有值，则返回之前的值，loaded 表示是否有之前的值。 m.LoadAndStore(k, v) (actual, loaded)：LoadOrStore 返回键的现有值（如果存在）。否则，它存储并返回给定的值。loaded 为 true 表示返回现有值，loaded 为 false 表示存储给定值。 m.Range(func(k, v) bool)：按照传入的 func 规则遍历 Map。 1func main() { 2\tm := sync.Map{} 3\tgo func() { 4\tm.Store(1,2) 5\tfmt.Println(m.Load(1)) 6\t}() 7\tgo func() { 8\tm.Store(1,2) 9\tfmt.Println(m.Load(1)) 10\t}() 11\tfmt.Println(m.Load(1)) 12\ttime.Sleep(5 * time.Second) 13} 参考资料 https://hedon954.github.io/noteSite/backend/golang/standard_packages/sync.html ",
+  "wordCount" : "1976",
+  "inLanguage": "zh",
+  "datePublished": "2024-02-13T16:09:19+08:00",
+  "dateModified": "2024-02-13T16:09:19+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/tech/golang/golang-%E6%A0%87%E5%87%86%E5%BA%93-sync/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "xgbt's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/assets/apple-icon.png"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/" title="🏠主页">
+                    <span>🏠主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/search" title="🔍搜索">
+                    <span>🔍搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags" title="🏷️标签">
+                    <span>🏷️标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives" title="📦归档">
+                    <span>📦归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Golang 标准库丨sync
+    </h1>
+    <div class="post-meta"><span title='2024-02-13 16:09:19 +0800 CST'>二月 13, 2024</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+        <div class="toc">
+            <details  open>
+                <summary accesskey="c" title="(Alt + C)">
+                    <span class="details">目录</span>
+                </summary>
+
+                <div class="inner"><ul>
+                        <li>
+                            <a href="#1-waitgroup" aria-label="1. WaitGroup">1. WaitGroup</a></li>
+                        <li>
+                            <a href="#2-once" aria-label="2. Once">2. Once</a></li>
+                        <li>
+                            <a href="#3-mutex" aria-label="3. Mutex">3. Mutex</a><ul>
+                                    
+                        <li>
+                            <a href="#31-rwmutex" aria-label="3.1 RWMutex">3.1 RWMutex</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#4-map" aria-label="4. Map">4. Map</a></li>
+                        <li>
+                            <a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99" aria-label="参考资料">参考资料</a>
+                        </li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </aside>
+    <script>
+        let activeElement;
+        let elements;
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            checkTocPosition();
+
+            elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+            if (elements.length > 0) {
+                
+                activeElement = elements[0];
+                const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+                document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+            }
+
+            
+            const topLink = document.getElementById('top-link');
+            if (topLink) {
+                topLink.addEventListener('click', (event) => {
+                    
+                    event.preventDefault();
+
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        }, false);
+
+        window.addEventListener('resize', function (event) {
+            checkTocPosition();
+        }, false);
+
+        window.addEventListener('scroll', () => {
+            
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+            
+            if (scrollPosition === 0) {
+                return;
+            }
+
+            
+            if (elements && elements.length > 0) {
+                
+                activeElement = Array.from(elements).find((element) => {
+                    if ((getOffsetTop(element) - scrollPosition) > 0 &&
+                        (getOffsetTop(element) - scrollPosition) < window.innerHeight / 2) {
+                        return element;
+                    }
+                }) || activeElement;
+
+                elements.forEach(element => {
+                    const id = encodeURI(element.getAttribute('id')).toLowerCase();
+                    const tocLink = document.querySelector(`.inner ul li a[href="#${id}"]`);
+                    if (element === activeElement) {
+                        tocLink.classList.add('active');
+
+                        
+                        const tocContainer = document.querySelector('.toc .inner');
+                        const linkOffsetTop = tocLink.offsetTop;
+                        const containerHeight = tocContainer.clientHeight;
+                        const linkHeight = tocLink.clientHeight;
+
+                        
+                        const scrollPosition = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
+                        tocContainer.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+                    } else {
+                        tocLink.classList.remove('active');
+                    }
+                });
+            }
+        }, false);
+
+        const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+        const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+        const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+        function checkTocPosition() {
+            const width = document.body.scrollWidth;
+
+            if (width - main - (toc * 2) - (gap * 4) > 0) {
+                document.getElementById("toc-container").classList.add("wide");
+            } else {
+                document.getElementById("toc-container").classList.remove("wide");
+            }
+        }
+
+        function getOffsetTop(element) {
+            if (!element.getClientRects().length) {
+                return 0;
+            }
+            let rect = element.getBoundingClientRect();
+            let win = element.ownerDocument.defaultView;
+            return rect.top + win.pageYOffset;
+        }
+
+    </script>
+  <div class="post-content"><h1 id="1-waitgroup">1. WaitGroup<a hidden class="anchor" aria-hidden="true" href="#1-waitgroup">#</a></h1>
+<p>WaitGroup 等待一组 Goroutine 完成。主 Goroutine 调用 Add(delta) 来设置要等待的 Goroutine 的数量。然后每个 Goroutine 运行并在完成时调用 Done()。同时，可以使用 Wait() 来阻塞，直到所有 Goroutine 完成。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">type</span> <span class="nx">WaitGroup</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="nx">noCopy</span> <span class="nx">noCopy</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="c1">// 64-bit value: high 32 bits are counter, low 32 bits are waiter count.
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"></span>	<span class="c1">// 64-bit atomic operations require 64-bit alignment, but 32-bit
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="c1"></span>	<span class="c1">// compilers do not ensure it. So we allocate 12 bytes and then use
+</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1"></span>	<span class="c1">// the aligned 8 bytes in them as state, and the other 4 as storage
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="c1"></span>	<span class="c1">// for the sema.
+</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c1"></span>	<span class="nx">state1</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="kt">uint32</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><ul>
+<li><strong>wg.Add(delta int)</strong>：Add 将 delta（可能为负）添加到 WaitGroup 计数器。如果计数器变为 0，所有在 Wait 时阻塞的 Goroutine 将被释放。如果计数器变成负值，Add 会 panic。</li>
+<li><strong>wg.Done()</strong>：当 WaitGroup 同步等待组中的某个 Goroutine 执行完毕后，设置这个 WaitGroup 的 counter 数值减 1，其实就是调用了 Add(-1)。</li>
+<li><strong>wg.Wait()</strong>：表示让当前的 Goroutine 等待，进入阻塞状态。一直到 WaitGroup 的计数器为 0，才能解除阻塞，这个 Goroutine 才能继续执行。</li>
+</ul>
+<p>总之，<strong>WaitGroup 让某个协程等待其它若干协程都先完成它们各自的任务</strong>。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="kd">const</span> <span class="nx">N</span> <span class="p">=</span> <span class="mi">5</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="kd">var</span> <span class="nx">values</span> <span class="p">[</span><span class="nx">N</span><span class="p">]</span><span class="kt">int64</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="kd">var</span> <span class="nx">wg</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">N</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="nx">i</span> <span class="o">:=</span> <span class="nx">i</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">		<span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">		<span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">			<span class="nx">values</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="mi">50</span> <span class="o">+</span> <span class="nx">rand</span><span class="p">.</span><span class="nf">Int63n</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">			<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Done:&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">			<span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">()</span> <span class="c1">// &lt;=&gt; wg.Add(-1)
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="c1"></span>		<span class="p">}()</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">	<span class="nx">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">	<span class="c1">// 所有的元素都保证被初始化了。
+</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;values:&#34;</span><span class="p">,</span> <span class="nx">values</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h1 id="2-once">2. Once<a hidden class="anchor" aria-hidden="true" href="#2-once">#</a></h1>
+<p>Once 是只执行一次的对象。Once 使用后不能复制。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">type</span> <span class="nx">Once</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">   <span class="c1">// done indicates whether the action has been performed.
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span>   <span class="c1">// It is first in the struct because it is used in the hot path.
+</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1"></span>   <span class="c1">// The hot path is inlined at every call site.
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="c1"></span>   <span class="c1">// Placing done first allows more compact instructions on some architectures (amd64/386),
+</span></span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="c1"></span>   <span class="c1">// and fewer instructions (to calculate offset) on other architectures.
+</span></span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="c1"></span>   <span class="nx">done</span> <span class="kt">uint32</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl">   <span class="nx">m</span>    <span class="nx">Mutex</span>
+</span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Once 只有一个 <code>Do(f func())</code> 方法，该方法只有一个类型为<code>func()</code>的参数。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">o</span> <span class="o">*</span><span class="nx">Once</span><span class="p">)</span> <span class="nf">Do</span><span class="p">(</span><span class="nx">f</span> <span class="kd">func</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">	<span class="k">if</span> <span class="nx">atomic</span><span class="p">.</span><span class="nf">LoadUint32</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">o</span><span class="p">.</span><span class="nx">done</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">		<span class="c1">// Outlined slow-path to allow inlining of the fast-path.
+</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1"></span>		<span class="nx">o</span><span class="p">.</span><span class="nf">doSlow</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>对一个可寻址的<code>sync.Once</code>值 o，<code>o.Do()</code> 方法调用可以在多个协程中被多次并发地执行，<strong>方法调用的实参应该为同一个函数值</strong>。最终，有且只有一个调用的实参函数被调用。被调用的实参函数内的代码将在任何<code>o.Do()</code>方法返回调用之前被执行。</p>
+<p>简单来说，<strong><code>sync.Once</code>被用来确保一段代码在一个并发程序中被执行且仅被执行一次，常用于单例模式。</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="kd">var</span> <span class="nx">once</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Once</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="nx">onceBody</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Only Once&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="nx">doneChan</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">bool</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">		<span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">			<span class="nx">once</span><span class="p">.</span><span class="nf">Do</span><span class="p">(</span><span class="nx">onceBody</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">			<span class="nx">doneChan</span> <span class="o">&lt;-</span> <span class="kc">true</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">		<span class="p">}()</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">
+</span></span><span class="line"><span class="ln">14</span><span class="cl">	<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">		<span class="o">&lt;-</span> <span class="nx">doneChan</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">
+</span></span><span class="line"><span class="ln">19</span><span class="cl"><span class="c1">// Only Once
+</span></span></span></code></pre></div><h1 id="3-mutex">3. Mutex<a hidden class="anchor" aria-hidden="true" href="#3-mutex">#</a></h1>
+<p>Go 语言包中的 sync 包提供了两种锁类型：sync.Mutex 和 sync.RWMutex。</p>
+<p>Mutex 是最简单的一种锁类型 —— <strong>互斥锁</strong>，同时也比较暴力，当一个 Goroutine 获得了 Mutex 后，其他 Goroutine 就只能等到该 Goroutine 释放 Mutex。</p>
+<p>互斥锁是传统并发编程对共享资源进行访问控制的主要手段，它由标准库 sync 中的 Mutex 结构体类型表示。sync.Mutex 类型只有两个公开的指针方法：Lock 和 Unlock。</p>
+<ul>
+<li>Lock 锁定当前的共享资源</li>
+<li>Unlock 进行解锁</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// A Mutex is a mutual exclusion lock.
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1">// The zero value for a Mutex is an unlocked mutex.
+</span></span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="c1">//
+</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1">// A Mutex must not be copied after first use.
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">Mutex</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">   <span class="nx">state</span> <span class="kt">int32</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">   <span class="nx">sema</span>  <span class="kt">uint32</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1">// Lock locks m.
+</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="c1">// If the lock is already in use, the calling goroutine
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="c1">// blocks until the mutex is available.
+</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Mutex</span><span class="p">)</span> <span class="nf">Lock</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">	<span class="c1">// Fast path: grab unlocked mutex.
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="nx">atomic</span><span class="p">.</span><span class="nf">CompareAndSwapInt32</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">state</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">mutexLocked</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">		<span class="k">if</span> <span class="nx">race</span><span class="p">.</span><span class="nx">Enabled</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">			<span class="nx">race</span><span class="p">.</span><span class="nf">Acquire</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">m</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">		<span class="k">return</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">	<span class="c1">// Slow path (outlined so that the fast path can be inlined)
+</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="c1"></span>	<span class="nx">m</span><span class="p">.</span><span class="nf">lockSlow</span><span class="p">()</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">
+</span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="c1">// Unlock unlocks m.
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="c1">// It is a run-time error if m is not locked on entry to Unlock.
+</span></span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="c1">//
+</span></span></span><span class="line"><span class="ln">28</span><span class="cl"><span class="c1">// A locked Mutex is not associated with a particular goroutine.
+</span></span></span><span class="line"><span class="ln">29</span><span class="cl"><span class="c1">// It is allowed for one goroutine to lock a Mutex and then
+</span></span></span><span class="line"><span class="ln">30</span><span class="cl"><span class="c1">// arrange for another goroutine to unlock it.
+</span></span></span><span class="line"><span class="ln">31</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Mutex</span><span class="p">)</span> <span class="nf">Unlock</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">	<span class="k">if</span> <span class="nx">race</span><span class="p">.</span><span class="nx">Enabled</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">33</span><span class="cl">		<span class="nx">_</span> <span class="p">=</span> <span class="nx">m</span><span class="p">.</span><span class="nx">state</span>
+</span></span><span class="line"><span class="ln">34</span><span class="cl">		<span class="nx">race</span><span class="p">.</span><span class="nf">Release</span><span class="p">(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="nx">m</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">35</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">36</span><span class="cl">
+</span></span><span class="line"><span class="ln">37</span><span class="cl">	<span class="c1">// Fast path: drop lock bit.
+</span></span></span><span class="line"><span class="ln">38</span><span class="cl"><span class="c1"></span>	<span class="nx">new</span> <span class="o">:=</span> <span class="nx">atomic</span><span class="p">.</span><span class="nf">AddInt32</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">state</span><span class="p">,</span> <span class="o">-</span><span class="nx">mutexLocked</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">39</span><span class="cl">	<span class="k">if</span> <span class="nx">new</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">40</span><span class="cl">		<span class="c1">// Outlined slow path to allow inlining the fast path.
+</span></span></span><span class="line"><span class="ln">41</span><span class="cl"><span class="c1"></span>		<span class="c1">// To hide unlockSlow during tracing we skip one extra frame when tracing GoUnblock.
+</span></span></span><span class="line"><span class="ln">42</span><span class="cl"><span class="c1"></span>		<span class="nx">m</span><span class="p">.</span><span class="nf">unlockSlow</span><span class="p">(</span><span class="nx">new</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">43</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">44</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="31-rwmutex">3.1 RWMutex<a hidden class="anchor" aria-hidden="true" href="#31-rwmutex">#</a></h2>
+<p>RWMutex 是读写锁，该锁可以由任意数量的读者或单个写者持有。RWMutex 的零值是未锁定的互斥锁。RWMutex 被第一次使用后不得复制。</p>
+<p>如果一个 Goroutine 持有一个 RWMutex 的读锁并且另一个 Goroutine 可能会调用 Lock，那么在前面的读锁被释放之前，任何 Goroutine 都不应该期望能够获取读锁。</p>
+<p>特别的，禁止递归占有读锁，这是为了确保锁最终会被释放；被阻塞的 Lock 调用会将新的读者排除在获取锁之外。</p>
+<ul>
+<li><strong>rwm.RLock()</strong>：上读锁</li>
+<li><strong>rwm.RUnlock()</strong>：解读锁</li>
+<li><strong>rwm.Lock()</strong>：上锁</li>
+<li><strong>rwm.Unlock()</strong>：解锁</li>
+</ul>
+<p>总结为如下三条：</p>
+<ol>
+<li>同时只能有一个 Goroutine 能够获得写锁</li>
+<li>同时可以有任意多个 Gorouinte 获得读锁</li>
+<li>同时只能存在写锁或读锁（读和写互斥）</li>
+</ol>
+<p>因此，RWMutex 经常用于读远远多于写的场景。</p>
+<h1 id="4-map">4. Map<a hidden class="anchor" aria-hidden="true" href="#4-map">#</a></h1>
+<p>sync.Map 对于多个 Goroutine 并发使用是安全的，无需额外的锁定或协调。Load、Store 和 Delete 在分摊常数时间内运行。</p>
+<p>sync.Map 针对两种常见用例进行了优化：</p>
+<ol>
+<li>当给定 key 的条目只写入一次但读取多次</li>
+<li>当多个 Goroutine 读取、写入和覆盖不相交的 key 集的条目</li>
+</ol>
+<p>在这两种情况下，与使用单独的 Mutex 或 RWMutex 配对的 Go map 相比，使用 Map 可以显着减少锁的竞争。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">type</span> <span class="nx">Map</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">	<span class="nx">mu</span> <span class="nx">Mutex</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">	<span class="nx">read</span> <span class="nx">atomic</span><span class="p">.</span><span class="nx">Value</span> <span class="c1">// readOnly
+</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1"></span>	<span class="nx">dirty</span> <span class="kd">map</span><span class="p">[</span><span class="kd">interface</span><span class="p">{}]</span><span class="o">*</span><span class="nx">entry</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">	<span class="nx">misses</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><ul>
+<li><strong>m.Load(k) (v, ok)</strong>：并发安全的 get。</li>
+<li><strong>m.Store(k, v)</strong>：并发安全的 put。</li>
+<li><strong>m.Delete(k)</strong>：并发安全的 delete。</li>
+<li><strong>m.LoadAndDelete(k) (v, loaded)</strong>：LoadAndDelete 删除键的值，如果之前有值，则返回之前的值，loaded 表示是否有之前的值。</li>
+<li><strong>m.LoadAndStore(k, v) (actual, loaded)</strong>：LoadOrStore 返回键的现有值（如果存在）。否则，它存储并返回给定的值。loaded 为 true 表示返回现有值，loaded 为 false 表示存储给定值。</li>
+<li><strong>m.Range(func(k, v) bool)</strong>：按照传入的 func 规则遍历 Map。</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="nx">m</span> <span class="o">:=</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">Map</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">		<span class="nx">m</span><span class="p">.</span><span class="nf">Store</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nf">Load</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="p">}()</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">		<span class="nx">m</span><span class="p">.</span><span class="nf">Store</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nf">Load</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="p">}()</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">m</span><span class="p">.</span><span class="nf">Load</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h1 id="参考资料">参考资料<a hidden class="anchor" aria-hidden="true" href="#参考资料">#</a></h1>
+<ol>
+<li><a href="https://hedon954.github.io/noteSite/backend/golang/standard_packages/sync.html">https://hedon954.github.io/noteSite/backend/golang/standard_packages/sync.html</a></li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="/tags/golang/">Golang</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>Volume 基础知识</span>
+  </a>
+  <a class="next" href="/tech/golang/golang-defer/">
+    <span class="title">下一页 »</span>
+    <br>
+    <span>Golang Defer</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制！';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
