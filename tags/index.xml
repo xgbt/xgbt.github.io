@@ -2,66 +2,66 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on xgbt&#39;s Blog</title>
-    <link>xgbt.site/tags/</link>
+    <link>/tags/</link>
     <description>Recent content in Tags on xgbt&#39;s Blog</description>
     <generator>Hugo -- 0.124.1</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 13 Nov 2024 01:09:19 +0800</lastBuildDate>
-    <atom:link href="xgbt.site/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes</title>
-      <link>xgbt.site/tags/kubernetes/</link>
+      <link>/tags/kubernetes/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>xgbt.site/tags/kubernetes/</guid>
+      <guid>/tags/kubernetes/</guid>
       <description></description>
     </item>
     <item>
       <title>Nginx</title>
-      <link>xgbt.site/tags/nginx/</link>
+      <link>/tags/nginx/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>xgbt.site/tags/nginx/</guid>
+      <guid>/tags/nginx/</guid>
       <description></description>
     </item>
     <item>
       <title>Ops</title>
-      <link>xgbt.site/tags/ops/</link>
+      <link>/tags/ops/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>xgbt.site/tags/ops/</guid>
+      <guid>/tags/ops/</guid>
       <description></description>
     </item>
     <item>
       <title>MQTT</title>
-      <link>xgbt.site/tags/mqtt/</link>
+      <link>/tags/mqtt/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>xgbt.site/tags/mqtt/</guid>
+      <guid>/tags/mqtt/</guid>
       <description></description>
     </item>
     <item>
       <title>Golang</title>
-      <link>xgbt.site/tags/golang/</link>
+      <link>/tags/golang/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>xgbt.site/tags/golang/</guid>
+      <guid>/tags/golang/</guid>
       <description></description>
     </item>
     <item>
       <title>Linux</title>
-      <link>xgbt.site/tags/linux/</link>
+      <link>/tags/linux/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>xgbt.site/tags/linux/</guid>
+      <guid>/tags/linux/</guid>
       <description></description>
     </item>
     <item>
       <title>Docker</title>
-      <link>xgbt.site/tags/docker/</link>
+      <link>/tags/docker/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>xgbt.site/tags/docker/</guid>
+      <guid>/tags/docker/</guid>
       <description></description>
     </item>
     <item>
       <title>并发编程</title>
-      <link>xgbt.site/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</link>
+      <link>/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>xgbt.site/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</guid>
+      <guid>/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</guid>
       <description></description>
     </item>
   </channel>

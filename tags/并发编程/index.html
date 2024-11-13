@@ -9,17 +9,17 @@
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="xgbt.site/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
-<link crossorigin="anonymous" href="xgbt.site/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="canonical" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
 <link rel="icon" href="/assets/apple-icon.png">
-<link rel="icon" type="image/png" sizes="16x16" href="xgbt.site/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="xgbt.site/favicon-32x32.png">
-<link rel="apple-touch-icon" href="xgbt.site/apple-touch-icon.png">
-<link rel="mask-icon" href="xgbt.site/safari-pinned-tab.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="xgbt.site/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/index.xml">
-<link rel="alternate" hreflang="zh" href="xgbt.site/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
+<link rel="alternate" type="application/rss+xml" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/index.xml">
+<link rel="alternate" hreflang="zh" href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
 <noscript>
     <style>
         #theme-toggle,
@@ -66,7 +66,7 @@
     rel="stylesheet"><meta property="og:title" content="并发编程" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="xgbt.site/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" />
+<meta property="og:url" content="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="并发编程"/>
@@ -89,7 +89,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="xgbt.site/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -115,22 +115,22 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="xgbt.site/xgbt.site/" title="🏠主页">
+                <a href="/" title="🏠主页">
                     <span>🏠主页</span>
                 </a>
             </li>
             <li>
-                <a href="xgbt.site/xgbt.site/search" title="🔍搜索">
+                <a href="/search" title="🔍搜索">
                     <span>🔍搜索</span>
                 </a>
             </li>
             <li>
-                <a href="xgbt.site/xgbt.site/tags" title="🏷️标签">
+                <a href="/tags" title="🏷️标签">
                     <span>🏷️标签</span>
                 </a>
             </li>
             <li>
-                <a href="xgbt.site/xgbt.site/archives" title="📦归档">
+                <a href="/archives" title="📦归档">
                     <span>📦归档</span>
                 </a>
             </li>
@@ -138,7 +138,7 @@
     </nav>
 </header>
 <main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="xgbt.site/">主页</a>&nbsp;»&nbsp;<a href="xgbt.site/tags/">Tags</a></div>
+<header class="page-header"><div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tags/">Tags</a></div>
   <h1>
     并发编程
   </h1>
@@ -153,7 +153,7 @@
     <p>并发过高导致程序崩溃 1func main() { 2 var wg sync.WaitGroup 3 for i := 0; i &lt; math.MaxInt32; i&#43;&#43; { 4 wg.Add(1) 5 go func(i int) { 6 defer wg.Done() 7 fmt.Println(i) 8 time.Sleep(time.Second) 9 }(i) 10 } 11 wg.Wait() 12} 1goroutine 1489841 [running]: 2internal/poll.(*fdMutex).rwlock(0xc000130060, 0x0?) 3 /usr/local/go/src/internal/poll/fd_mutex.go:147 &#43;0x11b 4internal/poll.(*FD).writeLock(...) 5 /usr/local/go/src/internal/poll/fd_mutex.go:239 6internal/poll.(*FD).Write(0xc000130060, {0xc0ca328a90, 0x8, 0x8}) 7 /usr/local/go/src/internal/poll/fd_unix.go:370 &#43;0x72 8os.(*File).write(...) 9 /usr/local/go/src/os/file_posix.go:48 10os.(*File).Write(0xc00012e008,...</p>
   </div>
   <footer class="entry-footer"><span title='2023-08-07 16:09:19 +0800 CST'>八月 7, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Golang 控制协程并发数量" href="xgbt.site/tech/golang/golang-%E6%8E%A7%E5%88%B6%E5%8D%8F%E7%A8%8B%E5%B9%B6%E5%8F%91%E6%95%B0%E9%87%8F/"></a>
+  <a class="entry-link" aria-label="post link to Golang 控制协程并发数量" href="/tech/golang/golang-%E6%8E%A7%E5%88%B6%E5%8D%8F%E7%A8%8B%E5%B9%B6%E5%8F%91%E6%95%B0%E9%87%8F/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -165,12 +165,12 @@
     <p>1. future/promise 1.1 单向接收 Channel 作为函数返回 sumSquares函数调用的两个实参请求并发进行。每个通道读取操作将阻塞到请求返回结果为止。 1func longTimeRequest() &lt;-chan int64 { 2 r := make(chan...</p>
   </div>
   <footer class="entry-footer"><span title='2023-08-03 16:09:19 +0800 CST'>八月 3, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Golang Channel 使用场景" href="xgbt.site/tech/golang/golang-channel-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/"></a>
+  <a class="entry-link" aria-label="post link to Golang Channel 使用场景" href="/tech/golang/golang-channel-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/"></a>
 </article>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="xgbt.site/">xgbt&#39;s Blog</a></span> · 
+        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
 
     <span>
         Powered by

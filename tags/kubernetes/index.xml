@@ -2,94 +2,94 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Kubernetes on xgbt&#39;s Blog</title>
-    <link>xgbt.site/tags/kubernetes/</link>
+    <link>/tags/kubernetes/</link>
     <description>Recent content in Kubernetes on xgbt&#39;s Blog</description>
     <generator>Hugo -- 0.124.1</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 13 Nov 2024 01:09:19 +0800</lastBuildDate>
-    <atom:link href="xgbt.site/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes 1.29.6 高可用集群部署</title>
-      <link>xgbt.site/tech/kubernetes/kubernetes-1.29.6-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/</link>
+      <link>/tech/kubernetes/kubernetes-1.29.6-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/</link>
       <pubDate>Wed, 13 Nov 2024 01:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/kubernetes-1.29.6-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/</guid>
+      <guid>/tech/kubernetes/kubernetes-1.29.6-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/</guid>
       <description>架构设计 OS: AlmaLinux 9.1 节点名 IP 地址 zqf-Master01 10.101.5.110 zqf-Master02 10.101.5.111 zqf-Master03 10.101.5.112 zqf-Worker01 10.101.5.113 zqf-Worker02 10.101.5.114 zqf-Worker03 10.101.5.115 zqf-Worker04 10.101.5.116 1. 所有节点操作 1.1 基础配置 1.1.1 配置镜像源 1sed -e &amp;#39;s|^mirrorlist=|#mirrorlist=|g&amp;#39; \ 2 -e &amp;#39;s|^#\s*baseurl=https://repo.almalinux.org/almalinux|baseurl=https://mirrors.zju.edu.cn/almalinux|g&amp;#39; \ 3 -i.bak \ 4 /etc/yum.repos.d/almalinux-*.repo 1dnf makecache 1.1.2 配置主机名 1hostnamectl set-hostname &amp;l</description>
     </item>
     <item>
       <title>基于 Kubeadm 手动更新证书</title>
-      <link>xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-kubeadm-%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%96%B0%E8%AF%81%E4%B9%A6/</link>
+      <link>/tech/kubernetes/%E5%9F%BA%E4%BA%8E-kubeadm-%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%96%B0%E8%AF%81%E4%B9%A6/</link>
       <pubDate>Tue, 15 Oct 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-kubeadm-%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%96%B0%E8%AF%81%E4%B9%A6/</guid>
+      <guid>/tech/kubernetes/%E5%9F%BA%E4%BA%8E-kubeadm-%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%96%B0%E8%AF%81%E4%B9%A6/</guid>
       <description>检查证书是否过期 1kubeadm certs check-expiration 该命令显示 /etc/kubernetes/pki 文件夹中的客户端证书以及 kubeadm（admin.conf、controller-manager.con</description>
     </item>
     <item>
       <title>基于 imagePullSecret 下载私有镜像仓库制品</title>
-      <link>xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-imagepullsecret-%E4%B8%8B%E8%BD%BD%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E5%88%B6%E5%93%81/</link>
+      <link>/tech/kubernetes/%E5%9F%BA%E4%BA%8E-imagepullsecret-%E4%B8%8B%E8%BD%BD%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E5%88%B6%E5%93%81/</link>
       <pubDate>Sun, 15 Sep 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-imagepullsecret-%E4%B8%8B%E8%BD%BD%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E5%88%B6%E5%93%81/</guid>
+      <guid>/tech/kubernetes/%E5%9F%BA%E4%BA%8E-imagepullsecret-%E4%B8%8B%E8%BD%BD%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E5%88%B6%E5%93%81/</guid>
       <description>Docker 登录私有仓库 首先配置私有仓库免 ssl 验证 1{ 2 &amp;#34;insecure-registries&amp;#34;: [&amp;#34;szharbor.xxx.cn&amp;#34;] 3} 输入用户名密码并登录 1docker login szharbor.xxx.cn 查看登录成功后的 Docker 认证文件 1cat ~/.docker/config.json 1{ 2 &amp;#34;auths&amp;#34;: { 3 &amp;#34;szharbor.xxx.cn&amp;#34;: { 4 &amp;#34;auth&amp;#34;: &amp;#34;cm...nVVM=&amp;#34; 5 } 6 } 7} 压缩，</description>
     </item>
     <item>
       <title>K8s 网络模型基础知识</title>
-      <link>xgbt.site/tech/kubernetes/k8s-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
+      <link>/tech/kubernetes/k8s-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
       <pubDate>Sat, 24 Aug 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/k8s-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
+      <guid>/tech/kubernetes/k8s-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
       <description>Kubernetes 网络的功能： 高度耦合的容器间通信：这个已经被 Pods 和 localhost 通信解决了。 Pod 间通信； Pod 和 Service 对象间通信； 外部和 Service 对象间通信； Kubernetes 本身的网络服务自带了一下功</description>
     </item>
     <item>
       <title>使用 NFS 作为 K8s 存储插件</title>
-      <link>xgbt.site/tech/kubernetes/%E4%BD%BF%E7%94%A8-nfs-%E4%BD%9C%E4%B8%BA-k8s-%E5%AD%98%E5%82%A8%E6%8F%92%E4%BB%B6/</link>
+      <link>/tech/kubernetes/%E4%BD%BF%E7%94%A8-nfs-%E4%BD%9C%E4%B8%BA-k8s-%E5%AD%98%E5%82%A8%E6%8F%92%E4%BB%B6/</link>
       <pubDate>Sat, 24 Aug 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/%E4%BD%BF%E7%94%A8-nfs-%E4%BD%9C%E4%B8%BA-k8s-%E5%AD%98%E5%82%A8%E6%8F%92%E4%BB%B6/</guid>
+      <guid>/tech/kubernetes/%E4%BD%BF%E7%94%A8-nfs-%E4%BD%9C%E4%B8%BA-k8s-%E5%AD%98%E5%82%A8%E6%8F%92%E4%BB%B6/</guid>
       <description>1. 基础配置 首先，在所有 master 节点和 worker 节点上安装 nfs-utils. 1sudo yum -y install nfs-utils 2systemctl enable nfs-utils 2. NFS Server 配置 服务端安装 nfs-utils 和 rpcbind 1sudo yum -y install nfs-utils rpcbind 2systemctl enable nfs-utils 3systemctl enable rpcbind 创建共享目录 1mkdir /hc-data/nfs **创建并修改</description>
     </item>
     <item>
       <title>K8s 下线节点流程</title>
-      <link>xgbt.site/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/</link>
+      <link>/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/</link>
       <pubDate>Sun, 14 Apr 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/</guid>
+      <guid>/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/</guid>
       <description>将节点设置为不可调度，防止新的Pod调度到该节点上。 1kubectl cordon &amp;lt;节点名&amp;gt; 排空节点上的Pod 1 kubectl drain &amp;lt;节点名&amp;gt; --ignore-daemonsets --delete-emptydir-data &amp;ndash</description>
     </item>
     <item>
       <title>K8s 启用 ipvs 模式</title>
-      <link>xgbt.site/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/</link>
+      <link>/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Sat, 13 Apr 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/</guid>
+      <guid>/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/</guid>
       <description>安装 ipvs 1# 安装 ipvs 相关软件包 2yum install ipvsadm ipset sysstat conntrack libseccomp 3 4# 载入模块 5modprobe -- ip_vs 6modprobe -- ip_vs_rr 7modprobe -- ip_vs_wrr 8modprobe -- ip_vs_sh 9modprobe -- nf_conntrack 10 11# 创建ipvs.conf，设置内核模块的自动载入。 12cat &amp;lt;&amp;lt;EOF &amp;gt; /etc/modules-load.d/ipvs.conf</description>
     </item>
     <item>
       <title>K8s 修改 NodePort 默认范围</title>
-      <link>xgbt.site/tech/kubernetes/k8s-%E4%BF%AE%E6%94%B9-nodeport-%E9%BB%98%E8%AE%A4%E8%8C%83%E5%9B%B4/</link>
+      <link>/tech/kubernetes/k8s-%E4%BF%AE%E6%94%B9-nodeport-%E9%BB%98%E8%AE%A4%E8%8C%83%E5%9B%B4/</link>
       <pubDate>Thu, 21 Mar 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/k8s-%E4%BF%AE%E6%94%B9-nodeport-%E9%BB%98%E8%AE%A4%E8%8C%83%E5%9B%B4/</guid>
+      <guid>/tech/kubernetes/k8s-%E4%BF%AE%E6%94%B9-nodeport-%E9%BB%98%E8%AE%A4%E8%8C%83%E5%9B%B4/</guid>
       <description>K8S 集群中 NodePort 默认范围为 30000-32767。 若要修改此范围，依次修改 Master 节点上的 /etc/kubernetes/manifests/kube-apiserver.yaml 文件。 1# 备份配置文件 2cp kube-apiserver.yaml kube-apiserver.yaml.bak 3vi kube-apiserver.yaml 4..... 5 Host Port: &amp;lt;none&amp;gt; 6 Command: 7 kube-apiserver 8 - --service-cluster-ip-range=10.96.0.0/12 9# 插入</description>
     </item>
     <item>
       <title>理解与使用 Container Capabilities</title>
-      <link>xgbt.site/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/</link>
+      <link>/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/</link>
       <pubDate>Tue, 19 Mar 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/</guid>
+      <guid>/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/</guid>
       <description>在使用 K8S 过程中，偶尔会遇到如下所示的一段配置： 1securityContext: 2 capabilities: 3 drop: 4 - ALL 5 add: 6 - NET_BIND_SERVICE 实际上这是配置对应的容器的 Capabilities，在我们使用 docker run 的</description>
     </item>
     <item>
       <title>Volume 基础知识</title>
-      <link>xgbt.site/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
+      <link>/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
       <pubDate>Fri, 15 Mar 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
+      <guid>/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
       <description>数据卷（Volume）是 Pod 与外部存储设备进行数据传递的通道，也是 Pod 内部容器间、Pod 与Pod 间、Pod 与外部环境进行数据共享的方式。 Volume 定义了</description>
     </item>
     <item>
       <title>K8s Pod 基础知识</title>
-      <link>xgbt.site/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
+      <link>/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
       <pubDate>Wed, 31 Jan 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
+      <guid>/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
       <description>Pod 是 K8s 集群中创建和管理的、最小的可部署的计算单元。K8s 不会直接操作容器，而是通过 Pod 封装了容器，集群通过管控 Pod ，便可控制容器的存储、网络等资</description>
     </item>
     <item>
       <title>基于 Velero 备份与恢复 K8s 集群</title>
-      <link>xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/</link>
+      <link>/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/</guid>
+      <guid>/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/</guid>
       <description>Velero 安装步骤 客户端 https://github.com/vmware-tanzu/velero/releases 下载并安装最新版本二进制客户端。 1cp velero /usr/local/bin &amp;amp;&amp;amp; chmod +x /usr/local/bin/velero 2 3velero version 4Client: 5 Version: v1.13.2 6 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 7&amp;lt;error getting server version: no matches for kind &amp;#34;ServerStatusRequest&amp;#34; in version &amp;#34;velero.io/v1&amp;#34;&amp;gt; 服务端 准备好秘钥文件 credentials-velero ，即 MinIO 的</description>
     </item>
   </channel>

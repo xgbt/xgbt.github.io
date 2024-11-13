@@ -2,45 +2,45 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Ops on xgbt&#39;s Blog</title>
-    <link>xgbt.site/tags/ops/</link>
+    <link>/tags/ops/</link>
     <description>Recent content in Ops on xgbt&#39;s Blog</description>
     <generator>Hugo -- 0.124.1</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 29 May 2024 16:09:19 +0800</lastBuildDate>
-    <atom:link href="xgbt.site/tags/ops/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/ops/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nginx 实现 GPT 流式传输</title>
-      <link>xgbt.site/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</link>
+      <link>/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</link>
       <pubDate>Wed, 29 May 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</guid>
+      <guid>/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</guid>
       <description>核心参数 1proxy_buffering off; 该指令使 Nginx 不缓冲来自上游服务器的响应，而是立即将其发送给客户端。适合需要实时或流式传输数据的场景非常有用，比如实时聊天、流媒体等</description>
     </item>
     <item>
       <title>CVE-2008-5161 OpenSSH CBC模式信息泄露漏洞</title>
-      <link>xgbt.site/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</link>
+      <link>/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</link>
       <pubDate>Thu, 04 Jan 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</guid>
+      <guid>/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</guid>
       <description>升级 OpenSSH 从选择一个最新的版本 https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/ 1# 获取最新版本 openssh 2wget --no-check-certificate https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.7p1.tar.gz 3 4# 解压 5tar -zxvf openssh-9.7p1.tar.gz 6 7# 安装相关需要组件 8yum -y install pam-devel gcc zlib-devel openssl-devel 9 10# 检查配置 11./configure --prefix=/usr --sysconfdir=/etc/ssh --with-zlib --with-ssl-dir=/usr/local/ssl --with-md5-passwords --mandir=/usr/share/man --with-pam 12 13# 编译安装 14make</description>
     </item>
     <item>
       <title>Jaeger 部署与使用</title>
-      <link>xgbt.site/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/</link>
+      <link>/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Mon, 11 Dec 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid>
+      <guid>/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid>
       <description>安装 Jaeger Operator 1kubectl create namespace observability 2kubectl create -f https://github.com/jaegertracing/jaeger-operator/releases/download/v1.52.0/jaeger-operator.yaml -n observability 若 rbac-proxy 安装失败，则修改 kube-rbac-prox 镜像地址为 10.101.7.108:80/open_source/kubebuilder/kube-rbac-proxy:v0.13.0 安装 Jaeger 1apiVersion: jaegertracing.io/v1 2kind: Jaeger 3metadata: 4 name: jaeger-prod 5 namespace: observability 6spec: 7 strategy: production 8 storage: 9 type: elasticsearch 10 esIndexCleaner: 11 enabled: true # turn the cron job deployment on and off 12 numberOfDays:</description>
     </item>
     <item>
       <title>Docker 网段与主机网段冲突导致网络中断</title>
-      <link>xgbt.site/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</link>
+      <link>/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</link>
       <pubDate>Mon, 09 Oct 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</guid>
+      <guid>/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</guid>
       <description>问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。 解决方案 查看路由信息 1ifconfig docker0 2 3docker0:</description>
     </item>
     <item>
       <title>Docker 安装与配置</title>
-      <link>xgbt.site/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</link>
+      <link>/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Fri, 11 Aug 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</guid>
+      <guid>/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</guid>
       <description>操作系统版本 AlmaLinux 9.3 安装 dnf-utils 1sudo dnf install -y dnf-utils 添加 Docker CE 存储库 1sudo dnf config-manager --add-repo https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo 1yum-config-manager --add-repo https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo 添加过后，执行列出 Alma Linux上可用存储库的列表 1sudo dnf repolist 把软件仓库地址替换为镜像</description>
     </item>
   </channel>
