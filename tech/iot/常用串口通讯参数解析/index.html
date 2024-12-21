@@ -5,26 +5,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Docker 网段与主机网段冲突导致网络中断 | xgbt&#39;s Blog</title>
-<meta name="keywords" content="Ops, Docker">
-<meta name="description" content="问题描述
-有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。
-解决方案
-
-查看路由信息
-
-1ifconfig docker0
-2
-3docker0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500
-4        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
-5        ether 02:42:90:e0:c1:a0  txqueuelen 0  (Ethernet)
-6        RX packets 0  bytes 0 (0.0 B)
-7        RX errors 0  dropped 0  overruns 0  frame 0
-8        TX packets 0  bytes 0 (0.0 B)
-9        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-可以看到，docker0 占用的网段为 172.17.0.1/16">
+<title>常用串口通讯参数解析 | xgbt&#39;s Blog</title>
+<meta name="keywords" content="IoT">
+<meta name="description" content="波特率 Baud Rate
+波特率是发送数据位的速度。
+PLC 设备中使用的波特率的常见值包括：1200、9600、19200、38400。
+数据位 Data Bits
+数据位是每帧中数据的位数。
+PLC 设备使用的常见值包括 7 或 8 个数据位。">
 <meta name="author" content="">
-<link rel="canonical" href="/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/">
+<link rel="canonical" href="/tech/iot/%E5%B8%B8%E7%94%A8%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
 <link rel="icon" href="/assets/apple-icon.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -33,7 +23,7 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="zh" href="/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/">
+<link rel="alternate" hreflang="zh" href="/tech/iot/%E5%B8%B8%E7%94%A8%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/">
 <noscript>
     <style>
         #theme-toggle,
@@ -77,46 +67,26 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
-    rel="stylesheet"><meta property="og:title" content="Docker 网段与主机网段冲突导致网络中断" />
-<meta property="og:description" content="问题描述
-有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。
-解决方案
-
-查看路由信息
-
-1ifconfig docker0
-2
-3docker0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500
-4        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
-5        ether 02:42:90:e0:c1:a0  txqueuelen 0  (Ethernet)
-6        RX packets 0  bytes 0 (0.0 B)
-7        RX errors 0  dropped 0  overruns 0  frame 0
-8        TX packets 0  bytes 0 (0.0 B)
-9        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-可以看到，docker0 占用的网段为 172.17.0.1/16" />
+    rel="stylesheet"><meta property="og:title" content="常用串口通讯参数解析" />
+<meta property="og:description" content="波特率 Baud Rate
+波特率是发送数据位的速度。
+PLC 设备中使用的波特率的常见值包括：1200、9600、19200、38400。
+数据位 Data Bits
+数据位是每帧中数据的位数。
+PLC 设备使用的常见值包括 7 或 8 个数据位。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/" /><meta property="article:section" content="tech" />
-<meta property="article:published_time" content="2023-10-09T16:09:19+08:00" />
-<meta property="article:modified_time" content="2023-10-09T16:09:19+08:00" />
+<meta property="og:url" content="/tech/iot/%E5%B8%B8%E7%94%A8%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/" /><meta property="article:section" content="tech" />
+<meta property="article:published_time" content="2023-10-26T16:09:19+08:00" />
+<meta property="article:modified_time" content="2023-10-26T16:09:19+08:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Docker 网段与主机网段冲突导致网络中断"/>
-<meta name="twitter:description" content="问题描述
-有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。
-解决方案
-
-查看路由信息
-
-1ifconfig docker0
-2
-3docker0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500
-4        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
-5        ether 02:42:90:e0:c1:a0  txqueuelen 0  (Ethernet)
-6        RX packets 0  bytes 0 (0.0 B)
-7        RX errors 0  dropped 0  overruns 0  frame 0
-8        TX packets 0  bytes 0 (0.0 B)
-9        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-可以看到，docker0 占用的网段为 172.17.0.1/16"/>
+<meta name="twitter:title" content="常用串口通讯参数解析"/>
+<meta name="twitter:description" content="波特率 Baud Rate
+波特率是发送数据位的速度。
+PLC 设备中使用的波特率的常见值包括：1200、9600、19200、38400。
+数据位 Data Bits
+数据位是每帧中数据的位数。
+PLC 设备使用的常见值包括 7 或 8 个数据位。"/>
 
 
 <script type="application/ld+json">
@@ -133,8 +103,8 @@
     {
       "@type": "ListItem",
       "position":  1 ,
-      "name": "Docker 网段与主机网段冲突导致网络中断",
-      "item": "/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/"
+      "name": "常用串口通讯参数解析",
+      "item": "/tech/iot/%E5%B8%B8%E7%94%A8%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/"
     }
   ]
 }
@@ -143,20 +113,20 @@
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Docker 网段与主机网段冲突导致网络中断",
-  "name": "Docker 网段与主机网段冲突导致网络中断",
-  "description": "问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。\n解决方案 查看路由信息 1ifconfig docker0 2 3docker0: flags=4099\u0026lt;UP,BROADCAST,MULTICAST\u0026gt; mtu 1500 4 inet 172.17.0.1 netmask 255.255.0.0 broadcast 172.17.255.255 5 ether 02:42:90:e0:c1:a0 txqueuelen 0 (Ethernet) 6 RX packets 0 bytes 0 (0.0 B) 7 RX errors 0 dropped 0 overruns 0 frame 0 8 TX packets 0 bytes 0 (0.0 B) 9 TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0 可以看到，docker0 占用的网段为 172.17.0.1/16\n",
+  "headline": "常用串口通讯参数解析",
+  "name": "常用串口通讯参数解析",
+  "description": "波特率 Baud Rate 波特率是发送数据位的速度。\nPLC 设备中使用的波特率的常见值包括：1200、9600、19200、38400。\n数据位 Data Bits 数据位是每帧中数据的位数。\nPLC 设备使用的常见值包括 7 或 8 个数据位。\n",
   "keywords": [
-    "Ops", "Docker"
+    "IoT"
   ],
-  "articleBody": "问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。\n解决方案 查看路由信息 1ifconfig docker0 2 3docker0: flags=4099 mtu 1500 4 inet 172.17.0.1 netmask 255.255.0.0 broadcast 172.17.255.255 5 ether 02:42:90:e0:c1:a0 txqueuelen 0 (Ethernet) 6 RX packets 0 bytes 0 (0.0 B) 7 RX errors 0 dropped 0 overruns 0 frame 0 8 TX packets 0 bytes 0 (0.0 B) 9 TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0 可以看到，docker0 占用的网段为 172.17.0.1/16\n修改 docker 默认网段 1# 停止 docker 服务 2systemctl stop docker 3 4# 删除原有网桥 5ip link del docker0 down 6 7# 修改 docker 网段 8vim /etc/docker/daemon.json 9\"bip\":\"192.168.100.1/24\" 10 11# 重启 docker 服务 12systemctl restart docker 此时再执行 ifconfig docker0 可以看到 docker 的网段已变更。\n参考资料：\nhttps://cloud.tencent.com/developer/article/2242559 ",
-  "wordCount" : "217",
+  "articleBody": "波特率 Baud Rate 波特率是发送数据位的速度。\nPLC 设备中使用的波特率的常见值包括：1200、9600、19200、38400。\n数据位 Data Bits 数据位是每帧中数据的位数。\nPLC 设备使用的常见值包括 7 或 8 个数据位。\n所有二进制协议都使用 8 个数据位；而ASCII 数据可以使用 7 或 8 位发送，例如 Modbus ASCII。\n停止位 Stop Bits 停止位是用于标记帧结束的位数。 PLC 设备使用的常见值为 1 或 2 个停止位。\n奇偶校验位 Parity 奇偶校验位提供错误检测功能。\nParity Description None No parity bit is added to the data. Even The parity bit is set to space (0) if the total number of data bits in the mark (1) state is even. Odd The parity bit is set to space (0) if the total number of data bits in the mark (1) state is odd. Mark The parity bit is set to mark (1). Space The parity bit is set to space (0). 其中，只有奇偶校验具有一定的错误检测能力。\n电信号 Electrical Signals 有许多串口类型定义了表示标记 (1) 位或空格 (0) 位的电信号：\nStandard Mode Mark Space RS-232 Single Ended -3v to -15v +3v to +15v RS-422 Differential 0v to -6v 0v to +6v RS-485 Differential -0.2v to -6v +0.2v to +6v 单端模式使用单线，测量相对于地的电压。差分模式使用一对电线，其中电压是两条电线之间的差值。\n单端模式可用于长达 15 米的短距离运行。差分模式工作距离可达 1500 米。\n参考资料 https://www.fernhillsoftware.com/help/drivers/serial-communication/index.html#:~:text=Baud%20Rate%20%2D%20the%20speed%20that,the%20end%20of%20a%20frame ",
+  "wordCount" : "433",
   "inLanguage": "zh",
-  "datePublished": "2023-10-09T16:09:19+08:00",
-  "dateModified": "2023-10-09T16:09:19+08:00",
+  "datePublished": "2023-10-26T16:09:19+08:00",
+  "dateModified": "2023-10-26T16:09:19+08:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/"
+    "@id": "/tech/iot/%E5%B8%B8%E7%94%A8%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/"
   },
   "publisher": {
     "@type": "Organization",
@@ -239,9 +209,9 @@
   <header class="post-header">
     <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
     <h1 class="post-title entry-hint-parent">
-      Docker 网段与主机网段冲突导致网络中断
+      常用串口通讯参数解析
     </h1>
-    <div class="post-meta"><span title='2023-10-09 16:09:19 +0800 CST'>十月 9, 2023</span>
+    <div class="post-meta"><span title='2023-10-26 16:09:19 +0800 CST'>十月 26, 2023</span>
 
 </div>
   </header> <aside id="toc-container" class="toc-container wide">
@@ -253,9 +223,17 @@
 
                 <div class="inner"><ul>
                         <li>
-                            <a href="#%e9%97%ae%e9%a2%98%e6%8f%8f%e8%bf%b0" aria-label="问题描述">问题描述</a></li>
+                            <a href="#%e6%b3%a2%e7%89%b9%e7%8e%87-baud-rate" aria-label="波特率 Baud Rate">波特率 Baud Rate</a></li>
                         <li>
-                            <a href="#%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88" aria-label="解决方案">解决方案</a>
+                            <a href="#%e6%95%b0%e6%8d%ae%e4%bd%8d-data-bits" aria-label="数据位 Data Bits">数据位 Data Bits</a></li>
+                        <li>
+                            <a href="#%e5%81%9c%e6%ad%a2%e4%bd%8d-stop-bits" aria-label="停止位 Stop Bits">停止位 Stop Bits</a></li>
+                        <li>
+                            <a href="#%e5%a5%87%e5%81%b6%e6%a0%a1%e9%aa%8c%e4%bd%8d-parity" aria-label="奇偶校验位 Parity">奇偶校验位 Parity</a></li>
+                        <li>
+                            <a href="#%e7%94%b5%e4%bf%a1%e5%8f%b7-electrical-signals" aria-label="电信号 Electrical Signals">电信号 Electrical Signals</a></li>
+                        <li>
+                            <a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99" aria-label="参考资料">参考资料</a>
                         </li>
                     </ul>
                 </div>
@@ -359,61 +337,104 @@
         }
 
     </script>
-  <div class="post-content"><h2 id="问题描述">问题描述<a hidden class="anchor" aria-hidden="true" href="#问题描述">#</a></h2>
-<p>有 IP 地址为 <code>172.24.x.xx/24</code> 的服务器无法 ping 通，原因为 docker 默认网段 <code>172.17.0.0/16</code> 占用了服务器所在网段，导致外部请求无法访问到真实服务器。</p>
-<h2 id="解决方案">解决方案<a hidden class="anchor" aria-hidden="true" href="#解决方案">#</a></h2>
-<ol>
-<li><strong>查看路由信息</strong></li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">ifconfig docker0
-</span></span><span class="line"><span class="ln">2</span><span class="cl">
-</span></span><span class="line"><span class="ln">3</span><span class="cl">docker0: <span class="nv">flags</span><span class="o">=</span>4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu <span class="m">1500</span>
-</span></span><span class="line"><span class="ln">4</span><span class="cl">        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
-</span></span><span class="line"><span class="ln">5</span><span class="cl">        ether 02:42:90:e0:c1:a0  txqueuelen <span class="m">0</span>  <span class="o">(</span>Ethernet<span class="o">)</span>
-</span></span><span class="line"><span class="ln">6</span><span class="cl">        RX packets <span class="m">0</span>  bytes <span class="m">0</span> <span class="o">(</span>0.0 B<span class="o">)</span>
-</span></span><span class="line"><span class="ln">7</span><span class="cl">        RX errors <span class="m">0</span>  dropped <span class="m">0</span>  overruns <span class="m">0</span>  frame <span class="m">0</span>
-</span></span><span class="line"><span class="ln">8</span><span class="cl">        TX packets <span class="m">0</span>  bytes <span class="m">0</span> <span class="o">(</span>0.0 B<span class="o">)</span>
-</span></span><span class="line"><span class="ln">9</span><span class="cl">        TX errors <span class="m">0</span>  dropped <span class="m">0</span> overruns <span class="m">0</span>  carrier <span class="m">0</span>  collisions <span class="m">0</span>
-</span></span></code></pre></div><p>可以看到，docker0 占用的网段为 172.17.0.1/16</p>
-<ol start="2">
-<li><strong>修改 docker 默认网段</strong></li>
-</ol>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1"># 停止 docker 服务</span>
-</span></span><span class="line"><span class="ln"> 2</span><span class="cl">systemctl stop docker
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"># 删除原有网桥</span>
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl">ip link del docker0 down
-</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1"># 修改 docker 网段</span>
-</span></span><span class="line"><span class="ln"> 8</span><span class="cl">vim /etc/docker/daemon.json 
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="s2">&#34;bip&#34;</span>:<span class="s2">&#34;192.168.100.1/24&#34;</span>
-</span></span><span class="line"><span class="ln">10</span><span class="cl">
-</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="c1"># 重启 docker 服务</span>
-</span></span><span class="line"><span class="ln">12</span><span class="cl">systemctl restart docker
-</span></span></code></pre></div><p>此时再执行 <code>ifconfig docker0</code> 可以看到 docker 的网段已变更。</p>
-<p><strong>参考资料：</strong></p>
-<ol>
-<li><a href="https://cloud.tencent.com/developer/article/2242559">https://cloud.tencent.com/developer/article/2242559</a></li>
-</ol>
+  <div class="post-content"><h1 id="波特率-baud-rate">波特率 Baud Rate<a hidden class="anchor" aria-hidden="true" href="#波特率-baud-rate">#</a></h1>
+<p>波特率是发送数据位的速度。</p>
+<p>PLC 设备中使用的波特率的常见值包括：1200、9600、19200、38400。</p>
+<h1 id="数据位-data-bits">数据位 Data Bits<a hidden class="anchor" aria-hidden="true" href="#数据位-data-bits">#</a></h1>
+<p>数据位是每帧中数据的位数。</p>
+<p>PLC 设备使用的常见值包括 7 或 8 个数据位。</p>
+<p>所有二进制协议都使用 8 个数据位；而ASCII 数据可以使用 7 或 8 位发送，例如 Modbus ASCII。</p>
+<h1 id="停止位-stop-bits">停止位 Stop Bits<a hidden class="anchor" aria-hidden="true" href="#停止位-stop-bits">#</a></h1>
+<p>停止位是用于标记帧结束的位数。 PLC 设备使用的常见值为 1 或 2 个停止位。</p>
+<h1 id="奇偶校验位-parity">奇偶校验位 Parity<a hidden class="anchor" aria-hidden="true" href="#奇偶校验位-parity">#</a></h1>
+<p>奇偶校验位提供错误检测功能。</p>
+<table>
+  <thead>
+      <tr>
+          <th>Parity</th>
+          <th>Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>None</td>
+          <td>No parity bit is added to the data.</td>
+      </tr>
+      <tr>
+          <td>Even</td>
+          <td>The parity bit is set to space (0) if the total number of data bits in the mark (1) state is even.</td>
+      </tr>
+      <tr>
+          <td>Odd</td>
+          <td>The parity bit is set to space (0) if the total number of data bits in the mark (1) state is odd.</td>
+      </tr>
+      <tr>
+          <td>Mark</td>
+          <td>The parity bit is set to mark (1).</td>
+      </tr>
+      <tr>
+          <td>Space</td>
+          <td>The parity bit is set to space (0).</td>
+      </tr>
+  </tbody>
+</table>
+<p>其中，只有奇偶校验具有一定的错误检测能力。</p>
+<h1 id="电信号-electrical-signals">电信号 Electrical Signals<a hidden class="anchor" aria-hidden="true" href="#电信号-electrical-signals">#</a></h1>
+<p>有许多串口类型定义了表示标记 (1) 位或空格 (0) 位的电信号：</p>
+<table>
+  <thead>
+      <tr>
+          <th>Standard</th>
+          <th>Mode</th>
+          <th>Mark</th>
+          <th>Space</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><a href="https://www.fernhillsoftware.com/help/drivers/serial-communication/rs-232.html">RS-232</a></td>
+          <td>Single Ended</td>
+          <td>-3v to -15v</td>
+          <td>+3v to +15v</td>
+      </tr>
+      <tr>
+          <td><a href="https://www.fernhillsoftware.com/help/drivers/serial-communication/rs-422.html">RS-422</a></td>
+          <td>Differential</td>
+          <td>0v to -6v</td>
+          <td>0v to +6v</td>
+      </tr>
+      <tr>
+          <td><a href="https://www.fernhillsoftware.com/help/drivers/serial-communication/rs-485.html">RS-485</a></td>
+          <td>Differential</td>
+          <td>-0.2v to -6v</td>
+          <td>+0.2v to +6v</td>
+      </tr>
+  </tbody>
+</table>
+<p>单端模式使用单线，测量相对于地的电压。差分模式使用一对电线，其中电压是两条电线之间的差值。</p>
+<p>单端模式可用于长达 15 米的短距离运行。差分模式工作距离可达 1500 米。</p>
+<h1 id="参考资料">参考资料<a hidden class="anchor" aria-hidden="true" href="#参考资料">#</a></h1>
+<ul>
+<li><a href="https://www.fernhillsoftware.com/help/drivers/serial-communication/index.html#:~:text=Baud%20Rate%20%2D%20the%20speed%20that,the%20end%20of%20a%20frame">https://www.fernhillsoftware.com/help/drivers/serial-communication/index.html#:~:text=Baud%20Rate%20%2D%20the%20speed%20that,the%20end%20of%20a%20frame</a></li>
+</ul>
 
 
   </div>
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="/tags/ops/">Ops</a></li>
-      <li><a href="/tags/docker/">Docker</a></li>
+      <li><a href="/tags/iot/">IoT</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="/tech/iot/%E5%B8%B8%E7%94%A8%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/">
+  <a class="prev" href="/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/">
     <span class="title">« 上一页</span>
     <br>
-    <span>常用串口通讯参数解析</span>
+    <span>Jaeger 部署与使用</span>
   </a>
-  <a class="next" href="/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/">
+  <a class="next" href="/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/">
     <span class="title">下一页 »</span>
     <br>
-    <span>修改 Linux DNS 配置</span>
+    <span>Docker 网段与主机网段冲突导致网络中断</span>
   </a>
 </nav>
 

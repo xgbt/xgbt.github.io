@@ -243,6 +243,20 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Golang 逃逸分析
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>堆内存与栈内存 Go 在 2 个位置为变量分配内存，全局堆(heap)空间，和每个 goroutine 的栈(stack)空间。
+Go 语言实现 GC 机制，因此开发者不需要关心内存分配在栈上，还是堆上。但是从性能的角度出发，在栈上分配内存和在堆上分配内存，性能差异是非常大的。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-05-17 16:09:19 +0800 CST'>五月 17, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to Golang 逃逸分析" href="/tech/golang/golang-%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">K8s 下线节点流程
     </h2>
   </header>
@@ -265,20 +279,6 @@
   </div>
   <footer class="entry-footer"><span title='2024-04-13 16:09:19 +0800 CST'>四月 13, 2024</span></footer>
   <a class="entry-link" aria-label="post link to K8s 启用 ipvs 模式" href="/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">MQTT 连接参数配置
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>MQTT 连接过程 MQTT 连接由客户端向服务器端发起。
-任何运行了 MQTT 客户端库的程序或设备都是一个 MQTT 客户端，而 MQTT 服务器 负责接收客户端发起的连接，并将客户端发送的消息转发到另外一些符合条件的客户端。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-03-22 16:09:19 +0800 CST'>三月 22, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to MQTT 连接参数配置" href="/tech/mqtt/mqtt-%E8%BF%9E%E6%8E%A5%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

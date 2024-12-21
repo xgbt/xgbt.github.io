@@ -146,6 +146,20 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Golang template 跳过 HTML 转义
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>使用golang标准库中的html/template时，在默认情况下渲染模版时为了安全等原因，会将字符串中的部分符号进行转义。
+注册自定义转义处理函数 1func unescapeHTML(s string) template.HTML { 2	return template.HTML(s) 3} 在定义转义处理函数后，我们需要使用Funcs()将其注册到模版中。需要注意，注册自定义函数需要在调用Parse()前进行。在注册时我们需要定义一个函数标识符，并在模版文本中使用。在下面例子中我们使用了名为unescapeHTML的函数标识符。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-12-11 16:09:19 +0800 CST'>十二月 11, 2023</span></footer>
+  <a class="entry-link" aria-label="post link to Golang template 跳过 HTML 转义" href="/tech/golang/golang-template-%E8%B7%B3%E8%BF%87-html-%E8%BD%AC%E4%B9%89/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Jaeger 部署与使用
     </h2>
   </header>
@@ -156,6 +170,22 @@
   </div>
   <footer class="entry-footer"><span title='2023-12-11 16:09:19 +0800 CST'>十二月 11, 2023</span></footer>
   <a class="entry-link" aria-label="post link to Jaeger 部署与使用" href="/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">常用串口通讯参数解析
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>波特率 Baud Rate 波特率是发送数据位的速度。
+PLC 设备中使用的波特率的常见值包括：1200、9600、19200、38400。
+数据位 Data Bits 数据位是每帧中数据的位数。
+PLC 设备使用的常见值包括 7 或 8 个数据位。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-10-26 16:09:19 +0800 CST'>十月 26, 2023</span></footer>
+  <a class="entry-link" aria-label="post link to 常用串口通讯参数解析" href="/tech/iot/%E5%B8%B8%E7%94%A8%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 

@@ -205,6 +205,15 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;该指令使 Nginx 不缓冲来自上游服务器的响应，而是立即将其发送给客户端。适合需要实时或流式传输数据的场景非常有用，比如实时聊天、流媒体等。&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Golang 逃逸分析</title>
+      <link>/tech/golang/golang-%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/</link>
+      <pubDate>Fri, 17 May 2024 16:09:19 +0800</pubDate>
+      <guid>/tech/golang/golang-%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/</guid>
+      <description>&lt;h1 id=&#34;堆内存与栈内存&#34;&gt;堆内存与栈内存&lt;/h1&gt;
+&lt;p&gt;Go 在 2 个位置为变量分配内存，全局堆(heap)空间，和每个 goroutine 的栈(stack)空间。&lt;/p&gt;
+&lt;p&gt;Go 语言实现 GC 机制，因此开发者不需要关心内存分配在栈上，还是堆上。但是从性能的角度出发，在栈上分配内存和在堆上分配内存，性能差异是非常大的。&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>K8s 下线节点流程</title>
       <link>/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/</link>
       <pubDate>Sun, 14 Apr 2024 16:09:19 +0800</pubDate>
@@ -285,9 +294,9 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>MQTT 连接参数配置</title>
-      <link>/tech/mqtt/mqtt-%E8%BF%9E%E6%8E%A5%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</link>
+      <link>/tech/iot/mqtt-%E8%BF%9E%E6%8E%A5%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Fri, 22 Mar 2024 16:09:19 +0800</pubDate>
-      <guid>/tech/mqtt/mqtt-%E8%BF%9E%E6%8E%A5%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</guid>
+      <guid>/tech/iot/mqtt-%E8%BF%9E%E6%8E%A5%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</guid>
       <description>&lt;h1 id=&#34;mqtt-连接过程&#34;&gt;MQTT 连接过程&lt;/h1&gt;
 &lt;p&gt;MQTT 连接由客户端向服务器端发起。&lt;/p&gt;
 &lt;p&gt;任何运行了 MQTT 客户端库的程序或设备都是一个 MQTT 客户端，而 MQTT 服务器 负责接收客户端发起的连接，并将客户端发送的消息转发到另外一些符合条件的客户端。&lt;/p&gt;</description>
@@ -313,17 +322,17 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>MQTT 发布-订阅模式</title>
-      <link>/tech/mqtt/mqtt-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</link>
+      <link>/tech/iot/mqtt-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Thu, 21 Mar 2024 16:09:19 +0800</pubDate>
-      <guid>/tech/mqtt/mqtt-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</guid>
+      <guid>/tech/iot/mqtt-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</guid>
       <description>&lt;h1 id=&#34;mqtt-发布订阅模式&#34;&gt;MQTT 发布/订阅模式&lt;/h1&gt;
 &lt;p&gt;发布-订阅模式（Publish-Subscribe Pattern）是一种消息传递模式，将发送消息的客户端（发布者）与接收消息的客户端（订阅者）解耦，使得两者不需要建立直接的联系也不需要知道对方的存在。&lt;/p&gt;</description>
     </item>
     <item>
       <title>MQTT QoS 简介</title>
-      <link>/tech/mqtt/mqtt-qos--%E7%AE%80%E4%BB%8B/</link>
+      <link>/tech/iot/mqtt-qos--%E7%AE%80%E4%BB%8B/</link>
       <pubDate>Wed, 20 Mar 2024 16:09:19 +0800</pubDate>
-      <guid>/tech/mqtt/mqtt-qos--%E7%AE%80%E4%BB%8B/</guid>
+      <guid>/tech/iot/mqtt-qos--%E7%AE%80%E4%BB%8B/</guid>
       <description>&lt;h1 id=&#34;什么是-qos&#34;&gt;什么是 QoS&lt;/h1&gt;
 &lt;p&gt;使用 MQTT 协议的设备一般运行在网络受限的环境下，只依靠底层TCP 传输协议并不能完全保证消息的可靠到达。&lt;/p&gt;
 &lt;p&gt;因此，MQTT 提供了 QoS（&lt;strong&gt;Quality of service&lt;/strong&gt;） 机制，其核心是设计了多种消息交互机制来提供不同的服务质量，来满足用户在各种场景下对消息可靠性的要求。&lt;/p&gt;</description>
@@ -509,6 +518,18 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;Stat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;kc&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;TimeFormat&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;ld&#34;&gt;2006-01-02 15:04:05&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;参考资料：&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>常用串口通讯参数解析</title>
+      <link>/tech/iot/%E5%B8%B8%E7%94%A8%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/</link>
+      <pubDate>Thu, 26 Oct 2023 16:09:19 +0800</pubDate>
+      <guid>/tech/iot/%E5%B8%B8%E7%94%A8%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/</guid>
+      <description>&lt;h1 id=&#34;波特率-baud-rate&#34;&gt;波特率 Baud Rate&lt;/h1&gt;
+&lt;p&gt;波特率是发送数据位的速度。&lt;/p&gt;
+&lt;p&gt;PLC 设备中使用的波特率的常见值包括：1200、9600、19200、38400。&lt;/p&gt;
+&lt;h1 id=&#34;数据位-data-bits&#34;&gt;数据位 Data Bits&lt;/h1&gt;
+&lt;p&gt;数据位是每帧中数据的位数。&lt;/p&gt;
+&lt;p&gt;PLC 设备使用的常见值包括 7 或 8 个数据位。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Docker 网段与主机网段冲突导致网络中断</title>

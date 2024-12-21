@@ -161,6 +161,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">MQTT 连接参数配置
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>MQTT 连接过程 MQTT 连接由客户端向服务器端发起。
+任何运行了 MQTT 客户端库的程序或设备都是一个 MQTT 客户端，而 MQTT 服务器 负责接收客户端发起的连接，并将客户端发送的消息转发到另外一些符合条件的客户端。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-03-22 16:09:19 +0800 CST'>三月 22, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to MQTT 连接参数配置" href="/tech/iot/mqtt-%E8%BF%9E%E6%8E%A5%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">K8s 修改 NodePort 默认范围
     </h2>
   </header>
@@ -184,7 +198,7 @@
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2024-03-21 16:09:19 +0800 CST'>三月 21, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to MQTT 发布-订阅模式" href="/tech/mqtt/mqtt-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/"></a>
+  <a class="entry-link" aria-label="post link to MQTT 发布-订阅模式" href="/tech/iot/mqtt-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -198,7 +212,7 @@
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2024-03-20 16:09:19 +0800 CST'>三月 20, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to MQTT QoS 简介" href="/tech/mqtt/mqtt-qos--%E7%AE%80%E4%BB%8B/"></a>
+  <a class="entry-link" aria-label="post link to MQTT QoS 简介" href="/tech/iot/mqtt-qos--%E7%AE%80%E4%BB%8B/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -282,20 +296,6 @@ Volume 定义了外置存储的细节，并内嵌到 Pod 中作为 Pod 的一部
   </div>
   <footer class="entry-footer"><span title='2024-01-04 16:09:19 +0800 CST'>一月 4, 2024</span></footer>
   <a class="entry-link" aria-label="post link to CVE-2008-5161 OpenSSH CBC模式信息泄露漏洞" href="/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Golang template 跳过 HTML 转义
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>使用golang标准库中的html/template时，在默认情况下渲染模版时为了安全等原因，会将字符串中的部分符号进行转义。
-注册自定义转义处理函数 1func unescapeHTML(s string) template.HTML { 2	return template.HTML(s) 3} 在定义转义处理函数后，我们需要使用Funcs()将其注册到模版中。需要注意，注册自定义函数需要在调用Parse()前进行。在注册时我们需要定义一个函数标识符，并在模版文本中使用。在下面例子中我们使用了名为unescapeHTML的函数标识符。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-12-11 16:09:19 +0800 CST'>十二月 11, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Golang template 跳过 HTML 转义" href="/tech/golang/golang-template-%E8%B7%B3%E8%BF%87-html-%E8%BD%AC%E4%B9%89/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>MQTT QoS 简介 | xgbt&#39;s Blog</title>
+<meta name="keywords" content="MQTT, IoT">
+<meta name="description" content="什么是 QoS
+使用 MQTT 协议的设备一般运行在网络受限的环境下，只依靠底层TCP 传输协议并不能完全保证消息的可靠到达。
+因此，MQTT 提供了 QoS（Quality of service） 机制，其核心是设计了多种消息交互机制来提供不同的服务质量，来满足用户在各种场景下对消息可靠性的要求。">
+<meta name="author" content="">
+<link rel="canonical" href="/tech/iot/mqtt-qos--%E7%AE%80%E4%BB%8B/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/assets/apple-icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="/tech/iot/mqtt-qos--%E7%AE%80%E4%BB%8B/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><style>
+@import url('https://fonts.cdnfonts.com/css/code-new-roman');
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
+    rel="stylesheet"><meta property="og:title" content="MQTT QoS 简介" />
+<meta property="og:description" content="什么是 QoS
+使用 MQTT 协议的设备一般运行在网络受限的环境下，只依靠底层TCP 传输协议并不能完全保证消息的可靠到达。
+因此，MQTT 提供了 QoS（Quality of service） 机制，其核心是设计了多种消息交互机制来提供不同的服务质量，来满足用户在各种场景下对消息可靠性的要求。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/tech/iot/mqtt-qos--%E7%AE%80%E4%BB%8B/" /><meta property="article:section" content="tech" />
+<meta property="article:published_time" content="2024-03-20T16:09:19+08:00" />
+<meta property="article:modified_time" content="2024-03-20T16:09:19+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MQTT QoS 简介"/>
+<meta name="twitter:description" content="什么是 QoS
+使用 MQTT 协议的设备一般运行在网络受限的环境下，只依靠底层TCP 传输协议并不能完全保证消息的可靠到达。
+因此，MQTT 提供了 QoS（Quality of service） 机制，其核心是设计了多种消息交互机制来提供不同的服务质量，来满足用户在各种场景下对消息可靠性的要求。"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Tech",
+      "item": "/tech/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "MQTT QoS 简介",
+      "item": "/tech/iot/mqtt-qos--%E7%AE%80%E4%BB%8B/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "MQTT QoS 简介",
+  "name": "MQTT QoS 简介",
+  "description": "什么是 QoS 使用 MQTT 协议的设备一般运行在网络受限的环境下，只依靠底层TCP 传输协议并不能完全保证消息的可靠到达。\n因此，MQTT 提供了 QoS（Quality of service） 机制，其核心是设计了多种消息交互机制来提供不同的服务质量，来满足用户在各种场景下对消息可靠性的要求。\n",
+  "keywords": [
+    "MQTT", "IoT"
+  ],
+  "articleBody": "什么是 QoS 使用 MQTT 协议的设备一般运行在网络受限的环境下，只依靠底层TCP 传输协议并不能完全保证消息的可靠到达。\n因此，MQTT 提供了 QoS（Quality of service） 机制，其核心是设计了多种消息交互机制来提供不同的服务质量，来满足用户在各种场景下对消息可靠性的要求。\nMQTT 定义了三个 QoS 等级，分别为：\nQoS 0，最多交付一次。 QoS 1，至少交付一次。 QoS 2，只交付一次。 其中，使用 QoS 0 可能丢失消息，使用 QoS 1 可以保证收到消息，但消息可能重复，使用 QoS 2 可以保证消息既不丢失也不重复。\nQoS 等级从低到高，不仅意味着消息可靠性的提升，也意味着传输复杂程度的提升。\n在一个完整的从发布者到订阅者的消息投递流程中，QoS 等级是由发布者在 PUBLISH 报文中指定，大部分情况下 Broker 向订阅者转发消息时都会维持原始的 QoS 不变。不过也有一些例外的情况，根据订阅者的订阅要求，消息的 QoS 等级可能会在转发的时候发生降级。\n例如，订阅者在订阅时要求 Broker 可以向其转发的消息的最大 QoS 等级为 QoS 1，那么后续所有 QoS 2 消息都会降级至 QoS 1 转发给此订阅者，而所有 QoS 0 和 QoS 1 消息则会保持原始的 QoS 等级转发。\nQoS 0 - 最多交付一次 QoS 0 是最低的 QoS 等级。\nQoS 0 消息即发即弃，不需要等待确认，不需要存储和重传，对于接收方来说，不需要担心收到重复的消息。\n为什么 QoS 0 消息会丢失？\n使用 QoS 0 传递消息时，消息的可靠性完全依赖于底层的 TCP 协议。\n而 TCP 只能保证在连接稳定不关闭的情况下消息的可靠到达，一旦出现连接关闭、重置，仍有可能丢失当前处于网络链路或操作系统底层缓冲区中的消息。这也是 QoS 0 消息最主要的丢失场景。\nQoS 1 - 至少交付一次 为了保证消息到达，QoS 1 加入了应答与重传机制。\n发送方只有在收到接收方的 PUBACK 报文以后，才能认为消息投递成功，在此之前，发送方需要存储该 PUBLISH 报文以便下次重传。\nQoS 1 需要在 PUBLISH 报文中设置 Packet ID，而作为响应的 PUBACK 报文，则会使用与 PUBLISH 报文相同的 Packet ID，以便发送方收到后删除正确的 PUBLISH 报文缓存。\n为什么 QoS 1 消息会重复？\n对于发送方，没收到 PUBACK 报文分为以下两种情况：\nPUBLISH 未到达接收方 PUBLISH 已经到达接收方，接收方的 PUBACK 报文还未到达发送方 对于CASE 1，发送方虽然重传了 PUBLISH 报文，但是对于接收方来说，实际上仍然仅收到了一次消息。\n对于CASE 2，在发送方重传时，接收方已经收到过了这个 PUBLISH 报文，这就导致接收方将收到重复的消息。虽然重传时 PUBLISH 报文中的 DUP 标志会被设置为 1，用以表示这是一个重传的报文。但是接收方并不能因此假定自己曾经接收过这个消息，仍然需要将其视作一个全新的消息。\n对于接收方，可能存在以下两种情况： 对于CASE 1，发送方由于没有收到 PUBACK 报文而重传了 PUBLISH 报文。此时，接收方收到的前后两个 PUBLISH 报文使用了相同的 Packet ID，并且第二个 PUBLISH 报文的 DUP 标志为 1，此时它确实是一个重复的消息。\n对于CASE 2，第一个 PUBLISH 报文已经完成了投递，1024 这个 Packet ID 重新变为可用状态。发送方使用这个 Packet ID 发送了一个全新的 PUBLISH 报文，但这一次报文未能到达对端，所以发送方后续重传了这个 PUBLISH 报文。这就使得虽然接收方收到的第二个 PUBLISH 报文同样是相同的 Packet ID，并且 DUP 为 1，但确实是一个全新的消息。\n由于我们无法区分这两种情况，所以只能让接收方将这些 PUBLISH 报文都当作全新的消息来处理。因此当我们使用 QoS 1 时，消息的重复在协议层面上是无法避免的。\n极端情况下，Broker 从发布方收到了重复的 PUBLISH 报文，而在将这些报文转发给订阅方的过程中，再次发生重传，这将导致订阅方最终收到更多的重复消息。\n以上，就是 QoS 1 保证消息到达，导致的消息重复。\nQoS 2 - 只交付一次 QoS 2 解决了 QoS 0、1 消息可能丢失或者重复的问题，但相应地，它也带来了最复杂的交互流程和最高的开销。每一次的 QoS 2 消息投递，都要求发送方与接收方进行至少两次请求/响应流程。\n发送方存储并发送 QoS 为 2 的 PUBLISH 报文启动一次 QoS 2 消息的传输，并等待接收方回复 PUBREC 报文。这一部分与 QoS 1 基本一致，但响应报文从 PUBACK 变成了 PUBREC。 当发送方收到 PUBREC 报文，即确认接收方收到了 PUBLISH 报文，发送方将不再需要重传这个报文，并且也不能再重传这个报文。此时发送方删除本地存储的 PUBLISH 报文，并存储并发送 PUBREL 报文，通知接受方本次使用的 Packet ID 将被标记为可用。与 PUBLISH 报文相同，所以也需要收到响应报文以确保 PUBREL 报文到达对端。 当接收方收到 PUBREL 报文，可以确认本次传输流程中不会再有重传的 PUBLISH 报文到达，因此回复 PUBCOMP 报文表示确认当前 Packet ID 可以用于新的消息。 当发送方收到 PUBCOMP 报文，本次 QoS 2 消息传输正式完成。之后，发送方可以再次使用当前的 Packet ID 发送新的消息，而接收方再次收到使用这个 Packet ID 的 PUBLISH 报文时，也会将它视为一个全新的消息。 为什么 QoS 2 消息不会重复？\nQoS 2 与 QoS 1 相同，通过响应报文保证消息不会丢失。与 QoS 1 相比，QoS 2 新增了 PUBREL 报文和 PUBCOMP 报文的流程，以保证消息不重复。\n首先回顾一下 QoS 1 消息无法避免重复的原因：使用 QoS 1 消息时，对接收方来说，回复完 PUBACK 响应报文后 Packet ID 就重新可用了，也不管响应是否确实到达了发送方。所以无法得知之后到达的，携带了相同 Packet ID 的 PUBLISH 报文是发送方没有收到响应而重传的，还是发送方收到了响应所以重新使用了这个 Packet ID 发送了一个全新的消息。\n![[https://assets.emqx.com/images/81b397e0a44a6abd3adbe411d1219272.png?x-image-process=image/resize,w_1520/format,webp]]\n所以，消息去重的关键就在于通信双方如何正确地同步释放 Packet ID，换句话说，不管发送方是重传消息还是发布新消息，一定是和对端达成共识了的。\nQoS 2 增加的 PUBREL 流程提供了帮助通信双方协商 Packet ID 何时可以重用的能力。\nQoS 2 规定，发送方只有在收到 PUBREC 报文之前可以重传 PUBLISH 报文。 一旦收到 PUBREC 报文并发出 PUBREL 报文，发送方就进入了 Packet ID 释放流程，不可以再使用当前 Packet ID 重传 PUBLISH 报文。同时，在收到对端回复的 PUBCOMP 报文确认双方都完成 Packet ID 释放之前，也不可以使用当前 Packet ID 发送新的消息。\n因此对于接收方来说，以 PUBREL 报文为界限，凡是在 PUBREL 报文之前到达的 PUBLISH 报文，都必然是重复的消息；而凡是在 PUBREL 报文之后到达的 PUBLISH 报文，都必然是全新的消息。\n一旦有了这个前提，我们就能够在协议层面完成 QoS 2 消息的去重。\n不同 QoS 的适用场景和注意事项 QoS 0 QoS 0 的缺点是可能会丢失消息，消息丢失的频率依赖于你所处的网络环境，并且可能使你错过断开连接期间的消息，不过优点是投递的效率较高。\n所以我们通常选择使用 QoS 0 传输一些高频且不那么重要的数据，比如传感器数据，周期性更新，即使遗漏几个周期的数据也可以接受。\nQoS 1 QoS 1 可以保证消息到达，所以适合传输一些较为重要的数据，比如下达关键指令、更新有实时性要求的状态等。\n但因为 QoS 1 还可能会导致消息重复，所以当我们选择使用 QoS 1 时，还需要能够处理消息的重复，或者能够允许消息的重复。\n在我们决定使用 QoS 1 并且不对其进行去重处理之前，我们需要先了解，允许消息的重复，可能意味着什么。\n如果我们不对 QoS 1 进行去重处理，我们可能会遭遇这种情况，发布方以 1、2 的顺序发布消息，但最终订阅方接收到的消息顺序可能是 1、2、1、2。 如果 1 表示开灯指令，2 表示关灯指令，我想大部分用户都不会接受自己仅仅进行了开灯然后关灯的操作，结果灯在开和关的状态来回变化。\nQoS 2 QoS 2 既可以保证消息到达，也可以保证消息不会重复，但传输成本最高。\n如果我们不愿意自行实现去重方案，并且能够接受 QoS 2 带来的额外开销，那么 QoS 2 将是一个合适的选择。金融、航空等行业场景下会更多地见到 QoS 2 的使用。\n参考资料 https://www.emqx.com/zh/blog/introduction-to-mqtt-qos ",
+  "wordCount" : "2881",
+  "inLanguage": "zh",
+  "datePublished": "2024-03-20T16:09:19+08:00",
+  "dateModified": "2024-03-20T16:09:19+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/tech/iot/mqtt-qos--%E7%AE%80%E4%BB%8B/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "xgbt's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/assets/apple-icon.png"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/" title="🏠主页">
+                    <span>🏠主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/search" title="🔍搜索">
+                    <span>🔍搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags" title="🏷️标签">
+                    <span>🏷️标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives" title="📦归档">
+                    <span>📦归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
+    <h1 class="post-title entry-hint-parent">
+      MQTT QoS 简介
+    </h1>
+    <div class="post-meta"><span title='2024-03-20 16:09:19 +0800 CST'>三月 20, 2024</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+        <div class="toc">
+            <details  open>
+                <summary accesskey="c" title="(Alt + C)">
+                    <span class="details">目录</span>
+                </summary>
+
+                <div class="inner"><ul>
+                        <li>
+                            <a href="#%e4%bb%80%e4%b9%88%e6%98%af-qos" aria-label="什么是 QoS">什么是 QoS</a></li>
+                        <li>
+                            <a href="#qos-0---%e6%9c%80%e5%a4%9a%e4%ba%a4%e4%bb%98%e4%b8%80%e6%ac%a1" aria-label="QoS 0 - 最多交付一次">QoS 0 - 最多交付一次</a></li>
+                        <li>
+                            <a href="#qos-1---%e8%87%b3%e5%b0%91%e4%ba%a4%e4%bb%98%e4%b8%80%e6%ac%a1" aria-label="QoS 1 - 至少交付一次">QoS 1 - 至少交付一次</a></li>
+                        <li>
+                            <a href="#qos-2---%e5%8f%aa%e4%ba%a4%e4%bb%98%e4%b8%80%e6%ac%a1" aria-label="QoS 2 - 只交付一次">QoS 2 - 只交付一次</a></li>
+                        <li>
+                            <a href="#%e4%b8%8d%e5%90%8c-qos-%e7%9a%84%e9%80%82%e7%94%a8%e5%9c%ba%e6%99%af%e5%92%8c%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" aria-label="不同 QoS 的适用场景和注意事项">不同 QoS 的适用场景和注意事项</a><ul>
+                                    
+                        <li>
+                            <a href="#qos-0" aria-label="QoS 0">QoS 0</a></li>
+                        <li>
+                            <a href="#qos-1" aria-label="QoS 1">QoS 1</a></li>
+                        <li>
+                            <a href="#qos-2" aria-label="QoS 2">QoS 2</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99" aria-label="参考资料">参考资料</a>
+                        </li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </aside>
+    <script>
+        let activeElement;
+        let elements;
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            checkTocPosition();
+
+            elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+            if (elements.length > 0) {
+                
+                activeElement = elements[0];
+                const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+                document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+            }
+
+            
+            const topLink = document.getElementById('top-link');
+            if (topLink) {
+                topLink.addEventListener('click', (event) => {
+                    
+                    event.preventDefault();
+
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        }, false);
+
+        window.addEventListener('resize', function (event) {
+            checkTocPosition();
+        }, false);
+
+        window.addEventListener('scroll', () => {
+            
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+            
+            if (scrollPosition === 0) {
+                return;
+            }
+
+            
+            if (elements && elements.length > 0) {
+                
+                activeElement = Array.from(elements).find((element) => {
+                    if ((getOffsetTop(element) - scrollPosition) > 0 &&
+                        (getOffsetTop(element) - scrollPosition) < window.innerHeight / 2) {
+                        return element;
+                    }
+                }) || activeElement;
+
+                elements.forEach(element => {
+                    const id = encodeURI(element.getAttribute('id')).toLowerCase();
+                    const tocLink = document.querySelector(`.inner ul li a[href="#${id}"]`);
+                    if (element === activeElement) {
+                        tocLink.classList.add('active');
+
+                        
+                        const tocContainer = document.querySelector('.toc .inner');
+                        const linkOffsetTop = tocLink.offsetTop;
+                        const containerHeight = tocContainer.clientHeight;
+                        const linkHeight = tocLink.clientHeight;
+
+                        
+                        const scrollPosition = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
+                        tocContainer.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+                    } else {
+                        tocLink.classList.remove('active');
+                    }
+                });
+            }
+        }, false);
+
+        const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+        const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+        const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+        function checkTocPosition() {
+            const width = document.body.scrollWidth;
+
+            if (width - main - (toc * 2) - (gap * 4) > 0) {
+                document.getElementById("toc-container").classList.add("wide");
+            } else {
+                document.getElementById("toc-container").classList.remove("wide");
+            }
+        }
+
+        function getOffsetTop(element) {
+            if (!element.getClientRects().length) {
+                return 0;
+            }
+            let rect = element.getBoundingClientRect();
+            let win = element.ownerDocument.defaultView;
+            return rect.top + win.pageYOffset;
+        }
+
+    </script>
+  <div class="post-content"><h1 id="什么是-qos">什么是 QoS<a hidden class="anchor" aria-hidden="true" href="#什么是-qos">#</a></h1>
+<p>使用 MQTT 协议的设备一般运行在网络受限的环境下，只依靠底层TCP 传输协议并不能完全保证消息的可靠到达。</p>
+<p>因此，MQTT 提供了 QoS（<strong>Quality of service</strong>） 机制，其核心是设计了多种消息交互机制来提供不同的服务质量，来满足用户在各种场景下对消息可靠性的要求。</p>
+<p>MQTT 定义了三个 QoS 等级，分别为：</p>
+<ul>
+<li>QoS 0，最多交付一次。</li>
+<li>QoS 1，至少交付一次。</li>
+<li>QoS 2，只交付一次。</li>
+</ul>
+<p><strong>其中，使用 QoS 0 可能丢失消息，使用 QoS 1 可以保证收到消息，但消息可能重复，使用 QoS 2 可以保证消息既不丢失也不重复。</strong></p>
+<p>QoS 等级从低到高，不仅意味着消息可靠性的提升，也意味着传输复杂程度的提升。</p>
+<p>在一个完整的从发布者到订阅者的消息投递流程中，<strong>QoS 等级是由发布者在 <code>PUBLISH</code> 报文中指定</strong>，大部分情况下 Broker 向订阅者转发消息时都会维持原始的 QoS 不变。不过也有一些例外的情况，根据订阅者的订阅要求，消息的 QoS 等级可能会在转发的时候发生降级。</p>
+<p>例如，订阅者在订阅时要求 Broker 可以向其转发的消息的最大 QoS 等级为 QoS 1，那么后续所有 QoS 2 消息都会降级至 QoS 1 转发给此订阅者，而所有 QoS 0 和 QoS 1 消息则会保持原始的 QoS 等级转发。</p>
+<h1 id="qos-0---最多交付一次">QoS 0 - 最多交付一次<a hidden class="anchor" aria-hidden="true" href="#qos-0---最多交付一次">#</a></h1>
+<p>QoS 0 是最低的 QoS 等级。</p>
+<p>QoS 0 消息即发即弃，不需要等待确认，不需要存储和重传，对于接收方来说，不需要担心收到重复的消息。</p>
+<p><img loading="lazy" src="https://assets.emqx.com/images/8b641a22608772826781851ab63c197f.png?x-image-process=image/resize,w_1520/format,webp" alt=""  />
+</p>
+<p><strong>为什么 QoS 0 消息会丢失？</strong></p>
+<p>使用 QoS 0 传递消息时，消息的可靠性完全依赖于底层的 TCP 协议。</p>
+<p>而 TCP 只能保证在连接稳定不关闭的情况下消息的可靠到达，一旦出现连接关闭、重置，仍有可能丢失当前处于网络链路或操作系统底层缓冲区中的消息。这也是 QoS 0 消息最主要的丢失场景。</p>
+<h1 id="qos-1---至少交付一次">QoS 1 - 至少交付一次<a hidden class="anchor" aria-hidden="true" href="#qos-1---至少交付一次">#</a></h1>
+<p>为了保证消息到达，QoS 1 加入了应答与重传机制。</p>
+<p>发送方只有在收到接收方的 <code>PUBACK</code> 报文以后，才能认为消息投递成功，在此之前，发送方需要存储该 PUBLISH 报文以便下次重传。</p>
+<p>QoS 1 需要在 <code>PUBLISH</code> 报文中设置 Packet ID，而作为响应的 <code>PUBACK</code> 报文，则会使用与 <code>PUBLISH</code> 报文相同的 Packet ID，以便发送方收到后删除正确的 <code>PUBLISH</code> 报文缓存。</p>
+<p><img loading="lazy" src="https://assets.emqx.com/images/b4f3ecaea5c047fa7352dc06753722c0.png?x-image-process=image/resize,w_1520/format,webp" alt=""  />
+</p>
+<p><strong>为什么 QoS 1 消息会重复？</strong></p>
+<p><strong>对于发送方</strong>，没收到 <code>PUBACK</code> 报文分为以下两种情况：</p>
+<ol>
+<li><code>PUBLISH</code> 未到达接收方</li>
+<li><code>PUBLISH</code> 已经到达接收方，接收方的 <code>PUBACK</code> 报文还未到达发送方</li>
+</ol>
+<p><img loading="lazy" src="https://assets.emqx.com/images/6a1a37b63c539d954a6ddeabf5c3beb3.png?x-image-process=image/resize,w_1520/format,webp" alt=""  />
+</p>
+<p>对于CASE 1，发送方虽然重传了 <code>PUBLISH</code> 报文，但是对于接收方来说，实际上仍然仅收到了一次消息。</p>
+<p>对于CASE 2，在发送方重传时，接收方已经收到过了这个 <code>PUBLISH</code> 报文，这就导致接收方将收到重复的消息。<strong>虽然重传时 PUBLISH 报文中的 DUP 标志会被设置为 1</strong>，用以表示这是一个重传的报文。但是接收方并不能因此假定自己曾经接收过这个消息，仍然需要将其视作一个全新的消息。</p>
+<hr>
+<p><strong>对于接收方</strong>，可能存在以下两种情况：
+<img loading="lazy" src="https://assets.emqx.com/images/19503f45df8aebaa89f8dac05ba03887.png?x-image-process=image/resize,w_1520/format,webp" alt=""  />
+</p>
+<p>对于CASE 1，发送方由于没有收到 <code>PUBACK</code> 报文而重传了 <code>PUBLISH</code> 报文。此时，接收方收到的前后两个 <code>PUBLISH</code> 报文使用了相同的 Packet ID，并且第二个 PUBLISH 报文的 DUP 标志为 1，此时它确实是一个重复的消息。</p>
+<p>对于CASE 2，第一个 <code>PUBLISH</code> 报文已经完成了投递，1024 这个 Packet ID 重新变为可用状态。发送方使用这个 Packet ID 发送了一个全新的 <code>PUBLISH</code> 报文，但这一次报文未能到达对端，所以发送方后续重传了这个 <code>PUBLISH</code> 报文。这就使得虽然接收方收到的第二个 PUBLISH 报文同样是相同的 Packet ID，并且 DUP 为 1，但确实是一个全新的消息。</p>
+<p>由于我们无法区分这两种情况，所以<strong>只能让接收方将这些 PUBLISH 报文都当作全新的消息来处理。因此当我们使用 QoS 1 时，消息的重复在协议层面上是无法避免的。</strong></p>
+<hr>
+<p>极端情况下，Broker 从发布方收到了重复的 PUBLISH 报文，而在将这些报文转发给订阅方的过程中，再次发生重传，这将导致订阅方最终收到更多的重复消息。</p>
+<p><img loading="lazy" src="https://assets.emqx.com/images/c3b75419b81abb75407d7eb7394dfe37.png?x-image-process=image/resize,w_1520/format,webp" alt=""  />
+</p>
+<p>以上，就是 QoS 1 保证消息到达，导致的消息重复。</p>
+<h1 id="qos-2---只交付一次">QoS 2 - 只交付一次<a hidden class="anchor" aria-hidden="true" href="#qos-2---只交付一次">#</a></h1>
+<p>QoS 2 解决了 QoS 0、1 消息可能丢失或者重复的问题，但相应地，它也带来了最复杂的交互流程和最高的开销。每一次的 QoS 2 消息投递，都要求发送方与接收方进行至少两次请求/响应流程。</p>
+<p><img loading="lazy" src="https://assets.emqx.com/images/462a9955a81c6d1b06ba8d091f2753ea.png?x-image-process=image/resize,w_1520/format,webp" alt=""  />
+</p>
+<ol>
+<li>发送方存储并发送 QoS 为 2 的 <code>PUBLISH</code> 报文启动一次 QoS 2 消息的传输，并等待接收方回复 <code>PUBREC</code> 报文。这一部分与 QoS 1 基本一致，但响应报文从 <code>PUBACK</code> 变成了 <code>PUBREC</code>。</li>
+<li>当发送方收到 <code>PUBREC</code> 报文，即确认接收方收到了 <code>PUBLISH</code> 报文，发送方将<strong>不再需要重传</strong>这个报文，并且也<strong>不能再重传</strong>这个报文。此时发送方删除本地存储的 <code>PUBLISH</code> 报文，并存储并发送 <code>PUBREL</code> 报文，通知接受方本次使用的 Packet ID 将被标记为可用。与 <code>PUBLISH</code> 报文相同，所以也需要收到响应报文以确保 <code>PUBREL</code> 报文到达对端。</li>
+<li>当接收方收到 <code>PUBREL</code> 报文，可以确认本次传输流程中不会再有重传的 <code>PUBLISH</code> 报文到达，因此回复 <code>PUBCOMP</code> 报文表示确认当前 Packet ID 可以用于新的消息。</li>
+<li>当发送方收到 <code>PUBCOMP</code> 报文，本次 QoS 2 消息传输正式完成。之后，发送方可以再次使用当前的 Packet ID 发送新的消息，而接收方再次收到使用这个 Packet ID 的 <code>PUBLISH</code> 报文时，也会将它视为一个全新的消息。</li>
+</ol>
+<hr>
+<p><strong>为什么 QoS 2 消息不会重复？</strong></p>
+<p>QoS 2 与 QoS 1 相同，通过响应报文保证消息不会丢失。与 QoS 1 相比，QoS 2 新增了 <code>PUBREL</code> 报文和 <code>PUBCOMP</code> 报文的流程，以保证消息不重复。</p>
+<p>首先回顾一下 <strong>QoS 1 消息无法避免重复的原因</strong>：使用 QoS 1 消息时，对接收方来说，回复完 <code>PUBACK</code> 响应报文后 Packet ID 就重新可用了，也不管响应是否确实到达了发送方。所以无法得知之后到达的，携带了相同 Packet ID 的 <code>PUBLISH</code> 报文是发送方没有收到响应而重传的，还是发送方收到了响应所以重新使用了这个 Packet ID 发送了一个全新的消息。</p>
+<p>![[https://assets.emqx.com/images/81b397e0a44a6abd3adbe411d1219272.png?x-image-process=image/resize,w_1520/format,webp]]</p>
+<p>所以，<strong>消息去重的关键就在于通信双方如何正确地同步释放 Packet ID</strong>，换句话说，不管发送方是重传消息还是发布新消息，一定是和对端达成共识了的。</p>
+<hr>
+<p>QoS 2 增加的 <code>PUBREL</code> 流程提供了帮助通信双方协商 Packet ID 何时可以重用的能力。</p>
+<p><img loading="lazy" src="https://assets.emqx.com/images/6f186c00ed9f61cdb4d42889fd0f0498.png?x-image-process=image/resize,w_1520/format,webp" alt=""  />
+</p>
+<p><strong>QoS 2 规定，发送方只有在收到 <code>PUBREC</code> 报文之前可以重传 <code>PUBLISH</code> 报文。</strong> 一旦收到 <code>PUBREC</code> 报文并发出 <code>PUBREL</code> 报文，发送方就进入了 Packet ID 释放流程，不可以再使用当前 Packet ID 重传 <code>PUBLISH</code> 报文。同时，<strong>在收到对端回复的 <code>PUBCOMP</code> 报文确认双方都完成 Packet ID 释放之前，也不可以使用当前 Packet ID 发送新的消息。</strong></p>
+<p><img loading="lazy" src="https://assets.emqx.com/images/cdd4d1fa357c7e42fe1f124cfe637919.png?x-image-process=image/resize,w_1520/format,webp" alt=""  />
+</p>
+<p>因此对于接收方来说，以 <code>PUBREL</code> 报文为界限，凡是在 PUBREL 报文之前到达的 <code>PUBLISH</code> 报文，都必然是重复的消息；而凡是在 PUBREL 报文之后到达的 PUBLISH 报文，都必然是全新的消息。</p>
+<p>一旦有了这个前提，我们就能够在协议层面完成 QoS 2 消息的去重。</p>
+<h1 id="不同-qos-的适用场景和注意事项">不同 QoS 的适用场景和注意事项<a hidden class="anchor" aria-hidden="true" href="#不同-qos-的适用场景和注意事项">#</a></h1>
+<h2 id="qos-0">QoS 0<a hidden class="anchor" aria-hidden="true" href="#qos-0">#</a></h2>
+<p>QoS 0 的缺点是可能会丢失消息，消息丢失的频率依赖于你所处的网络环境，并且可能使你错过断开连接期间的消息，不过优点是投递的效率较高。</p>
+<p>所以我们通常选择使用 QoS 0 传输一些高频且不那么重要的数据，比如<strong>传感器数据，周期性更新</strong>，即使遗漏几个周期的数据也可以接受。</p>
+<h2 id="qos-1">QoS 1<a hidden class="anchor" aria-hidden="true" href="#qos-1">#</a></h2>
+<p>QoS 1 可以保证消息到达，所以适合传输一些较为重要的数据，比如<strong>下达关键指令、更新有实时性要求的状态等。</strong></p>
+<p>但因为 QoS 1 还可能会导致消息重复，所以当我们选择使用 QoS 1 时，还需要能够处理消息的重复，或者能够允许消息的重复。</p>
+<p>在我们决定使用 QoS 1 并且不对其进行去重处理之前，我们需要先了解，允许消息的重复，可能意味着什么。</p>
+<p><strong>如果我们不对 QoS 1 进行去重处理，我们可能会遭遇这种情况，发布方以 1、2 的顺序发布消息，但最终订阅方接收到的消息顺序可能是 1、2、1、2。</strong> 如果 1 表示开灯指令，2 表示关灯指令，我想大部分用户都不会接受自己仅仅进行了开灯然后关灯的操作，结果灯在开和关的状态来回变化。</p>
+<h2 id="qos-2">QoS 2<a hidden class="anchor" aria-hidden="true" href="#qos-2">#</a></h2>
+<p>QoS 2 既可以保证消息到达，也可以保证消息不会重复，但传输成本最高。</p>
+<p>如果我们不愿意自行实现去重方案，并且能够接受 QoS 2 带来的额外开销，那么 QoS 2 将是一个合适的选择。金融、航空等行业场景下会更多地见到 QoS 2 的使用。</p>
+<h1 id="参考资料">参考资料<a hidden class="anchor" aria-hidden="true" href="#参考资料">#</a></h1>
+<ul>
+<li><a href="https://www.emqx.com/zh/blog/introduction-to-mqtt-qos">https://www.emqx.com/zh/blog/introduction-to-mqtt-qos</a></li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="/tags/mqtt/">MQTT</a></li>
+      <li><a href="/tags/iot/">IoT</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="/tech/iot/mqtt-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>MQTT 发布-订阅模式</span>
+  </a>
+  <a class="next" href="/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/">
+    <span class="title">下一页 »</span>
+    <br>
+    <span>理解与使用 Container Capabilities</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制！';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>
