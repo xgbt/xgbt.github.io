@@ -2,66 +2,66 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tags on xgbt&#39;s Blog</title>
-    <link>/tags/</link>
+    <link>xgbt.site/tags/</link>
     <description>Recent content in Tags on xgbt&#39;s Blog</description>
-    <generator>Hugo -- 0.124.1</generator>
+    <generator>Hugo -- 0.139.3</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 13 Nov 2024 01:09:19 +0800</lastBuildDate>
-    <atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="xgbt.site/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes</title>
-      <link>/tags/kubernetes/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/tags/kubernetes/</guid>
+      <link>xgbt.site/tags/kubernetes/</link>
+      <pubDate>Wed, 13 Nov 2024 01:09:19 +0800</pubDate>
+      <guid>xgbt.site/tags/kubernetes/</guid>
       <description></description>
     </item>
     <item>
       <title>Nginx</title>
-      <link>/tags/nginx/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/tags/nginx/</guid>
+      <link>xgbt.site/tags/nginx/</link>
+      <pubDate>Wed, 29 May 2024 16:09:19 +0800</pubDate>
+      <guid>xgbt.site/tags/nginx/</guid>
       <description></description>
     </item>
     <item>
       <title>Ops</title>
-      <link>/tags/ops/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/tags/ops/</guid>
+      <link>xgbt.site/tags/ops/</link>
+      <pubDate>Wed, 29 May 2024 16:09:19 +0800</pubDate>
+      <guid>xgbt.site/tags/ops/</guid>
       <description></description>
     </item>
     <item>
       <title>MQTT</title>
-      <link>/tags/mqtt/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/tags/mqtt/</guid>
+      <link>xgbt.site/tags/mqtt/</link>
+      <pubDate>Fri, 22 Mar 2024 16:09:19 +0800</pubDate>
+      <guid>xgbt.site/tags/mqtt/</guid>
       <description></description>
     </item>
     <item>
       <title>Golang</title>
-      <link>/tags/golang/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/tags/golang/</guid>
+      <link>xgbt.site/tags/golang/</link>
+      <pubDate>Tue, 13 Feb 2024 16:09:19 +0800</pubDate>
+      <guid>xgbt.site/tags/golang/</guid>
       <description></description>
     </item>
     <item>
       <title>Linux</title>
-      <link>/tags/linux/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/tags/linux/</guid>
+      <link>xgbt.site/tags/linux/</link>
+      <pubDate>Thu, 04 Jan 2024 16:09:19 +0800</pubDate>
+      <guid>xgbt.site/tags/linux/</guid>
       <description></description>
     </item>
     <item>
       <title>Docker</title>
-      <link>/tags/docker/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/tags/docker/</guid>
+      <link>xgbt.site/tags/docker/</link>
+      <pubDate>Mon, 09 Oct 2023 16:09:19 +0800</pubDate>
+      <guid>xgbt.site/tags/docker/</guid>
       <description></description>
     </item>
     <item>
       <title>并发编程</title>
-      <link>/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</guid>
+      <link>xgbt.site/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</link>
+      <pubDate>Mon, 07 Aug 2023 16:09:19 +0800</pubDate>
+      <guid>xgbt.site/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</guid>
       <description></description>
     </item>
   </channel>

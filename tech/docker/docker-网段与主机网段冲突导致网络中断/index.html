@@ -7,18 +7,33 @@
 <meta name="robots" content="index, follow">
 <title>Docker 网段与主机网段冲突导致网络中断 | xgbt&#39;s Blog</title>
 <meta name="keywords" content="Ops, Docker">
-<meta name="description" content="问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。 解决方案 查看路由信息 1ifconfig docker0 2 3docker0:">
+<meta name="description" content="问题描述
+有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。
+解决方案
+
+查看路由信息
+
+1ifconfig docker0
+2
+3docker0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500
+4        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+5        ether 02:42:90:e0:c1:a0  txqueuelen 0  (Ethernet)
+6        RX packets 0  bytes 0 (0.0 B)
+7        RX errors 0  dropped 0  overruns 0  frame 0
+8        TX packets 0  bytes 0 (0.0 B)
+9        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+可以看到，docker0 占用的网段为 172.17.0.1/16">
 <meta name="author" content="">
-<link rel="canonical" href="/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="canonical" href="xgbt.site/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/">
+<link crossorigin="anonymous" href="xgbt.site/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
 <link rel="icon" href="/assets/apple-icon.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="xgbt.site/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="xgbt.site/favicon-32x32.png">
+<link rel="apple-touch-icon" href="xgbt.site/apple-touch-icon.png">
+<link rel="mask-icon" href="xgbt.site/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="zh" href="/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/">
+<link rel="alternate" hreflang="zh" href="xgbt.site/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/">
 <noscript>
     <style>
         #theme-toggle,
@@ -63,15 +78,45 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
     rel="stylesheet"><meta property="og:title" content="Docker 网段与主机网段冲突导致网络中断" />
-<meta property="og:description" content="问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。 解决方案 查看路由信息 1ifconfig docker0 2 3docker0:" />
+<meta property="og:description" content="问题描述
+有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。
+解决方案
+
+查看路由信息
+
+1ifconfig docker0
+2
+3docker0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500
+4        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+5        ether 02:42:90:e0:c1:a0  txqueuelen 0  (Ethernet)
+6        RX packets 0  bytes 0 (0.0 B)
+7        RX errors 0  dropped 0  overruns 0  frame 0
+8        TX packets 0  bytes 0 (0.0 B)
+9        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+可以看到，docker0 占用的网段为 172.17.0.1/16" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/" /><meta property="article:section" content="tech" />
+<meta property="og:url" content="xgbt.site/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/" /><meta property="article:section" content="tech" />
 <meta property="article:published_time" content="2023-10-09T16:09:19+08:00" />
 <meta property="article:modified_time" content="2023-10-09T16:09:19+08:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Docker 网段与主机网段冲突导致网络中断"/>
-<meta name="twitter:description" content="问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。 解决方案 查看路由信息 1ifconfig docker0 2 3docker0:"/>
+<meta name="twitter:description" content="问题描述
+有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。
+解决方案
+
+查看路由信息
+
+1ifconfig docker0
+2
+3docker0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500
+4        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+5        ether 02:42:90:e0:c1:a0  txqueuelen 0  (Ethernet)
+6        RX packets 0  bytes 0 (0.0 B)
+7        RX errors 0  dropped 0  overruns 0  frame 0
+8        TX packets 0  bytes 0 (0.0 B)
+9        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+可以看到，docker0 占用的网段为 172.17.0.1/16"/>
 
 
 <script type="application/ld+json">
@@ -83,13 +128,13 @@
       "@type": "ListItem",
       "position":  1 ,
       "name": "Tech",
-      "item": "/tech/"
-    }
+      "item": "xgbt.site/tech/"
+    }, 
     {
       "@type": "ListItem",
-      "position":  1 ,
+      "position":  2 ,
       "name": "Docker 网段与主机网段冲突导致网络中断",
-      "item": "/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/"
+      "item": "xgbt.site/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/"
     }
   ]
 }
@@ -100,7 +145,7 @@
   "@type": "BlogPosting",
   "headline": "Docker 网段与主机网段冲突导致网络中断",
   "name": "Docker 网段与主机网段冲突导致网络中断",
-  "description": "问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。 解决方案 查看路由信息 1ifconfig docker0 2 3docker0:",
+  "description": "问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。\n解决方案 查看路由信息 1ifconfig docker0 2 3docker0: flags=4099\u0026lt;UP,BROADCAST,MULTICAST\u0026gt; mtu 1500 4 inet 172.17.0.1 netmask 255.255.0.0 broadcast 172.17.255.255 5 ether 02:42:90:e0:c1:a0 txqueuelen 0 (Ethernet) 6 RX packets 0 bytes 0 (0.0 B) 7 RX errors 0 dropped 0 overruns 0 frame 0 8 TX packets 0 bytes 0 (0.0 B) 9 TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0 可以看到，docker0 占用的网段为 172.17.0.1/16\n",
   "keywords": [
     "Ops", "Docker"
   ],
@@ -111,7 +156,7 @@
   "dateModified": "2023-10-09T16:09:19+08:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/"
+    "@id": "xgbt.site/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/"
   },
   "publisher": {
     "@type": "Organization",
@@ -140,7 +185,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <a href="xgbt.site/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -166,22 +211,22 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="/" title="🏠主页">
+                <a href="xgbt.site/xgbt.site/" title="🏠主页">
                     <span>🏠主页</span>
                 </a>
             </li>
             <li>
-                <a href="/search" title="🔍搜索">
+                <a href="xgbt.site/xgbt.site/search" title="🔍搜索">
                     <span>🔍搜索</span>
                 </a>
             </li>
             <li>
-                <a href="/tags" title="🏷️标签">
+                <a href="xgbt.site/xgbt.site/tags" title="🏷️标签">
                     <span>🏷️标签</span>
                 </a>
             </li>
             <li>
-                <a href="/archives" title="📦归档">
+                <a href="xgbt.site/xgbt.site/archives" title="📦归档">
                     <span>📦归档</span>
                 </a>
             </li>
@@ -192,7 +237,7 @@
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
+    <div class="breadcrumbs"><a href="xgbt.site/">主页</a>&nbsp;»&nbsp;<a href="xgbt.site/tech/">Tech</a></div>
     <h1 class="post-title entry-hint-parent">
       Docker 网段与主机网段冲突导致网络中断
     </h1>
@@ -356,16 +401,16 @@
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="/tags/ops/">Ops</a></li>
-      <li><a href="/tags/docker/">Docker</a></li>
+      <li><a href="xgbt.site/tags/ops/">Ops</a></li>
+      <li><a href="xgbt.site/tags/docker/">Docker</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/">
+  <a class="prev" href="xgbt.site/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/">
     <span class="title">« 上一页</span>
     <br>
     <span>Jaeger 部署与使用</span>
   </a>
-  <a class="next" href="/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/">
+  <a class="next" href="xgbt.site/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/">
     <span class="title">下一页 »</span>
     <br>
     <span>修改 Linux DNS 配置</span>
@@ -377,7 +422,7 @@
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+        <span>&copy; 2024 <a href="xgbt.site/">xgbt&#39;s Blog</a></span> · 
 
     <span>
         Powered by

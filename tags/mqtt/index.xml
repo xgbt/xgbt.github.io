@@ -2,18 +2,37 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>MQTT on xgbt&#39;s Blog</title>
-    <link>/tags/mqtt/</link>
+    <link>xgbt.site/tags/mqtt/</link>
     <description>Recent content in MQTT on xgbt&#39;s Blog</description>
-    <generator>Hugo -- 0.124.1</generator>
+    <generator>Hugo -- 0.139.3</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 20 Mar 2024 16:09:19 +0800</lastBuildDate>
-    <atom:link href="/tags/mqtt/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Mar 2024 16:09:19 +0800</lastBuildDate>
+    <atom:link href="xgbt.site/tags/mqtt/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MQTT 连接参数配置</title>
+      <link>xgbt.site/tech/mqtt/mqtt-%E8%BF%9E%E6%8E%A5%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</link>
+      <pubDate>Fri, 22 Mar 2024 16:09:19 +0800</pubDate>
+      <guid>xgbt.site/tech/mqtt/mqtt-%E8%BF%9E%E6%8E%A5%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</guid>
+      <description>&lt;h1 id=&#34;mqtt-连接过程&#34;&gt;MQTT 连接过程&lt;/h1&gt;
+&lt;p&gt;MQTT 连接由客户端向服务器端发起。&lt;/p&gt;
+&lt;p&gt;任何运行了 MQTT 客户端库的程序或设备都是一个 MQTT 客户端，而 MQTT 服务器 负责接收客户端发起的连接，并将客户端发送的消息转发到另外一些符合条件的客户端。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>MQTT 发布-订阅模式</title>
+      <link>xgbt.site/tech/mqtt/mqtt-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</link>
+      <pubDate>Thu, 21 Mar 2024 16:09:19 +0800</pubDate>
+      <guid>xgbt.site/tech/mqtt/mqtt-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</guid>
+      <description>&lt;h1 id=&#34;mqtt-发布订阅模式&#34;&gt;MQTT 发布/订阅模式&lt;/h1&gt;
+&lt;p&gt;发布-订阅模式（Publish-Subscribe Pattern）是一种消息传递模式，将发送消息的客户端（发布者）与接收消息的客户端（订阅者）解耦，使得两者不需要建立直接的联系也不需要知道对方的存在。&lt;/p&gt;</description>
+    </item>
     <item>
       <title>MQTT QoS 简介</title>
-      <link>/tech/mqtt-qos--%E7%AE%80%E4%BB%8B/</link>
+      <link>xgbt.site/tech/mqtt/mqtt-qos--%E7%AE%80%E4%BB%8B/</link>
       <pubDate>Wed, 20 Mar 2024 16:09:19 +0800</pubDate>
-      <guid>/tech/mqtt-qos--%E7%AE%80%E4%BB%8B/</guid>
-      <description>什么是 QoS 使用 MQTT 协议的设备一般运行在网络受限的环境下，只依靠底层TCP 传输协议并不能完全保证消息的可靠到达。 因此，MQTT 提供了 QoS（Qua</description>
+      <guid>xgbt.site/tech/mqtt/mqtt-qos--%E7%AE%80%E4%BB%8B/</guid>
+      <description>&lt;h1 id=&#34;什么是-qos&#34;&gt;什么是 QoS&lt;/h1&gt;
+&lt;p&gt;使用 MQTT 协议的设备一般运行在网络受限的环境下，只依靠底层TCP 传输协议并不能完全保证消息的可靠到达。&lt;/p&gt;
+&lt;p&gt;因此，MQTT 提供了 QoS（&lt;strong&gt;Quality of service&lt;/strong&gt;） 机制，其核心是设计了多种消息交互机制来提供不同的服务质量，来满足用户在各种场景下对消息可靠性的要求。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

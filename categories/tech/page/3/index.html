@@ -9,17 +9,17 @@
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="/categories/tech/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="canonical" href="xgbt.site/categories/tech/">
+<link crossorigin="anonymous" href="xgbt.site/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
 <link rel="icon" href="/assets/apple-icon.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="xgbt.site/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="xgbt.site/favicon-32x32.png">
+<link rel="apple-touch-icon" href="xgbt.site/apple-touch-icon.png">
+<link rel="mask-icon" href="xgbt.site/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="/categories/tech/index.xml">
-<link rel="alternate" hreflang="zh" href="/categories/tech/">
+<link rel="alternate" type="application/rss+xml" href="xgbt.site/categories/tech/index.xml">
+<link rel="alternate" hreflang="zh" href="xgbt.site/categories/tech/">
 <noscript>
     <style>
         #theme-toggle,
@@ -66,7 +66,7 @@
     rel="stylesheet"><meta property="og:title" content="Tech" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="/categories/tech/" />
+<meta property="og:url" content="xgbt.site/categories/tech/" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Tech"/>
@@ -89,7 +89,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <a href="xgbt.site/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -115,22 +115,22 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="/" title="🏠主页">
+                <a href="xgbt.site/xgbt.site/" title="🏠主页">
                     <span>🏠主页</span>
                 </a>
             </li>
             <li>
-                <a href="/search" title="🔍搜索">
+                <a href="xgbt.site/xgbt.site/search" title="🔍搜索">
                     <span>🔍搜索</span>
                 </a>
             </li>
             <li>
-                <a href="/tags" title="🏷️标签">
+                <a href="xgbt.site/xgbt.site/tags" title="🏷️标签">
                     <span>🏷️标签</span>
                 </a>
             </li>
             <li>
-                <a href="/archives" title="📦归档">
+                <a href="xgbt.site/xgbt.site/archives" title="📦归档">
                     <span>📦归档</span>
                 </a>
             </li>
@@ -138,7 +138,7 @@
     </nav>
 </header>
 <main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/categories/">Categories</a></div>
+<header class="page-header"><div class="breadcrumbs"><a href="xgbt.site/">主页</a>&nbsp;»&nbsp;<a href="xgbt.site/categories/">Categories</a></div>
   <h1>
     Tech
   </h1>
@@ -146,14 +146,56 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Jaeger 部署与使用
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 安装 Jaeger Operator 1kubectl create namespace observability 2kubectl create -f https://github.com/jaegertracing/jaeger-operator/releases/download/v1.52.0/jaeger-operator.yaml -n observability 若 rbac-proxy 安装失败，则修改 kube-rbac-prox 镜像地址为 10.101.7.108:80/open_source/kubebuilder/kube-rbac-proxy:v0.13.0
+安装 Jaeger 1apiVersion: jaegertracing.io/v1 2kind: Jaeger 3metadata: 4 name: jaeger-prod 5 namespace: observability 6spec: 7 strategy: production 8 storage: 9 type: elasticsearch 10 esIndexCleaner: 11 enabled: true # turn the cron job deployment on and off 12 numberOfDays: 7 # number of days to wait before deleting a record 13 schedule: &#34;55 23 * * *&#34; # cron expression for it to run 14 options: 15 es: 16 server-urls: http://elasticsearch.szhems.svc:9200 17 index-prefix: dev 18 # tls: 19 # ca: /es/certificates/ca.crt 20 # secretName: jaeger-secret 21 # volumeMounts: 22 # - name: certificates 23 # mountPath: /es/certificates/ 24 # readOnly: true 25 # volumes: 26 # - name: certificates 27 # secret: 28 # secretName: quickstart-es-http-certs-public go-zero 每个服务的配置文件下添加Telemetry配置 1Log: 2 ServiceName: platform-api 3 Level: info 4 Stat: false 5 TimeFormat: 2006-01-02 15:04:05 参考资料：
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-12-11 16:09:19 +0800 CST'>十二月 11, 2023</span></footer>
+  <a class="entry-link" aria-label="post link to Jaeger 部署与使用" href="xgbt.site/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Docker 网段与主机网段冲突导致网络中断
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。
+解决方案 查看路由信息 1ifconfig docker0 2 3docker0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt; mtu 1500 4 inet 172.17.0.1 netmask 255.255.0.0 broadcast 172.17.255.255 5 ether 02:42:90:e0:c1:a0 txqueuelen 0 (Ethernet) 6 RX packets 0 bytes 0 (0.0 B) 7 RX errors 0 dropped 0 overruns 0 frame 0 8 TX packets 0 bytes 0 (0.0 B) 9 TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0 可以看到，docker0 占用的网段为 172.17.0.1/16
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-10-09 16:09:19 +0800 CST'>十月 9, 2023</span></footer>
+  <a class="entry-link" aria-label="post link to Docker 网段与主机网段冲突导致网络中断" href="xgbt.site/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">修改 Linux DNS 配置
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 查看网卡配置 1ip a 修改或添加 DNS 服务器 1vim /etc/sysconfig/network-scripts/ifcfg-eth0 1# 添加规则 2DNS1=114.114.114.114 3DNS2=8.8.8.8 重启网络使配置生效 1service network restart </p>
+  </div>
+  <footer class="entry-footer"><span title='2023-09-08 16:09:19 +0800 CST'>九月 8, 2023</span></footer>
+  <a class="entry-link" aria-label="post link to 修改 Linux DNS 配置" href="xgbt.site/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Docker 安装与配置
     </h2>
   </header>
   <div class="entry-content">
-    <p>操作系统版本 AlmaLinux 9.3 安装 dnf-utils 1sudo dnf install -y dnf-utils 添加 Docker CE 存储库 1sudo dnf config-manager --add-repo https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo 1yum-config-manager --add-repo https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo 添加过后，执行列出 Alma Linux上可用存储库的列表 1sudo dnf repolist 把软件仓库地址替换为镜像...</p>
+    <p>操作系统版本 AlmaLinux 9.3
+安装 dnf-utils 1sudo dnf install -y dnf-utils 添加 Docker CE 存储库 1sudo dnf config-manager --add-repo https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo 1yum-config-manager --add-repo https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo 添加过后，执行列出 Alma Linux上可用存储库的列表
+1sudo dnf repolist 把软件仓库地址替换为镜像站 1sed -i &#39;s&#43;https://download.docker.com&#43;https://mirrors.tuna.tsinghua.edu.cn/docker-ce&#43;&#39; /etc/yum.repos.d/docker-ce.repo 安装 Docker CE 1sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 启动并启用 Docker 1sudo systemctl start docker 2sudo systemctl enable docker 配置国内镜像源 1{ 2 &#34;registry-mirrors&#34;: [ 3	&#34;https://docker.1panel.live&#34; 4 ] 5} 1sudo systemctl daemon-reload 2sudo systemctl restart docker </p>
   </div>
   <footer class="entry-footer"><span title='2023-08-11 16:09:19 +0800 CST'>八月 11, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Docker 安装与配置" href="/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/"></a>
+  <a class="entry-link" aria-label="post link to Docker 安装与配置" href="xgbt.site/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -162,10 +204,11 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p>并发过高导致程序崩溃 1func main() { 2 var wg sync.WaitGroup 3 for i := 0; i &lt; math.MaxInt32; i&#43;&#43; { 4 wg.Add(1) 5 go func(i int) { 6 defer wg.Done() 7 fmt.Println(i) 8 time.Sleep(time.Second) 9 }(i) 10 } 11 wg.Wait() 12} 1goroutine 1489841 [running]: 2internal/poll.(*fdMutex).rwlock(0xc000130060, 0x0?) 3 /usr/local/go/src/internal/poll/fd_mutex.go:147 &#43;0x11b 4internal/poll.(*FD).writeLock(...) 5 /usr/local/go/src/internal/poll/fd_mutex.go:239 6internal/poll.(*FD).Write(0xc000130060, {0xc0ca328a90, 0x8, 0x8}) 7 /usr/local/go/src/internal/poll/fd_unix.go:370 &#43;0x72 8os.(*File).write(...) 9 /usr/local/go/src/os/file_posix.go:48 10os.(*File).Write(0xc00012e008,...</p>
+    <p>并发过高导致程序崩溃 1func main() { 2	var wg sync.WaitGroup 3	for i := 0; i &lt; math.MaxInt32; i&#43;&#43; { 4	wg.Add(1) 5	go func(i int) { 6	defer wg.Done() 7	fmt.Println(i) 8	time.Sleep(time.Second) 9	}(i) 10	} 11	wg.Wait() 12} 1goroutine 1489841 [running]: 2internal/poll.(*fdMutex).rwlock(0xc000130060, 0x0?) 3 /usr/local/go/src/internal/poll/fd_mutex.go:147 &#43;0x11b 4internal/poll.(*FD).writeLock(...) 5 /usr/local/go/src/internal/poll/fd_mutex.go:239 6internal/poll.(*FD).Write(0xc000130060, {0xc0ca328a90, 0x8, 0x8}) 7 /usr/local/go/src/internal/poll/fd_unix.go:370 &#43;0x72 8os.(*File).write(...) 9 /usr/local/go/src/os/file_posix.go:48 10os.(*File).Write(0xc00012e008, {0xc0ca328a90?, 0x8, 0xc0cd90b750?}) 11 /usr/local/go/src/os/file.go:175 &#43;0x65 12fmt.Fprintln({0x4b7ff8, 0xc00012e008}, {0xc0cd90b790, 0x1, 0x1}) 13 /usr/local/go/src/fmt/print.go:305 &#43;0x75 14fmt.Println(...) 15 /usr/local/go/src/fmt/print.go:314 16main.main.func1(0x0?) 17 /root/zhuangqf/Blank/cmd/main.go:16 &#43;0x8f 18created by main.main 19 /root/zhuangqf/Blank/cmd/main.go:14 &#43;0x3c 20panic: too many concurrent operations on a single file or socket (max 1048575) 1panic: too many concurrent operations on a single file or socket (max 1048575) 1 个 file/socket 的上并发操作个数超过了上限（1048575），简而言之，系统的资源被耗尽了。0xFFFFF = 1048575
+...</p>
   </div>
   <footer class="entry-footer"><span title='2023-08-07 16:09:19 +0800 CST'>八月 7, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Golang 控制协程并发数量" href="/tech/golang/golang-%E6%8E%A7%E5%88%B6%E5%8D%8F%E7%A8%8B%E5%B9%B6%E5%8F%91%E6%95%B0%E9%87%8F/"></a>
+  <a class="entry-link" aria-label="post link to Golang 控制协程并发数量" href="xgbt.site/tech/golang/golang-%E6%8E%A7%E5%88%B6%E5%8D%8F%E7%A8%8B%E5%B9%B6%E5%8F%91%E6%95%B0%E9%87%8F/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -174,10 +217,12 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p>1. future/promise 1.1 单向接收 Channel 作为函数返回 sumSquares函数调用的两个实参请求并发进行。每个通道读取操作将阻塞到请求返回结果为止。 1func longTimeRequest() &lt;-chan int64 { 2 r := make(chan...</p>
+    <p>1. future/promise 1.1 单向接收 Channel 作为函数返回 sumSquares函数调用的两个实参请求并发进行。每个通道读取操作将阻塞到请求返回结果为止。
+1func longTimeRequest() &lt;-chan int64 { 2	r := make(chan int64) 3 4	go func() { 5	time.Sleep(time.Second * 3) // 模拟一个工作负载 6	r &lt;- rand.Int63n(100) 7	}() 8 9	return r 10} 11 12func sumSquares(a, b int64) int64 { 13	return a*a &#43; b*b 14} 15 16func main() { 17 18	a, b := longTimeRequest(), longTimeRequest() 19	fmt.Println(sumSquares(&lt;-a, &lt;-b)) 20} 1.2 单向发送 Channel 作为函数实参 sumSquares函数调用的两个实参的请求也是并发进行的。和上例不同的是longTimeRequest函数接收一个单向发送通道类型参数而不是返回一个单向接收通道结果。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2023-08-03 16:09:19 +0800 CST'>八月 3, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Golang Channel 使用场景" href="/tech/golang/golang-channel-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/"></a>
+  <a class="entry-link" aria-label="post link to Golang Channel 使用场景" href="xgbt.site/tech/golang/golang-channel-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -186,10 +231,12 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p>参考资料： https://go.dev/wiki/CodeReviewComments https://go.dev/wiki/CommonMistakes Review Comments 使用 gofmt 或者 goimports 自动格式化代码 记录声明的注释应该是完整的句子，注释应以所描述事物的名称开头并以句点结束。 1// Request represents a request to run a command. 2type Request...</p>
+    <p>参考资料：
+https://go.dev/wiki/CodeReviewComments https://go.dev/wiki/CommonMistakes Review Comments 使用 gofmt 或者 goimports 自动格式化代码 记录声明的注释应该是完整的句子，注释应以所描述事物的名称开头并以句点结束。 1// Request represents a request to run a command. 2type Request struct { ... 3 4// Encode writes the JSON encoding of req to w. 5func Encode(w io.Writer, req *Request) { ... context.Context 类型的值携带跨 API 和进程边界的安全凭证、跟踪信息、截止日期和取消信号。Go 程序沿着从传入 RPC 和 HTTP 请求到传出请求的整个函数调用链显式传递上下文。大多数使用 Context 的函数都将它作为第一个参数： 1func F(ctx context.Context, /* other arguments */) {} 注意，不要将 Context 成员添加到结构类型中；而是向需要传递该类型的每个方法添加一个 ctx 参数。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2023-05-06 16:09:19 +0800 CST'>五月 6, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Golang Code Review Comments" href="/tech/golang/golang-code-review-comments/"></a>
+  <a class="entry-link" aria-label="post link to Golang Code Review Comments" href="xgbt.site/tech/golang/golang-code-review-comments/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
@@ -198,26 +245,15 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p>1. panic 与 error 1.1 panic panic 会中止程序执行进入异常处理逻辑，panic可以在当前函数或者调用链向上的任何一层被defer recover 捕获处理，没被捕获的panic会...</p>
+    <p>1. panic 与 error 1.1 panic panic 会中止程序执行进入异常处理逻辑，panic可以在当前函数或者调用链向上的任何一层被defer recover 捕获处理，没被捕获的panic会使程序打印堆栈后异常退出。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2023-02-11 16:09:19 +0800 CST'>二月 11, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Golang 错误处理" href="/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">基于 Velero 备份与恢复 K8s 集群
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Velero 安装步骤 客户端 https://github.com/vmware-tanzu/velero/releases 下载并安装最新版本二进制客户端。 1cp velero /usr/local/bin &amp;&amp; chmod &#43;x /usr/local/bin/velero 2 3velero version 4Client: 5 Version: v1.13.2 6 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 7&lt;error getting server version: no matches for kind &#34;ServerStatusRequest&#34; in version &#34;velero.io/v1&#34;&gt; 服务端 准备好秘钥文件 credentials-velero ，即 MinIO 的...</p>
-  </div>
-  <footer class="entry-footer"></footer>
-  <a class="entry-link" aria-label="post link to 基于 Velero 备份与恢复 K8s 集群" href="/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/"></a>
+  <a class="entry-link" aria-label="post link to Golang 错误处理" href="xgbt.site/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="prev" href="/categories/tech/page/2/">
+    <a class="prev" href="xgbt.site/xgbt.site/categories/tech/page/2/">
       «&nbsp;上一页&nbsp;
     </a>
   </nav>
@@ -225,7 +261,7 @@
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+        <span>&copy; 2024 <a href="xgbt.site/">xgbt&#39;s Blog</a></span> · 
 
     <span>
         Powered by

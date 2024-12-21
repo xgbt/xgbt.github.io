@@ -9,17 +9,17 @@
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="/tags/kubernetes/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="canonical" href="xgbt.site/tags/kubernetes/">
+<link crossorigin="anonymous" href="xgbt.site/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
 <link rel="icon" href="/assets/apple-icon.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="xgbt.site/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="xgbt.site/favicon-32x32.png">
+<link rel="apple-touch-icon" href="xgbt.site/apple-touch-icon.png">
+<link rel="mask-icon" href="xgbt.site/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="/tags/kubernetes/index.xml">
-<link rel="alternate" hreflang="zh" href="/tags/kubernetes/">
+<link rel="alternate" type="application/rss+xml" href="xgbt.site/tags/kubernetes/index.xml">
+<link rel="alternate" hreflang="zh" href="xgbt.site/tags/kubernetes/">
 <noscript>
     <style>
         #theme-toggle,
@@ -66,7 +66,7 @@
     rel="stylesheet"><meta property="og:title" content="Kubernetes" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="/tags/kubernetes/" />
+<meta property="og:url" content="xgbt.site/tags/kubernetes/" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Kubernetes"/>
@@ -89,7 +89,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <a href="xgbt.site/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -115,22 +115,22 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="/" title="🏠主页">
+                <a href="xgbt.site/xgbt.site/" title="🏠主页">
                     <span>🏠主页</span>
                 </a>
             </li>
             <li>
-                <a href="/search" title="🔍搜索">
+                <a href="xgbt.site/xgbt.site/search" title="🔍搜索">
                     <span>🔍搜索</span>
                 </a>
             </li>
             <li>
-                <a href="/tags" title="🏷️标签">
+                <a href="xgbt.site/xgbt.site/tags" title="🏷️标签">
                     <span>🏷️标签</span>
                 </a>
             </li>
             <li>
-                <a href="/archives" title="📦归档">
+                <a href="xgbt.site/xgbt.site/archives" title="📦归档">
                     <span>📦归档</span>
                 </a>
             </li>
@@ -138,7 +138,7 @@
     </nav>
 </header>
 <main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tags/">Tags</a></div>
+<header class="page-header"><div class="breadcrumbs"><a href="xgbt.site/">主页</a>&nbsp;»&nbsp;<a href="xgbt.site/tags/">Tags</a></div>
   <h1>
     Kubernetes
   </h1>
@@ -146,30 +146,33 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">K8s Pod 基础知识
+    <h2 class="entry-hint-parent">Volume 基础知识
     </h2>
   </header>
   <div class="entry-content">
-    <p>Pod 是 K8s 集群中创建和管理的、最小的可部署的计算单元。K8s 不会直接操作容器，而是通过 Pod 封装了容器，集群通过管控 Pod ，便可控制容器的存储、网络等资...</p>
+    <p>数据卷（Volume）是 Pod 与外部存储设备进行数据传递的通道，也是 Pod 内部容器间、Pod 与Pod 间、Pod 与外部环境进行数据共享的方式。
+Volume 定义了外置存储的细节，并内嵌到 Pod 中作为 Pod 的一部分。其实质是外置存储在Kubernetes 系统的一个资源映射，当负载需要使用外置存储的时候，可以从数据卷（Volume）中查到相关信息并进行存储挂载操作。
+...</p>
   </div>
-  <footer class="entry-footer"><span title='2024-01-31 16:09:19 +0800 CST'>一月 31, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to K8s Pod 基础知识" href="/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"></a>
+  <footer class="entry-footer"><span title='2024-03-15 16:09:19 +0800 CST'>三月 15, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to Volume 基础知识" href="xgbt.site/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"></a>
 </article>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">基于 Velero 备份与恢复 K8s 集群
+    <h2 class="entry-hint-parent">K8s Pod 基础知识
     </h2>
   </header>
   <div class="entry-content">
-    <p>Velero 安装步骤 客户端 https://github.com/vmware-tanzu/velero/releases 下载并安装最新版本二进制客户端。 1cp velero /usr/local/bin &amp;&amp; chmod &#43;x /usr/local/bin/velero 2 3velero version 4Client: 5 Version: v1.13.2 6 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 7&lt;error getting server version: no matches for kind &#34;ServerStatusRequest&#34; in version &#34;velero.io/v1&#34;&gt; 服务端 准备好秘钥文件 credentials-velero ，即 MinIO 的...</p>
+    <p>Pod 是 K8s 集群中创建和管理的、最小的可部署的计算单元。K8s 不会直接操作容器，而是通过 Pod 封装了容器，集群通过管控 Pod ，便可控制容器的存储、网络等资源，实现资源隔离或共享。
+...</p>
   </div>
-  <footer class="entry-footer"></footer>
-  <a class="entry-link" aria-label="post link to 基于 Velero 备份与恢复 K8s 集群" href="/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/"></a>
+  <footer class="entry-footer"><span title='2024-01-31 16:09:19 +0800 CST'>一月 31, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to K8s Pod 基础知识" href="xgbt.site/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="prev" href="/tags/kubernetes/">
+    <a class="prev" href="xgbt.site/xgbt.site/tags/kubernetes/">
       «&nbsp;上一页&nbsp;
     </a>
   </nav>
@@ -177,7 +180,7 @@
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+        <span>&copy; 2024 <a href="xgbt.site/">xgbt&#39;s Blog</a></span> · 
 
     <span>
         Powered by

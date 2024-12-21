@@ -7,18 +7,59 @@
 <meta name="robots" content="index, follow">
 <title>基于 Velero 备份与恢复 K8s 集群 | xgbt&#39;s Blog</title>
 <meta name="keywords" content="Kubernetes">
-<meta name="description" content="Velero 安装步骤 客户端 https://github.com/vmware-tanzu/velero/releases 下载并安装最新版本二进制客户端。 1cp velero /usr/local/bin &amp;&amp; chmod &#43;x /usr/local/bin/velero 2 3velero version 4Client: 5 Version: v1.13.2 6 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 7&lt;error getting server version: no matches for kind &#34;ServerStatusRequest&#34; in version &#34;velero.io/v1&#34;&gt; 服务端 准备好秘钥文件 credentials-velero ，即 MinIO 的">
+<meta name="description" content="Velero 安装步骤
+客户端
+https://github.com/vmware-tanzu/velero/releases
+下载并安装最新版本二进制客户端。
+1cp velero /usr/local/bin &amp;&amp; chmod &#43;x /usr/local/bin/velero
+2
+3velero version
+4Client:
+5        Version: v1.13.2
+6        Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6
+7&lt;error getting server version: no matches for kind &#34;ServerStatusRequest&#34; in version &#34;velero.io/v1&#34;&gt;
+服务端
+
+准备好秘钥文件 credentials-velero ，即 MinIO 的用户名密码。
+
+1[default]
+2aws_access_key_id=&lt;access key id&gt;
+3aws_secret_access_key=&lt;secret access key&gt;
+
+使用 velero install 安装服务端
+
+ 1velero install \
+ 2  --provider aws \
+ 3  --image velero/velero:v1.13.2 \
+ 4  --plugins velero/velero-plugin-for-aws:v1.9.2 \
+ 5  --bucket velero \
+ 6  --secret-file ./credentials-velero \
+ 7  --use-node-agent \
+ 8  --use-volume-snapshots=false \
+ 9  --namespace velero \
+10  --backup-location-config region=minio,s3ForcePathStyle=&#34;true&#34;,s3Url=http://10.101.6.118:9000 \
+11  --wait
+1velero  version
+2Client:
+3        Version: v1.13.2
+4        Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6
+5Server:
+6        Version: v1.13.2
+Velero 使用
+备份
+1velero create backup NAME [flags]
+backup选项：">
 <meta name="author" content="">
-<link rel="canonical" href="/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="canonical" href="xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/">
+<link crossorigin="anonymous" href="xgbt.site/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
 <link rel="icon" href="/assets/apple-icon.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="xgbt.site/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="xgbt.site/favicon-32x32.png">
+<link rel="apple-touch-icon" href="xgbt.site/apple-touch-icon.png">
+<link rel="mask-icon" href="xgbt.site/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="zh" href="/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/">
+<link rel="alternate" hreflang="zh" href="xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/">
 <noscript>
     <style>
         #theme-toggle,
@@ -63,15 +104,97 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
     rel="stylesheet"><meta property="og:title" content="基于 Velero 备份与恢复 K8s 集群" />
-<meta property="og:description" content="Velero 安装步骤 客户端 https://github.com/vmware-tanzu/velero/releases 下载并安装最新版本二进制客户端。 1cp velero /usr/local/bin &amp;&amp; chmod &#43;x /usr/local/bin/velero 2 3velero version 4Client: 5 Version: v1.13.2 6 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 7&lt;error getting server version: no matches for kind &#34;ServerStatusRequest&#34; in version &#34;velero.io/v1&#34;&gt; 服务端 准备好秘钥文件 credentials-velero ，即 MinIO 的" />
+<meta property="og:description" content="Velero 安装步骤
+客户端
+https://github.com/vmware-tanzu/velero/releases
+下载并安装最新版本二进制客户端。
+1cp velero /usr/local/bin &amp;&amp; chmod &#43;x /usr/local/bin/velero
+2
+3velero version
+4Client:
+5        Version: v1.13.2
+6        Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6
+7&lt;error getting server version: no matches for kind &#34;ServerStatusRequest&#34; in version &#34;velero.io/v1&#34;&gt;
+服务端
+
+准备好秘钥文件 credentials-velero ，即 MinIO 的用户名密码。
+
+1[default]
+2aws_access_key_id=&lt;access key id&gt;
+3aws_secret_access_key=&lt;secret access key&gt;
+
+使用 velero install 安装服务端
+
+ 1velero install \
+ 2  --provider aws \
+ 3  --image velero/velero:v1.13.2 \
+ 4  --plugins velero/velero-plugin-for-aws:v1.9.2 \
+ 5  --bucket velero \
+ 6  --secret-file ./credentials-velero \
+ 7  --use-node-agent \
+ 8  --use-volume-snapshots=false \
+ 9  --namespace velero \
+10  --backup-location-config region=minio,s3ForcePathStyle=&#34;true&#34;,s3Url=http://10.101.6.118:9000 \
+11  --wait
+1velero  version
+2Client:
+3        Version: v1.13.2
+4        Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6
+5Server:
+6        Version: v1.13.2
+Velero 使用
+备份
+1velero create backup NAME [flags]
+backup选项：" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/" /><meta property="article:section" content="tech" />
-
-
+<meta property="og:url" content="xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/" /><meta property="article:section" content="tech" />
+<meta property="article:published_time" content="2024-09-24T16:09:19+08:00" />
+<meta property="article:modified_time" content="2024-09-24T16:09:19+08:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="基于 Velero 备份与恢复 K8s 集群"/>
-<meta name="twitter:description" content="Velero 安装步骤 客户端 https://github.com/vmware-tanzu/velero/releases 下载并安装最新版本二进制客户端。 1cp velero /usr/local/bin &amp;&amp; chmod &#43;x /usr/local/bin/velero 2 3velero version 4Client: 5 Version: v1.13.2 6 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 7&lt;error getting server version: no matches for kind &#34;ServerStatusRequest&#34; in version &#34;velero.io/v1&#34;&gt; 服务端 准备好秘钥文件 credentials-velero ，即 MinIO 的"/>
+<meta name="twitter:description" content="Velero 安装步骤
+客户端
+https://github.com/vmware-tanzu/velero/releases
+下载并安装最新版本二进制客户端。
+1cp velero /usr/local/bin &amp;&amp; chmod &#43;x /usr/local/bin/velero
+2
+3velero version
+4Client:
+5        Version: v1.13.2
+6        Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6
+7&lt;error getting server version: no matches for kind &#34;ServerStatusRequest&#34; in version &#34;velero.io/v1&#34;&gt;
+服务端
+
+准备好秘钥文件 credentials-velero ，即 MinIO 的用户名密码。
+
+1[default]
+2aws_access_key_id=&lt;access key id&gt;
+3aws_secret_access_key=&lt;secret access key&gt;
+
+使用 velero install 安装服务端
+
+ 1velero install \
+ 2  --provider aws \
+ 3  --image velero/velero:v1.13.2 \
+ 4  --plugins velero/velero-plugin-for-aws:v1.9.2 \
+ 5  --bucket velero \
+ 6  --secret-file ./credentials-velero \
+ 7  --use-node-agent \
+ 8  --use-volume-snapshots=false \
+ 9  --namespace velero \
+10  --backup-location-config region=minio,s3ForcePathStyle=&#34;true&#34;,s3Url=http://10.101.6.118:9000 \
+11  --wait
+1velero  version
+2Client:
+3        Version: v1.13.2
+4        Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6
+5Server:
+6        Version: v1.13.2
+Velero 使用
+备份
+1velero create backup NAME [flags]
+backup选项："/>
 
 
 <script type="application/ld+json">
@@ -83,13 +206,13 @@
       "@type": "ListItem",
       "position":  1 ,
       "name": "Tech",
-      "item": "/tech/"
-    }
+      "item": "xgbt.site/tech/"
+    }, 
     {
       "@type": "ListItem",
-      "position":  1 ,
+      "position":  2 ,
       "name": "基于 Velero 备份与恢复 K8s 集群",
-      "item": "/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/"
+      "item": "xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/"
     }
   ]
 }
@@ -100,18 +223,18 @@
   "@type": "BlogPosting",
   "headline": "基于 Velero 备份与恢复 K8s 集群",
   "name": "基于 Velero 备份与恢复 K8s 集群",
-  "description": "Velero 安装步骤 客户端 https://github.com/vmware-tanzu/velero/releases 下载并安装最新版本二进制客户端。 1cp velero /usr/local/bin \u0026amp;\u0026amp; chmod +x /usr/local/bin/velero 2 3velero version 4Client: 5 Version: v1.13.2 6 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 7\u0026lt;error getting server version: no matches for kind \u0026#34;ServerStatusRequest\u0026#34; in version \u0026#34;velero.io/v1\u0026#34;\u0026gt; 服务端 准备好秘钥文件 credentials-velero ，即 MinIO 的",
+  "description": "Velero 安装步骤 客户端 https://github.com/vmware-tanzu/velero/releases\n下载并安装最新版本二进制客户端。\n1cp velero /usr/local/bin \u0026amp;\u0026amp; chmod +x /usr/local/bin/velero 2 3velero version 4Client: 5 Version: v1.13.2 6 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 7\u0026lt;error getting server version: no matches for kind \u0026#34;ServerStatusRequest\u0026#34; in version \u0026#34;velero.io/v1\u0026#34;\u0026gt; 服务端 准备好秘钥文件 credentials-velero ，即 MinIO 的用户名密码。 1[default] 2aws_access_key_id=\u0026lt;access key id\u0026gt; 3aws_secret_access_key=\u0026lt;secret access key\u0026gt; 使用 velero install 安装服务端 1velero install \\ 2 --provider aws \\ 3 --image velero/velero:v1.13.2 \\ 4 --plugins velero/velero-plugin-for-aws:v1.9.2 \\ 5 --bucket velero \\ 6 --secret-file ./credentials-velero \\ 7 --use-node-agent \\ 8 --use-volume-snapshots=false \\ 9 --namespace velero \\ 10 --backup-location-config region=minio,s3ForcePathStyle=\u0026#34;true\u0026#34;,s3Url=http://10.101.6.118:9000 \\ 11 --wait 1velero version 2Client: 3 Version: v1.13.2 4 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 5Server: 6 Version: v1.13.2 Velero 使用 备份 1velero create backup NAME [flags] backup选项：\n",
   "keywords": [
     "Kubernetes"
   ],
   "articleBody": "Velero 安装步骤 客户端 https://github.com/vmware-tanzu/velero/releases\n下载并安装最新版本二进制客户端。\n1cp velero /usr/local/bin \u0026\u0026 chmod +x /usr/local/bin/velero 2 3velero version 4Client: 5 Version: v1.13.2 6 Git commit: 4d961fb6fec384ed7f3c1b7c65c818106107f5a6 7",
   "wordCount" : "866",
   "inLanguage": "zh",
-  "datePublished": "0001-01-01T00:00:00Z",
-  "dateModified": "0001-01-01T00:00:00Z",
+  "datePublished": "2024-09-24T16:09:19+08:00",
+  "dateModified": "2024-09-24T16:09:19+08:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/"
+    "@id": "xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/"
   },
   "publisher": {
     "@type": "Organization",
@@ -140,7 +263,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <a href="xgbt.site/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -166,22 +289,22 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="/" title="🏠主页">
+                <a href="xgbt.site/xgbt.site/" title="🏠主页">
                     <span>🏠主页</span>
                 </a>
             </li>
             <li>
-                <a href="/search" title="🔍搜索">
+                <a href="xgbt.site/xgbt.site/search" title="🔍搜索">
                     <span>🔍搜索</span>
                 </a>
             </li>
             <li>
-                <a href="/tags" title="🏷️标签">
+                <a href="xgbt.site/xgbt.site/tags" title="🏷️标签">
                     <span>🏷️标签</span>
                 </a>
             </li>
             <li>
-                <a href="/archives" title="📦归档">
+                <a href="xgbt.site/xgbt.site/archives" title="📦归档">
                     <span>📦归档</span>
                 </a>
             </li>
@@ -192,11 +315,11 @@
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
+    <div class="breadcrumbs"><a href="xgbt.site/">主页</a>&nbsp;»&nbsp;<a href="xgbt.site/tech/">Tech</a></div>
     <h1 class="post-title entry-hint-parent">
       基于 Velero 备份与恢复 K8s 集群
     </h1>
-    <div class="post-meta">
+    <div class="post-meta"><span title='2024-09-24 16:09:19 +0800 CST'>九月 24, 2024</span>
 
 </div>
   </header> <aside id="toc-container" class="toc-container wide">
@@ -459,13 +582,18 @@
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="/tags/kubernetes/">Kubernetes</a></li>
+      <li><a href="xgbt.site/tags/kubernetes/">Kubernetes</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/">
+  <a class="prev" href="xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-kubeadm-%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%96%B0%E8%AF%81%E4%B9%A6/">
     <span class="title">« 上一页</span>
     <br>
-    <span>Golang 错误处理</span>
+    <span>基于 Kubeadm 手动更新证书</span>
+  </a>
+  <a class="next" href="xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-imagepullsecret-%E4%B8%8B%E8%BD%BD%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E5%88%B6%E5%93%81/">
+    <span class="title">下一页 »</span>
+    <br>
+    <span>基于 imagePullSecret 下载私有镜像仓库制品</span>
   </a>
 </nav>
 
@@ -474,7 +602,7 @@
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+        <span>&copy; 2024 <a href="xgbt.site/">xgbt&#39;s Blog</a></span> · 
 
     <span>
         Powered by

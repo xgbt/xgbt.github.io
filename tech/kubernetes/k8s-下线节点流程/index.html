@@ -7,18 +7,32 @@
 <meta name="robots" content="index, follow">
 <title>K8s 下线节点流程 | xgbt&#39;s Blog</title>
 <meta name="keywords" content="Kubernetes">
-<meta name="description" content="将节点设置为不可调度，防止新的Pod调度到该节点上。 1kubectl cordon &lt;节点名&gt; 排空节点上的Pod 1 kubectl drain &lt;节点名&gt; --ignore-daemonsets --delete-emptydir-data &ndash">
+<meta name="description" content="
+将节点设置为不可调度，防止新的Pod调度到该节点上。
+
+1kubectl cordon &lt;节点名&gt;
+
+排空节点上的Pod
+
+1 kubectl drain &lt;节点名&gt; --ignore-daemonsets --delete-emptydir-data
+
+&ndash;ignore-daemonsets：允许跳过DaemonSet管理的Pod
+&ndash;delete-emptydir-data：允许删除使用emptyDir卷的Pod
+
+
+可以直接执行kubectl drain操作，省略cordon步骤。
+drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）。">
 <meta name="author" content="">
-<link rel="canonical" href="/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="canonical" href="xgbt.site/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/">
+<link crossorigin="anonymous" href="xgbt.site/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
 <link rel="icon" href="/assets/apple-icon.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="xgbt.site/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="xgbt.site/favicon-32x32.png">
+<link rel="apple-touch-icon" href="xgbt.site/apple-touch-icon.png">
+<link rel="mask-icon" href="xgbt.site/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="zh" href="/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/">
+<link rel="alternate" hreflang="zh" href="xgbt.site/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/">
 <noscript>
     <style>
         #theme-toggle,
@@ -63,15 +77,43 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
     rel="stylesheet"><meta property="og:title" content="K8s 下线节点流程" />
-<meta property="og:description" content="将节点设置为不可调度，防止新的Pod调度到该节点上。 1kubectl cordon &lt;节点名&gt; 排空节点上的Pod 1 kubectl drain &lt;节点名&gt; --ignore-daemonsets --delete-emptydir-data &ndash" />
+<meta property="og:description" content="
+将节点设置为不可调度，防止新的Pod调度到该节点上。
+
+1kubectl cordon &lt;节点名&gt;
+
+排空节点上的Pod
+
+1 kubectl drain &lt;节点名&gt; --ignore-daemonsets --delete-emptydir-data
+
+&ndash;ignore-daemonsets：允许跳过DaemonSet管理的Pod
+&ndash;delete-emptydir-data：允许删除使用emptyDir卷的Pod
+
+
+可以直接执行kubectl drain操作，省略cordon步骤。
+drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/" /><meta property="article:section" content="tech" />
+<meta property="og:url" content="xgbt.site/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/" /><meta property="article:section" content="tech" />
 <meta property="article:published_time" content="2024-04-14T16:09:19+08:00" />
 <meta property="article:modified_time" content="2024-04-14T16:09:19+08:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="K8s 下线节点流程"/>
-<meta name="twitter:description" content="将节点设置为不可调度，防止新的Pod调度到该节点上。 1kubectl cordon &lt;节点名&gt; 排空节点上的Pod 1 kubectl drain &lt;节点名&gt; --ignore-daemonsets --delete-emptydir-data &ndash"/>
+<meta name="twitter:description" content="
+将节点设置为不可调度，防止新的Pod调度到该节点上。
+
+1kubectl cordon &lt;节点名&gt;
+
+排空节点上的Pod
+
+1 kubectl drain &lt;节点名&gt; --ignore-daemonsets --delete-emptydir-data
+
+&ndash;ignore-daemonsets：允许跳过DaemonSet管理的Pod
+&ndash;delete-emptydir-data：允许删除使用emptyDir卷的Pod
+
+
+可以直接执行kubectl drain操作，省略cordon步骤。
+drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）。"/>
 
 
 <script type="application/ld+json">
@@ -83,13 +125,13 @@
       "@type": "ListItem",
       "position":  1 ,
       "name": "Tech",
-      "item": "/tech/"
-    }
+      "item": "xgbt.site/tech/"
+    }, 
     {
       "@type": "ListItem",
-      "position":  1 ,
+      "position":  2 ,
       "name": "K8s 下线节点流程",
-      "item": "/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/"
+      "item": "xgbt.site/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/"
     }
   ]
 }
@@ -100,7 +142,7 @@
   "@type": "BlogPosting",
   "headline": "K8s 下线节点流程",
   "name": "K8s 下线节点流程",
-  "description": "将节点设置为不可调度，防止新的Pod调度到该节点上。 1kubectl cordon \u0026lt;节点名\u0026gt; 排空节点上的Pod 1 kubectl drain \u0026lt;节点名\u0026gt; --ignore-daemonsets --delete-emptydir-data \u0026ndash",
+  "description": " 将节点设置为不可调度，防止新的Pod调度到该节点上。 1kubectl cordon \u0026lt;节点名\u0026gt; 排空节点上的Pod 1 kubectl drain \u0026lt;节点名\u0026gt; --ignore-daemonsets --delete-emptydir-data \u0026ndash;ignore-daemonsets：允许跳过DaemonSet管理的Pod \u0026ndash;delete-emptydir-data：允许删除使用emptyDir卷的Pod 可以直接执行kubectl drain操作，省略cordon步骤。 drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）。\n",
   "keywords": [
     "Kubernetes"
   ],
@@ -111,7 +153,7 @@
   "dateModified": "2024-04-14T16:09:19+08:00",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/"
+    "@id": "xgbt.site/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/"
   },
   "publisher": {
     "@type": "Organization",
@@ -140,7 +182,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <a href="xgbt.site/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -166,22 +208,22 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="/" title="🏠主页">
+                <a href="xgbt.site/xgbt.site/" title="🏠主页">
                     <span>🏠主页</span>
                 </a>
             </li>
             <li>
-                <a href="/search" title="🔍搜索">
+                <a href="xgbt.site/xgbt.site/search" title="🔍搜索">
                     <span>🔍搜索</span>
                 </a>
             </li>
             <li>
-                <a href="/tags" title="🏷️标签">
+                <a href="xgbt.site/xgbt.site/tags" title="🏷️标签">
                     <span>🏷️标签</span>
                 </a>
             </li>
             <li>
-                <a href="/archives" title="📦归档">
+                <a href="xgbt.site/xgbt.site/archives" title="📦归档">
                     <span>📦归档</span>
                 </a>
             </li>
@@ -192,7 +234,7 @@
 
 <article class="post-single">
   <header class="post-header">
-    <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
+    <div class="breadcrumbs"><a href="xgbt.site/">主页</a>&nbsp;»&nbsp;<a href="xgbt.site/tech/">Tech</a></div>
     <h1 class="post-title entry-hint-parent">
       K8s 下线节点流程
     </h1>
@@ -236,15 +278,15 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
 
   <footer class="post-footer">
     <ul class="post-tags">
-      <li><a href="/tags/kubernetes/">Kubernetes</a></li>
+      <li><a href="xgbt.site/tags/kubernetes/">Kubernetes</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/">
+  <a class="prev" href="xgbt.site/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/">
     <span class="title">« 上一页</span>
     <br>
     <span>Nginx 实现 GPT 流式传输</span>
   </a>
-  <a class="next" href="/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/">
+  <a class="next" href="xgbt.site/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/">
     <span class="title">下一页 »</span>
     <br>
     <span>K8s 启用 ipvs 模式</span>
@@ -256,7 +298,7 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+        <span>&copy; 2024 <a href="xgbt.site/">xgbt&#39;s Blog</a></span> · 
 
     <span>
         Powered by

@@ -9,17 +9,17 @@
 <meta name="keywords" content="">
 <meta name="description" content="Tech - xgbt&#39;s Blog">
 <meta name="author" content="">
-<link rel="canonical" href="/tech/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="canonical" href="xgbt.site/tech/">
+<link crossorigin="anonymous" href="xgbt.site/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
 <link rel="icon" href="/assets/apple-icon.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<link rel="icon" type="image/png" sizes="16x16" href="xgbt.site/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="xgbt.site/favicon-32x32.png">
+<link rel="apple-touch-icon" href="xgbt.site/apple-touch-icon.png">
+<link rel="mask-icon" href="xgbt.site/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="/tech/index.xml">
-<link rel="alternate" hreflang="zh" href="/tech/">
+<link rel="alternate" type="application/rss+xml" href="xgbt.site/tech/index.xml">
+<link rel="alternate" hreflang="zh" href="xgbt.site/tech/">
 <noscript>
     <style>
         #theme-toggle,
@@ -66,7 +66,7 @@
     rel="stylesheet"><meta property="og:title" content="Tech" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="/tech/" />
+<meta property="og:url" content="xgbt.site/tech/" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Tech"/>
@@ -82,7 +82,7 @@
       "@type": "ListItem",
       "position":  1 ,
       "name": "Tech",
-      "item": "/tech/"
+      "item": "xgbt.site/tech/"
     }
   ]
 }
@@ -104,7 +104,7 @@
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <a href="xgbt.site/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -130,22 +130,22 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="/" title="🏠主页">
+                <a href="xgbt.site/xgbt.site/" title="🏠主页">
                     <span>🏠主页</span>
                 </a>
             </li>
             <li>
-                <a href="/search" title="🔍搜索">
+                <a href="xgbt.site/xgbt.site/search" title="🔍搜索">
                     <span>🔍搜索</span>
                 </a>
             </li>
             <li>
-                <a href="/tags" title="🏷️标签">
+                <a href="xgbt.site/xgbt.site/tags" title="🏷️标签">
                     <span>🏷️标签</span>
                 </a>
             </li>
             <li>
-                <a href="/archives" title="📦归档">
+                <a href="xgbt.site/xgbt.site/archives" title="📦归档">
                     <span>📦归档</span>
                 </a>
             </li>
@@ -153,7 +153,7 @@
     </nav>
 </header>
 <main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="/">主页</a></div>
+<header class="page-header"><div class="breadcrumbs"><a href="xgbt.site/">主页</a></div>
   <h1>
     Tech
   </h1>
@@ -161,14 +161,58 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">K8s 修改 NodePort 默认范围
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>K8S 集群中 NodePort 默认范围为 30000-32767。
+若要修改此范围，依次修改 Master 节点上的 /etc/kubernetes/manifests/kube-apiserver.yaml 文件。
+1# 备份配置文件 2cp kube-apiserver.yaml kube-apiserver.yaml.bak 3vi kube-apiserver.yaml 4..... 5 Host Port: &lt;none&gt; 6 Command: 7 kube-apiserver 8 - --service-cluster-ip-range=10.96.0.0/12 9# 插入 10 - --service-node-port-range=1-65535 然后, kube-apiserver 会自动重启生效。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-03-21 16:09:19 +0800 CST'>三月 21, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to K8s 修改 NodePort 默认范围" href="xgbt.site/tech/kubernetes/k8s-%E4%BF%AE%E6%94%B9-nodeport-%E9%BB%98%E8%AE%A4%E8%8C%83%E5%9B%B4/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">MQTT 发布-订阅模式
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>MQTT 发布/订阅模式 发布-订阅模式（Publish-Subscribe Pattern）是一种消息传递模式，将发送消息的客户端（发布者）与接收消息的客户端（订阅者）解耦，使得两者不需要建立直接的联系也不需要知道对方的存在。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-03-21 16:09:19 +0800 CST'>三月 21, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to MQTT 发布-订阅模式" href="xgbt.site/tech/mqtt/mqtt-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">MQTT QoS 简介
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>什么是 QoS 使用 MQTT 协议的设备一般运行在网络受限的环境下，只依靠底层TCP 传输协议并不能完全保证消息的可靠到达。
+因此，MQTT 提供了 QoS（Quality of service） 机制，其核心是设计了多种消息交互机制来提供不同的服务质量，来满足用户在各种场景下对消息可靠性的要求。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-03-20 16:09:19 +0800 CST'>三月 20, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to MQTT QoS 简介" href="xgbt.site/tech/mqtt/mqtt-qos--%E7%AE%80%E4%BB%8B/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">理解与使用 Container Capabilities
     </h2>
   </header>
   <div class="entry-content">
-    <p>在使用 K8S 过程中，偶尔会遇到如下所示的一段配置： 1securityContext: 2 capabilities: 3 drop: 4 - ALL 5 add: 6 - NET_BIND_SERVICE 实际上这是配置对应的容器的 Capabilities，在我们使用 docker run 的...</p>
+    <p>在使用 K8S 过程中，偶尔会遇到如下所示的一段配置：
+1securityContext: 2 capabilities: 3 drop: 4 - ALL 5 add: 6 - NET_BIND_SERVICE 实际上这是配置对应的容器的 Capabilities，在我们使用 docker run 的时候可以通过 --cap-add 和 --cap-drop 命令来给容器添加 Linux Capabilities。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2024-03-19 16:09:19 +0800 CST'>三月 19, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to 理解与使用 Container Capabilities" href="/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/"></a>
+  <a class="entry-link" aria-label="post link to 理解与使用 Container Capabilities" href="xgbt.site/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -177,10 +221,12 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p>数据卷（Volume）是 Pod 与外部存储设备进行数据传递的通道，也是 Pod 内部容器间、Pod 与Pod 间、Pod 与外部环境进行数据共享的方式。 Volume 定义了...</p>
+    <p>数据卷（Volume）是 Pod 与外部存储设备进行数据传递的通道，也是 Pod 内部容器间、Pod 与Pod 间、Pod 与外部环境进行数据共享的方式。
+Volume 定义了外置存储的细节，并内嵌到 Pod 中作为 Pod 的一部分。其实质是外置存储在Kubernetes 系统的一个资源映射，当负载需要使用外置存储的时候，可以从数据卷（Volume）中查到相关信息并进行存储挂载操作。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2024-03-15 16:09:19 +0800 CST'>三月 15, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to Volume 基础知识" href="/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"></a>
+  <a class="entry-link" aria-label="post link to Volume 基础知识" href="xgbt.site/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -189,10 +235,12 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p>1. WaitGroup WaitGroup 等待一组 Goroutine 完成。主 Goroutine 调用 Add(delta) 来设置要等待的 Goroutine 的数量。然后每个 Goroutine 运行并在完成时调用 Done()。同时，可以使用 Wait() 来阻塞，直到所有 Goroutine 完成。 1type...</p>
+    <p>1. WaitGroup WaitGroup 等待一组 Goroutine 完成。主 Goroutine 调用 Add(delta) 来设置要等待的 Goroutine 的数量。然后每个 Goroutine 运行并在完成时调用 Done()。同时，可以使用 Wait() 来阻塞，直到所有 Goroutine 完成。
+1type WaitGroup struct { 2	noCopy noCopy 3 4	// 64-bit value: high 32 bits are counter, low 32 bits are waiter count. 5	// 64-bit atomic operations require 64-bit alignment, but 32-bit 6	// compilers do not ensure it. So we allocate 12 bytes and then use 7	// the aligned 8 bytes in them as state, and the other 4 as storage 8	// for the sema. 9	state1 [3]uint32 10} wg.Add(delta int)：Add 将 delta（可能为负）添加到 WaitGroup 计数器。如果计数器变为 0，所有在 Wait 时阻塞的 Goroutine 将被释放。如果计数器变成负值，Add 会 panic。 wg.Done()：当 WaitGroup 同步等待组中的某个 Goroutine 执行完毕后，设置这个 WaitGroup 的 counter 数值减 1，其实就是调用了 Add(-1)。 wg.Wait()：表示让当前的 Goroutine 等待，进入阻塞状态。一直到 WaitGroup 的计数器为 0，才能解除阻塞，这个 Goroutine 才能继续执行。 总之，WaitGroup 让某个协程等待其它若干协程都先完成它们各自的任务。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2024-02-13 16:09:19 +0800 CST'>二月 13, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to Golang 标准库丨sync" href="/tech/golang/golang-%E6%A0%87%E5%87%86%E5%BA%93-sync/"></a>
+  <a class="entry-link" aria-label="post link to Golang 标准库丨sync" href="xgbt.site/tech/golang/golang-%E6%A0%87%E5%87%86%E5%BA%93-sync/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -201,10 +249,12 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p>1. 基础特性 1.1 先进后出 对于多个defer语句，类似栈，按先进后出的顺序执行。 1func main() { 2 var whatever [5]struct{} 3 for i := range whatever { 4 defer fmt.Print(i) 5 } 6} 7 8// 43210 1.2 实时解析函数参数 1package...</p>
+    <p>1. 基础特性 1.1 先进后出 对于多个defer语句，类似栈，按先进后出的顺序执行。
+1func main() { 2 var whatever [5]struct{} 3 for i := range whatever { 4 defer fmt.Print(i) 5 } 6} 7 8// 43210 1.2 实时解析函数参数 1package main 2 3import &#34;fmt&#34; 4 5func test(a int) {//无返回值函数 6	defer fmt.Println(&#34;1、a =&#34;, a) //方法 7	defer func(v int) { fmt.Println(&#34;2、a =&#34;, v)} (a) //有参函数 8	defer func() { fmt.Println(&#34;3、a =&#34;, a)} () //无参函数 9	a&#43;&#43; 10} 11func main() { 12	test(1) 13} 14 15// 3、a = 2 16// 2、a = 1 17// 1、a = 1 1.3 return 返回机制 defer、return、返回值三者的执行逻辑应该是：
+...</p>
   </div>
   <footer class="entry-footer"><span title='2024-02-11 16:09:19 +0800 CST'>二月 11, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to Golang Defer" href="/tech/golang/golang-defer/"></a>
+  <a class="entry-link" aria-label="post link to Golang Defer" href="xgbt.site/tech/golang/golang-defer/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -213,10 +263,11 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p>Pod 是 K8s 集群中创建和管理的、最小的可部署的计算单元。K8s 不会直接操作容器，而是通过 Pod 封装了容器，集群通过管控 Pod ，便可控制容器的存储、网络等资...</p>
+    <p>Pod 是 K8s 集群中创建和管理的、最小的可部署的计算单元。K8s 不会直接操作容器，而是通过 Pod 封装了容器，集群通过管控 Pod ，便可控制容器的存储、网络等资源，实现资源隔离或共享。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2024-01-31 16:09:19 +0800 CST'>一月 31, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to K8s Pod 基础知识" href="/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"></a>
+  <a class="entry-link" aria-label="post link to K8s Pod 基础知识" href="xgbt.site/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -225,10 +276,12 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p>升级 OpenSSH 从选择一个最新的版本 https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/ 1# 获取最新版本 openssh 2wget --no-check-certificate https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.7p1.tar.gz 3 4# 解压 5tar -zxvf openssh-9.7p1.tar.gz 6 7# 安装相关需要组件 8yum -y install pam-devel gcc zlib-devel openssl-devel 9 10# 检查配置 11./configure --prefix=/usr --sysconfdir=/etc/ssh --with-zlib --with-ssl-dir=/usr/local/ssl --with-md5-passwords --mandir=/usr/share/man --with-pam 12 13# 编译安装 14make...</p>
+    <p>升级 OpenSSH 从选择一个最新的版本 https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/
+1# 获取最新版本 openssh 2wget --no-check-certificate https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.7p1.tar.gz 3 4# 解压 5tar -zxvf openssh-9.7p1.tar.gz 6 7# 安装相关需要组件 8yum -y install pam-devel gcc zlib-devel openssl-devel 9 10# 检查配置 11./configure --prefix=/usr --sysconfdir=/etc/ssh --with-zlib --with-ssl-dir=/usr/local/ssl --with-md5-passwords --mandir=/usr/share/man --with-pam 12 13# 编译安装 14make &amp;&amp; make install 编译完成之后会有部分文件中的参数例如 GSSAPIAuthentication 显示不支持，将其删掉即可。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2024-01-04 16:09:19 +0800 CST'>一月 4, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to CVE-2008-5161 OpenSSH CBC模式信息泄露漏洞" href="/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/"></a>
+  <a class="entry-link" aria-label="post link to CVE-2008-5161 OpenSSH CBC模式信息泄露漏洞" href="xgbt.site/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -237,60 +290,26 @@
     </h2>
   </header>
   <div class="entry-content">
-    <p>使用golang标准库中的html/template时，在默认情况下渲染模版时为了安全等原因，会将字符串中的部分符号进行转义。 注册自定义转义...</p>
+    <p>使用golang标准库中的html/template时，在默认情况下渲染模版时为了安全等原因，会将字符串中的部分符号进行转义。
+注册自定义转义处理函数 1func unescapeHTML(s string) template.HTML { 2	return template.HTML(s) 3} 在定义转义处理函数后，我们需要使用Funcs()将其注册到模版中。需要注意，注册自定义函数需要在调用Parse()前进行。在注册时我们需要定义一个函数标识符，并在模版文本中使用。在下面例子中我们使用了名为unescapeHTML的函数标识符。
+...</p>
   </div>
   <footer class="entry-footer"><span title='2023-12-11 16:09:19 +0800 CST'>十二月 11, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Golang template 跳过 HTML 转义" href="/tech/golang/golang-template-%E8%B7%B3%E8%BF%87-html-%E8%BD%AC%E4%B9%89/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Jaeger 部署与使用
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>安装 Jaeger Operator 1kubectl create namespace observability 2kubectl create -f https://github.com/jaegertracing/jaeger-operator/releases/download/v1.52.0/jaeger-operator.yaml -n observability 若 rbac-proxy 安装失败，则修改 kube-rbac-prox 镜像地址为 10.101.7.108:80/open_source/kubebuilder/kube-rbac-proxy:v0.13.0 安装 Jaeger 1apiVersion: jaegertracing.io/v1 2kind: Jaeger 3metadata: 4 name: jaeger-prod 5 namespace: observability 6spec: 7 strategy: production 8 storage: 9 type: elasticsearch 10 esIndexCleaner: 11 enabled: true # turn the cron job deployment on and off 12 numberOfDays:...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-12-11 16:09:19 +0800 CST'>十二月 11, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Jaeger 部署与使用" href="/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Docker 网段与主机网段冲突导致网络中断
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。 解决方案 查看路由信息 1ifconfig docker0 2 3docker0:...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-10-09 16:09:19 +0800 CST'>十月 9, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Docker 网段与主机网段冲突导致网络中断" href="/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">修改 Linux DNS 配置
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>查看网卡配置 1ip a 修改或添加 DNS 服务器 1vim /etc/sysconfig/network-scripts/ifcfg-eth0 1# 添加规则 2DNS1=114.114.114.114 3DNS2=8.8.8.8 重启网络使配置生效 1service network restart</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-09-08 16:09:19 +0800 CST'>九月 8, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to 修改 Linux DNS 配置" href="/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/"></a>
+  <a class="entry-link" aria-label="post link to Golang template 跳过 HTML 转义" href="xgbt.site/tech/golang/golang-template-%E8%B7%B3%E8%BF%87-html-%E8%BD%AC%E4%B9%89/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
-    <a class="prev" href="/tech/">
+    <a class="prev" href="xgbt.site/xgbt.site/tech/">
       «&nbsp;上一页&nbsp;
     </a>
-    <a class="next" href="/tech/page/3/">下一页&nbsp;&nbsp;»
+    <a class="next" href="xgbt.site/xgbt.site/tech/page/3/">下一页&nbsp;&nbsp;»
     </a>
   </nav>
 </footer>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+        <span>&copy; 2024 <a href="xgbt.site/">xgbt&#39;s Blog</a></span> · 
 
     <span>
         Powered by
