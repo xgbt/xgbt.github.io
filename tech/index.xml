@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Tech on xgbt&#39;s Blog</title>
-    <link>xgbt.site/tech/</link>
+    <link>/tech/</link>
     <description>Recent content in Tech on xgbt&#39;s Blog</description>
     <generator>Hugo -- 0.139.3</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 13 Nov 2024 01:09:19 +0800</lastBuildDate>
-    <atom:link href="xgbt.site/tech/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tech/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kubernetes 1.29.6 高可用集群部署</title>
-      <link>xgbt.site/tech/kubernetes/kubernetes-1.29.6-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/</link>
+      <link>/tech/kubernetes/kubernetes-1.29.6-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/</link>
       <pubDate>Wed, 13 Nov 2024 01:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/kubernetes-1.29.6-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/</guid>
+      <guid>/tech/kubernetes/kubernetes-1.29.6-%E9%AB%98%E5%8F%AF%E7%94%A8%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/</guid>
       <description>&lt;h1 id=&#34;架构设计&#34;&gt;架构设计&lt;/h1&gt;
 &lt;p&gt;OS: AlmaLinux 9.1&lt;/p&gt;
 &lt;table&gt;
@@ -67,18 +67,18 @@
     </item>
     <item>
       <title>基于 Kubeadm 手动更新证书</title>
-      <link>xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-kubeadm-%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%96%B0%E8%AF%81%E4%B9%A6/</link>
+      <link>/tech/kubernetes/%E5%9F%BA%E4%BA%8E-kubeadm-%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%96%B0%E8%AF%81%E4%B9%A6/</link>
       <pubDate>Tue, 15 Oct 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-kubeadm-%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%96%B0%E8%AF%81%E4%B9%A6/</guid>
+      <guid>/tech/kubernetes/%E5%9F%BA%E4%BA%8E-kubeadm-%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%96%B0%E8%AF%81%E4%B9%A6/</guid>
       <description>&lt;h1 id=&#34;检查证书是否过期&#34;&gt;检查证书是否过期&lt;/h1&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;kubeadm certs check-expiration
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;该命令显示 &lt;code&gt;/etc/kubernetes/pki&lt;/code&gt; 文件夹中的客户端证书以及 kubeadm（&lt;code&gt;admin.conf&lt;/code&gt;、&lt;code&gt;controller-manager.conf&lt;/code&gt; 和 &lt;code&gt;scheduler.conf&lt;/code&gt;） 使用的 kubeconfig 文件中嵌入的客户端证书的到期时间/剩余时间。&lt;/p&gt;</description>
     </item>
     <item>
       <title>基于 Velero 备份与恢复 K8s 集群</title>
-      <link>xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/</link>
+      <link>/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/</link>
       <pubDate>Tue, 24 Sep 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/</guid>
+      <guid>/tech/kubernetes/%E5%9F%BA%E4%BA%8E-velero-%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D-k8s-%E9%9B%86%E7%BE%A4/</guid>
       <description>&lt;h1 id=&#34;velero-安装步骤&#34;&gt;Velero 安装步骤&lt;/h1&gt;
 &lt;h2 id=&#34;客户端&#34;&gt;客户端&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://github.com/vmware-tanzu/velero/releases&#34;&gt;https://github.com/vmware-tanzu/velero/releases&lt;/a&gt;&lt;/p&gt;
@@ -124,9 +124,9 @@
     </item>
     <item>
       <title>基于 imagePullSecret 下载私有镜像仓库制品</title>
-      <link>xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-imagepullsecret-%E4%B8%8B%E8%BD%BD%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E5%88%B6%E5%93%81/</link>
+      <link>/tech/kubernetes/%E5%9F%BA%E4%BA%8E-imagepullsecret-%E4%B8%8B%E8%BD%BD%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E5%88%B6%E5%93%81/</link>
       <pubDate>Sun, 15 Sep 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/%E5%9F%BA%E4%BA%8E-imagepullsecret-%E4%B8%8B%E8%BD%BD%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E5%88%B6%E5%93%81/</guid>
+      <guid>/tech/kubernetes/%E5%9F%BA%E4%BA%8E-imagepullsecret-%E4%B8%8B%E8%BD%BD%E7%A7%81%E6%9C%89%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E5%88%B6%E5%93%81/</guid>
       <description>&lt;h1 id=&#34;docker-登录私有仓库&#34;&gt;Docker 登录私有仓库&lt;/h1&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;首先配置私有仓库免 ssl 验证&lt;/strong&gt;&lt;/li&gt;
@@ -158,9 +158,9 @@
     </item>
     <item>
       <title>K8s 网络模型基础知识</title>
-      <link>xgbt.site/tech/kubernetes/k8s-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
+      <link>/tech/kubernetes/k8s-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
       <pubDate>Sat, 24 Aug 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/k8s-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
+      <guid>/tech/kubernetes/k8s-%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
       <description>&lt;p&gt;Kubernetes 网络的功能：&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;高度耦合的容器间通信：这个已经被 Pods 和 &lt;code&gt;localhost&lt;/code&gt; 通信解决了。&lt;/li&gt;
@@ -172,9 +172,9 @@
     </item>
     <item>
       <title>使用 NFS 作为 K8s 存储插件</title>
-      <link>xgbt.site/tech/kubernetes/%E4%BD%BF%E7%94%A8-nfs-%E4%BD%9C%E4%B8%BA-k8s-%E5%AD%98%E5%82%A8%E6%8F%92%E4%BB%B6/</link>
+      <link>/tech/kubernetes/%E4%BD%BF%E7%94%A8-nfs-%E4%BD%9C%E4%B8%BA-k8s-%E5%AD%98%E5%82%A8%E6%8F%92%E4%BB%B6/</link>
       <pubDate>Sat, 24 Aug 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/%E4%BD%BF%E7%94%A8-nfs-%E4%BD%9C%E4%B8%BA-k8s-%E5%AD%98%E5%82%A8%E6%8F%92%E4%BB%B6/</guid>
+      <guid>/tech/kubernetes/%E4%BD%BF%E7%94%A8-nfs-%E4%BD%9C%E4%B8%BA-k8s-%E5%AD%98%E5%82%A8%E6%8F%92%E4%BB%B6/</guid>
       <description>&lt;h1 id=&#34;1-基础配置&#34;&gt;1. 基础配置&lt;/h1&gt;
 &lt;p&gt;首先，在所有 master 节点和 worker 节点上安装 nfs-utils.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;sudo yum -y install nfs-utils
@@ -197,18 +197,18 @@
     </item>
     <item>
       <title>Nginx 实现 GPT 流式传输</title>
-      <link>xgbt.site/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</link>
+      <link>/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</link>
       <pubDate>Wed, 29 May 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</guid>
+      <guid>/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</guid>
       <description>&lt;p&gt;&lt;strong&gt;核心参数&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;proxy_buffering off;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;该指令使 Nginx 不缓冲来自上游服务器的响应，而是立即将其发送给客户端。适合需要实时或流式传输数据的场景非常有用，比如实时聊天、流媒体等。&lt;/p&gt;</description>
     </item>
     <item>
       <title>K8s 下线节点流程</title>
-      <link>xgbt.site/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/</link>
+      <link>/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/</link>
       <pubDate>Sun, 14 Apr 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/</guid>
+      <guid>/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/</guid>
       <description>&lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;将节点设置为不可调度&lt;/strong&gt;，防止新的Pod调度到该节点上。&lt;/li&gt;
 &lt;/ol&gt;
@@ -227,9 +227,9 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>K8s 启用 ipvs 模式</title>
-      <link>xgbt.site/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/</link>
+      <link>/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Sat, 13 Apr 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/</guid>
+      <guid>/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/</guid>
       <description>&lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;安装 ipvs&lt;/strong&gt;&lt;/li&gt;
 &lt;/ol&gt;
@@ -285,18 +285,18 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>MQTT 连接参数配置</title>
-      <link>xgbt.site/tech/mqtt/mqtt-%E8%BF%9E%E6%8E%A5%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</link>
+      <link>/tech/mqtt/mqtt-%E8%BF%9E%E6%8E%A5%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Fri, 22 Mar 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/mqtt/mqtt-%E8%BF%9E%E6%8E%A5%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</guid>
+      <guid>/tech/mqtt/mqtt-%E8%BF%9E%E6%8E%A5%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</guid>
       <description>&lt;h1 id=&#34;mqtt-连接过程&#34;&gt;MQTT 连接过程&lt;/h1&gt;
 &lt;p&gt;MQTT 连接由客户端向服务器端发起。&lt;/p&gt;
 &lt;p&gt;任何运行了 MQTT 客户端库的程序或设备都是一个 MQTT 客户端，而 MQTT 服务器 负责接收客户端发起的连接，并将客户端发送的消息转发到另外一些符合条件的客户端。&lt;/p&gt;</description>
     </item>
     <item>
       <title>K8s 修改 NodePort 默认范围</title>
-      <link>xgbt.site/tech/kubernetes/k8s-%E4%BF%AE%E6%94%B9-nodeport-%E9%BB%98%E8%AE%A4%E8%8C%83%E5%9B%B4/</link>
+      <link>/tech/kubernetes/k8s-%E4%BF%AE%E6%94%B9-nodeport-%E9%BB%98%E8%AE%A4%E8%8C%83%E5%9B%B4/</link>
       <pubDate>Thu, 21 Mar 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/k8s-%E4%BF%AE%E6%94%B9-nodeport-%E9%BB%98%E8%AE%A4%E8%8C%83%E5%9B%B4/</guid>
+      <guid>/tech/kubernetes/k8s-%E4%BF%AE%E6%94%B9-nodeport-%E9%BB%98%E8%AE%A4%E8%8C%83%E5%9B%B4/</guid>
       <description>&lt;p&gt;K8S 集群中 NodePort 默认范围为 30000-32767。&lt;/p&gt;
 &lt;p&gt;若要修改此范围，依次修改 Master 节点上的 &lt;code&gt;/etc/kubernetes/manifests/kube-apiserver.yaml&lt;/code&gt; 文件。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 备份配置文件&lt;/span&gt;
@@ -313,26 +313,26 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>MQTT 发布-订阅模式</title>
-      <link>xgbt.site/tech/mqtt/mqtt-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</link>
+      <link>/tech/mqtt/mqtt-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</link>
       <pubDate>Thu, 21 Mar 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/mqtt/mqtt-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</guid>
+      <guid>/tech/mqtt/mqtt-%E5%8F%91%E5%B8%83-%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F/</guid>
       <description>&lt;h1 id=&#34;mqtt-发布订阅模式&#34;&gt;MQTT 发布/订阅模式&lt;/h1&gt;
 &lt;p&gt;发布-订阅模式（Publish-Subscribe Pattern）是一种消息传递模式，将发送消息的客户端（发布者）与接收消息的客户端（订阅者）解耦，使得两者不需要建立直接的联系也不需要知道对方的存在。&lt;/p&gt;</description>
     </item>
     <item>
       <title>MQTT QoS 简介</title>
-      <link>xgbt.site/tech/mqtt/mqtt-qos--%E7%AE%80%E4%BB%8B/</link>
+      <link>/tech/mqtt/mqtt-qos--%E7%AE%80%E4%BB%8B/</link>
       <pubDate>Wed, 20 Mar 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/mqtt/mqtt-qos--%E7%AE%80%E4%BB%8B/</guid>
+      <guid>/tech/mqtt/mqtt-qos--%E7%AE%80%E4%BB%8B/</guid>
       <description>&lt;h1 id=&#34;什么是-qos&#34;&gt;什么是 QoS&lt;/h1&gt;
 &lt;p&gt;使用 MQTT 协议的设备一般运行在网络受限的环境下，只依靠底层TCP 传输协议并不能完全保证消息的可靠到达。&lt;/p&gt;
 &lt;p&gt;因此，MQTT 提供了 QoS（&lt;strong&gt;Quality of service&lt;/strong&gt;） 机制，其核心是设计了多种消息交互机制来提供不同的服务质量，来满足用户在各种场景下对消息可靠性的要求。&lt;/p&gt;</description>
     </item>
     <item>
       <title>理解与使用 Container Capabilities</title>
-      <link>xgbt.site/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/</link>
+      <link>/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/</link>
       <pubDate>Tue, 19 Mar 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/</guid>
+      <guid>/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/</guid>
       <description>&lt;p&gt;在使用 K8S 过程中，偶尔会遇到如下所示的一段配置：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nt&#34;&gt;securityContext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;capabilities&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
@@ -344,17 +344,17 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>Volume 基础知识</title>
-      <link>xgbt.site/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
+      <link>/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
       <pubDate>Fri, 15 Mar 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
+      <guid>/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
       <description>&lt;p&gt;数据卷（Volume）是 Pod 与外部存储设备进行数据传递的通道，也是 Pod 内部容器间、Pod 与Pod 间、Pod 与外部环境进行数据共享的方式。&lt;/p&gt;
 &lt;p&gt;Volume 定义了外置存储的细节，并内嵌到 Pod 中作为 Pod 的一部分。其实质是外置存储在Kubernetes 系统的一个资源映射，当负载需要使用外置存储的时候，可以从数据卷（Volume）中查到相关信息并进行存储挂载操作。&lt;/p&gt;</description>
     </item>
     <item>
       <title>Golang 标准库丨sync</title>
-      <link>xgbt.site/tech/golang/golang-%E6%A0%87%E5%87%86%E5%BA%93-sync/</link>
+      <link>/tech/golang/golang-%E6%A0%87%E5%87%86%E5%BA%93-sync/</link>
       <pubDate>Tue, 13 Feb 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/golang/golang-%E6%A0%87%E5%87%86%E5%BA%93-sync/</guid>
+      <guid>/tech/golang/golang-%E6%A0%87%E5%87%86%E5%BA%93-sync/</guid>
       <description>&lt;h1 id=&#34;1-waitgroup&#34;&gt;1. WaitGroup&lt;/h1&gt;
 &lt;p&gt;WaitGroup 等待一组 Goroutine 完成。主 Goroutine 调用 Add(delta) 来设置要等待的 Goroutine 的数量。然后每个 Goroutine 运行并在完成时调用 Done()。同时，可以使用 Wait() 来阻塞，直到所有 Goroutine 完成。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;type&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;WaitGroup&lt;/span&gt; &lt;span class=&#34;kd&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
@@ -376,9 +376,9 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>Golang Defer</title>
-      <link>xgbt.site/tech/golang/golang-defer/</link>
+      <link>/tech/golang/golang-defer/</link>
       <pubDate>Sun, 11 Feb 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/golang/golang-defer/</guid>
+      <guid>/tech/golang/golang-defer/</guid>
       <description>&lt;h1 id=&#34;1-基础特性&#34;&gt;1. 基础特性&lt;/h1&gt;
 &lt;h2 id=&#34;11-先进后出&#34;&gt;1.1 先进后出&lt;/h2&gt;
 &lt;p&gt;对于多个defer语句，类似栈，按&lt;strong&gt;先进后出&lt;/strong&gt;的顺序执行。&lt;/p&gt;
@@ -413,16 +413,16 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>K8s Pod 基础知识</title>
-      <link>xgbt.site/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
+      <link>/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</link>
       <pubDate>Wed, 31 Jan 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
+      <guid>/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</guid>
       <description>&lt;p&gt;Pod 是 K8s 集群中创建和管理的、最小的可部署的计算单元。K8s 不会直接操作容器，而是通过 Pod 封装了容器，集群通过管控 Pod ，便可控制容器的存储、网络等资源，实现资源隔离或共享。&lt;/p&gt;</description>
     </item>
     <item>
       <title>CVE-2008-5161 OpenSSH CBC模式信息泄露漏洞</title>
-      <link>xgbt.site/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</link>
+      <link>/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</link>
       <pubDate>Thu, 04 Jan 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</guid>
+      <guid>/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</guid>
       <description>&lt;h1 id=&#34;升级-openssh&#34;&gt;升级 OpenSSH&lt;/h1&gt;
 &lt;p&gt;从选择一个最新的版本
 &lt;a href=&#34;https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/&#34;&gt;https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/&lt;/a&gt;&lt;/p&gt;
@@ -444,9 +444,9 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>Golang template 跳过 HTML 转义</title>
-      <link>xgbt.site/tech/golang/golang-template-%E8%B7%B3%E8%BF%87-html-%E8%BD%AC%E4%B9%89/</link>
+      <link>/tech/golang/golang-template-%E8%B7%B3%E8%BF%87-html-%E8%BD%AC%E4%B9%89/</link>
       <pubDate>Mon, 11 Dec 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/golang/golang-template-%E8%B7%B3%E8%BF%87-html-%E8%BD%AC%E4%B9%89/</guid>
+      <guid>/tech/golang/golang-template-%E8%B7%B3%E8%BF%87-html-%E8%BD%AC%E4%B9%89/</guid>
       <description>&lt;p&gt;使用golang标准库中的&lt;code&gt;html/template&lt;/code&gt;时，在默认情况下渲染模版时为了安全等原因，会将字符串中的部分符号进行转义。&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;注册自定义转义处理函数&lt;/strong&gt;&lt;/li&gt;
@@ -458,9 +458,9 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>Jaeger 部署与使用</title>
-      <link>xgbt.site/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/</link>
+      <link>/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Mon, 11 Dec 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid>
+      <guid>/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid>
       <description>&lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;安装 Jaeger Operator&lt;/strong&gt;&lt;/li&gt;
 &lt;/ol&gt;
@@ -512,9 +512,9 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>Docker 网段与主机网段冲突导致网络中断</title>
-      <link>xgbt.site/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</link>
+      <link>/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</link>
       <pubDate>Mon, 09 Oct 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</guid>
+      <guid>/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</guid>
       <description>&lt;h2 id=&#34;问题描述&#34;&gt;问题描述&lt;/h2&gt;
 &lt;p&gt;有 IP 地址为 &lt;code&gt;172.24.x.xx/24&lt;/code&gt; 的服务器无法 ping 通，原因为 docker 默认网段 &lt;code&gt;172.17.0.0/16&lt;/code&gt; 占用了服务器所在网段，导致外部请求无法访问到真实服务器。&lt;/p&gt;
 &lt;h2 id=&#34;解决方案&#34;&gt;解决方案&lt;/h2&gt;
@@ -534,9 +534,9 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>修改 Linux DNS 配置</title>
-      <link>xgbt.site/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/</link>
+      <link>/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Fri, 08 Sep 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/</guid>
+      <guid>/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/</guid>
       <description>&lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;查看网卡配置&lt;/strong&gt;&lt;/li&gt;
 &lt;/ol&gt;
@@ -556,9 +556,9 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>Docker 安装与配置</title>
-      <link>xgbt.site/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</link>
+      <link>/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Fri, 11 Aug 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</guid>
+      <guid>/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</guid>
       <description>&lt;p&gt;操作系统版本 AlmaLinux 9.3&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;安装 &lt;code&gt;dnf-utils&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
@@ -598,9 +598,9 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>Golang 控制协程并发数量</title>
-      <link>xgbt.site/tech/golang/golang-%E6%8E%A7%E5%88%B6%E5%8D%8F%E7%A8%8B%E5%B9%B6%E5%8F%91%E6%95%B0%E9%87%8F/</link>
+      <link>/tech/golang/golang-%E6%8E%A7%E5%88%B6%E5%8D%8F%E7%A8%8B%E5%B9%B6%E5%8F%91%E6%95%B0%E9%87%8F/</link>
       <pubDate>Mon, 07 Aug 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/golang/golang-%E6%8E%A7%E5%88%B6%E5%8D%8F%E7%A8%8B%E5%B9%B6%E5%8F%91%E6%95%B0%E9%87%8F/</guid>
+      <guid>/tech/golang/golang-%E6%8E%A7%E5%88%B6%E5%8D%8F%E7%A8%8B%E5%B9%B6%E5%8F%91%E6%95%B0%E9%87%8F/</guid>
       <description>&lt;h1 id=&#34;并发过高导致程序崩溃&#34;&gt;并发过高导致程序崩溃&lt;/h1&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-go&#34; data-lang=&#34;go&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;kd&#34;&gt;func&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;  
 &lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt; 2&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;	&lt;span class=&#34;kd&#34;&gt;var&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;wg&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;sync&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;WaitGroup&lt;/span&gt;  
@@ -639,9 +639,9 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>Golang Channel 使用场景</title>
-      <link>xgbt.site/tech/golang/golang-channel-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</link>
+      <link>/tech/golang/golang-channel-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</link>
       <pubDate>Thu, 03 Aug 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/golang/golang-channel-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</guid>
+      <guid>/tech/golang/golang-channel-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/</guid>
       <description>&lt;h1 id=&#34;1-futurepromise&#34;&gt;1. future/promise&lt;/h1&gt;
 &lt;h2 id=&#34;11-单向接收-channel-作为函数返回&#34;&gt;1.1 单向接收 Channel 作为函数返回&lt;/h2&gt;
 &lt;p&gt;&lt;code&gt;sumSquares&lt;/code&gt;函数调用的两个实参请求并发进行。每个通道读取操作将阻塞到请求返回结果为止。&lt;/p&gt;
@@ -670,9 +670,9 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>Golang Code Review Comments</title>
-      <link>xgbt.site/tech/golang/golang-code-review-comments/</link>
+      <link>/tech/golang/golang-code-review-comments/</link>
       <pubDate>Sat, 06 May 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/golang/golang-code-review-comments/</guid>
+      <guid>/tech/golang/golang-code-review-comments/</guid>
       <description>&lt;p&gt;&lt;strong&gt;参考资料：&lt;/strong&gt;&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&#34;https://go.dev/wiki/CodeReviewComments&#34;&gt;https://go.dev/wiki/CodeReviewComments&lt;/a&gt;&lt;/li&gt;
@@ -697,9 +697,9 @@ drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）
     </item>
     <item>
       <title>Golang 错误处理</title>
-      <link>xgbt.site/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</link>
+      <link>/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</link>
       <pubDate>Sat, 11 Feb 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</guid>
+      <guid>/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</guid>
       <description>&lt;h1 id=&#34;1-panic-与-error&#34;&gt;1. panic 与 error&lt;/h1&gt;
 &lt;h2 id=&#34;11-panic&#34;&gt;1.1 panic&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;panic 会中止程序执行进入异常处理逻辑&lt;/strong&gt;，panic可以在当前函数或者调用链向上的任何一层被defer recover 捕获处理，没被捕获的panic会使程序打印堆栈后异常退出。&lt;/p&gt;</description>

@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Ops on xgbt&#39;s Blog</title>
-    <link>xgbt.site/tags/ops/</link>
+    <link>/tags/ops/</link>
     <description>Recent content in Ops on xgbt&#39;s Blog</description>
     <generator>Hugo -- 0.139.3</generator>
     <language>zh-cn</language>
     <lastBuildDate>Wed, 29 May 2024 16:09:19 +0800</lastBuildDate>
-    <atom:link href="xgbt.site/tags/ops/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/ops/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Nginx 实现 GPT 流式传输</title>
-      <link>xgbt.site/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</link>
+      <link>/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</link>
       <pubDate>Wed, 29 May 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</guid>
+      <guid>/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/</guid>
       <description>&lt;p&gt;&lt;strong&gt;核心参数&lt;/strong&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;proxy_buffering off;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;该指令使 Nginx 不缓冲来自上游服务器的响应，而是立即将其发送给客户端。适合需要实时或流式传输数据的场景非常有用，比如实时聊天、流媒体等。&lt;/p&gt;</description>
     </item>
     <item>
       <title>CVE-2008-5161 OpenSSH CBC模式信息泄露漏洞</title>
-      <link>xgbt.site/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</link>
+      <link>/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</link>
       <pubDate>Thu, 04 Jan 2024 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</guid>
+      <guid>/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/</guid>
       <description>&lt;h1 id=&#34;升级-openssh&#34;&gt;升级 OpenSSH&lt;/h1&gt;
 &lt;p&gt;从选择一个最新的版本
 &lt;a href=&#34;https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/&#34;&gt;https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/&lt;/a&gt;&lt;/p&gt;
@@ -43,9 +43,9 @@
     </item>
     <item>
       <title>Jaeger 部署与使用</title>
-      <link>xgbt.site/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/</link>
+      <link>/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/</link>
       <pubDate>Mon, 11 Dec 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid>
+      <guid>/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/</guid>
       <description>&lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;安装 Jaeger Operator&lt;/strong&gt;&lt;/li&gt;
 &lt;/ol&gt;
@@ -97,9 +97,9 @@
     </item>
     <item>
       <title>Docker 网段与主机网段冲突导致网络中断</title>
-      <link>xgbt.site/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</link>
+      <link>/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</link>
       <pubDate>Mon, 09 Oct 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</guid>
+      <guid>/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</guid>
       <description>&lt;h2 id=&#34;问题描述&#34;&gt;问题描述&lt;/h2&gt;
 &lt;p&gt;有 IP 地址为 &lt;code&gt;172.24.x.xx/24&lt;/code&gt; 的服务器无法 ping 通，原因为 docker 默认网段 &lt;code&gt;172.17.0.0/16&lt;/code&gt; 占用了服务器所在网段，导致外部请求无法访问到真实服务器。&lt;/p&gt;
 &lt;h2 id=&#34;解决方案&#34;&gt;解决方案&lt;/h2&gt;
@@ -119,9 +119,9 @@
     </item>
     <item>
       <title>Docker 安装与配置</title>
-      <link>xgbt.site/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</link>
+      <link>/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Fri, 11 Aug 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</guid>
+      <guid>/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</guid>
       <description>&lt;p&gt;操作系统版本 AlmaLinux 9.3&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;安装 &lt;code&gt;dnf-utils&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;

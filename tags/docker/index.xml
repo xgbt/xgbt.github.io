@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Docker on xgbt&#39;s Blog</title>
-    <link>xgbt.site/tags/docker/</link>
+    <link>/tags/docker/</link>
     <description>Recent content in Docker on xgbt&#39;s Blog</description>
     <generator>Hugo -- 0.139.3</generator>
     <language>zh-cn</language>
     <lastBuildDate>Mon, 09 Oct 2023 16:09:19 +0800</lastBuildDate>
-    <atom:link href="xgbt.site/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Docker 网段与主机网段冲突导致网络中断</title>
-      <link>xgbt.site/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</link>
+      <link>/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</link>
       <pubDate>Mon, 09 Oct 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</guid>
+      <guid>/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</guid>
       <description>&lt;h2 id=&#34;问题描述&#34;&gt;问题描述&lt;/h2&gt;
 &lt;p&gt;有 IP 地址为 &lt;code&gt;172.24.x.xx/24&lt;/code&gt; 的服务器无法 ping 通，原因为 docker 默认网段 &lt;code&gt;172.17.0.0/16&lt;/code&gt; 占用了服务器所在网段，导致外部请求无法访问到真实服务器。&lt;/p&gt;
 &lt;h2 id=&#34;解决方案&#34;&gt;解决方案&lt;/h2&gt;
@@ -32,9 +32,9 @@
     </item>
     <item>
       <title>Docker 安装与配置</title>
-      <link>xgbt.site/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</link>
+      <link>/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</link>
       <pubDate>Fri, 11 Aug 2023 16:09:19 +0800</pubDate>
-      <guid>xgbt.site/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</guid>
+      <guid>/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/</guid>
       <description>&lt;p&gt;操作系统版本 AlmaLinux 9.3&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;&lt;strong&gt;安装 &lt;code&gt;dnf-utils&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
