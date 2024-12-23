@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
-<title>Ops | xgbt&#39;s Blog</title>
+<title>Tech | xgbt&#39;s Blog</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="/tags/ops/">
+<link rel="canonical" href="/categories/tech/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
 <link rel="icon" href="/assets/apple-icon.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -18,8 +18,8 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="/tags/ops/index.xml">
-<link rel="alternate" hreflang="zh" href="/tags/ops/">
+<link rel="alternate" type="application/rss+xml" href="/categories/tech/index.xml">
+<link rel="alternate" hreflang="zh" href="/categories/tech/">
 <noscript>
     <style>
         #theme-toggle,
@@ -63,13 +63,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
-    rel="stylesheet"><meta property="og:title" content="Ops" />
+    rel="stylesheet"><meta property="og:title" content="Tech" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="/tags/ops/" />
+<meta property="og:url" content="/categories/tech/" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Ops"/>
+<meta name="twitter:title" content="Tech"/>
 <meta name="twitter:description" content=""/>
 
 </head>
@@ -138,95 +138,31 @@
     </nav>
 </header>
 <main class="main"> 
-<header class="page-header"><div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tags/">Tags</a></div>
+<header class="page-header"><div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/categories/">Categories</a></div>
   <h1>
-    Ops
+    Tech
   </h1>
 </header>
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
-    <h2 class="entry-hint-parent">Nginx 实现 GPT 流式传输
+    <h2 class="entry-hint-parent">Golang 错误处理
     </h2>
   </header>
   <div class="entry-content">
-    <p>核心参数
-1proxy_buffering off; 该指令使 Nginx 不缓冲来自上游服务器的响应，而是立即将其发送给客户端。适合需要实时或流式传输数据的场景非常有用，比如实时聊天、流媒体等。
+    <p>1. panic 与 error 1.1 panic panic 会中止程序执行进入异常处理逻辑，panic可以在当前函数或者调用链向上的任何一层被defer recover 捕获处理，没被捕获的panic会使程序打印堆栈后异常退出。
 ...</p>
   </div>
-  <footer class="entry-footer"><span title='2024-05-29 16:09:19 +0800 CST'>五月 29, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to Nginx 实现 GPT 流式传输" href="/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/"></a>
+  <footer class="entry-footer"><span title='2023-02-11 16:09:19 +0800 CST'>二月 11, 2023</span></footer>
+  <a class="entry-link" aria-label="post link to Golang 错误处理" href="/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/"></a>
 </article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">CVE-2008-5161 OpenSSH CBC模式信息泄露漏洞
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>升级 OpenSSH 从选择一个最新的版本 https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/
-1# 获取最新版本 openssh 2wget --no-check-certificate https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.7p1.tar.gz 3 4# 解压 5tar -zxvf openssh-9.7p1.tar.gz 6 7# 安装相关需要组件 8yum -y install pam-devel gcc zlib-devel openssl-devel 9 10# 检查配置 11./configure --prefix=/usr --sysconfdir=/etc/ssh --with-zlib --with-ssl-dir=/usr/local/ssl --with-md5-passwords --mandir=/usr/share/man --with-pam 12 13# 编译安装 14make &amp;&amp; make install 编译完成之后会有部分文件中的参数例如 GSSAPIAuthentication 显示不支持，将其删掉即可。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-01-04 16:09:19 +0800 CST'>一月 4, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to CVE-2008-5161 OpenSSH CBC模式信息泄露漏洞" href="/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Jaeger 部署与使用
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> 安装 Jaeger Operator 1kubectl create namespace observability 2kubectl create -f https://github.com/jaegertracing/jaeger-operator/releases/download/v1.52.0/jaeger-operator.yaml -n observability 若 rbac-proxy 安装失败，则修改 kube-rbac-prox 镜像地址为 10.101.7.108:80/open_source/kubebuilder/kube-rbac-proxy:v0.13.0
-安装 Jaeger 1apiVersion: jaegertracing.io/v1 2kind: Jaeger 3metadata: 4 name: jaeger-prod 5 namespace: observability 6spec: 7 strategy: production 8 storage: 9 type: elasticsearch 10 esIndexCleaner: 11 enabled: true # turn the cron job deployment on and off 12 numberOfDays: 7 # number of days to wait before deleting a record 13 schedule: &#34;55 23 * * *&#34; # cron expression for it to run 14 options: 15 es: 16 server-urls: http://elasticsearch.szhems.svc:9200 17 index-prefix: dev 18 # tls: 19 # ca: /es/certificates/ca.crt 20 # secretName: jaeger-secret 21 # volumeMounts: 22 # - name: certificates 23 # mountPath: /es/certificates/ 24 # readOnly: true 25 # volumes: 26 # - name: certificates 27 # secret: 28 # secretName: quickstart-es-http-certs-public go-zero 每个服务的配置文件下添加Telemetry配置 1Log: 2 ServiceName: platform-api 3 Level: info 4 Stat: false 5 TimeFormat: 2006-01-02 15:04:05 参考资料：
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-12-11 16:09:19 +0800 CST'>十二月 11, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Jaeger 部署与使用" href="/tech/ops/jaeger-%E9%83%A8%E7%BD%B2%E4%B8%8E%E4%BD%BF%E7%94%A8/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Docker 精简镜像实践
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>使用精简的基础镜像 Alpine Alpine一个基于 musl libc 和 busybox、面向安全的轻量级 Linux 发行版，压缩体积只有 3M 左右，很多流行的镜像都有基于 alpine 的制作的基础镜像。
-scratch scratch 是一个空镜像，如果我们的应用是一个不依赖动态链接库的、包含所有依赖的二进制文件，则可以使用 scratch 作为基础镜像，此时镜像的体积差不多就是二进制文件的体积。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-11-25 16:09:19 +0800 CST'>十一月 25, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Docker 精简镜像实践" href="/tech/docker/docker-%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F%E5%AE%9E%E8%B7%B5/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Docker 网段与主机网段冲突导致网络中断
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。
-解决方案 查看路由信息 1ifconfig docker0 2 3docker0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt; mtu 1500 4 inet 172.17.0.1 netmask 255.255.0.0 broadcast 172.17.255.255 5 ether 02:42:90:e0:c1:a0 txqueuelen 0 (Ethernet) 6 RX packets 0 bytes 0 (0.0 B) 7 RX errors 0 dropped 0 overruns 0 frame 0 8 TX packets 0 bytes 0 (0.0 B) 9 TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0 可以看到，docker0 占用的网段为 172.17.0.1/16
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-10-09 16:09:19 +0800 CST'>十月 9, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Docker 网段与主机网段冲突导致网络中断" href="/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Docker 安装与配置
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>操作系统版本 AlmaLinux 9.3
-安装 dnf-utils 1sudo dnf install -y dnf-utils 添加 Docker CE 存储库 1sudo dnf config-manager --add-repo https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo 1yum-config-manager --add-repo https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo 添加过后，执行列出 Alma Linux上可用存储库的列表
-1sudo dnf repolist 把软件仓库地址替换为镜像站 1sed -i &#39;s&#43;https://download.docker.com&#43;https://mirrors.tuna.tsinghua.edu.cn/docker-ce&#43;&#39; /etc/yum.repos.d/docker-ce.repo 安装 Docker CE 1sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 启动并启用 Docker 1sudo systemctl start docker 2sudo systemctl enable docker 配置国内镜像源 1{ 2 &#34;registry-mirrors&#34;: [ 3	&#34;https://docker.1panel.live&#34; 4 ] 5} 1sudo systemctl daemon-reload 2sudo systemctl restart docker </p>
-  </div>
-  <footer class="entry-footer"><span title='2023-08-11 16:09:19 +0800 CST'>八月 11, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Docker 安装与配置" href="/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/"></a>
-</article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="prev" href="/categories/tech/page/3/">
+      «&nbsp;上一页&nbsp;
+    </a>
+  </nav>
+</footer>
     </main>
     
 <footer class="footer">

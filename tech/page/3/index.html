@@ -189,6 +189,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Docker 精简镜像实践
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>使用精简的基础镜像 Alpine Alpine一个基于 musl libc 和 busybox、面向安全的轻量级 Linux 发行版，压缩体积只有 3M 左右，很多流行的镜像都有基于 alpine 的制作的基础镜像。
+scratch scratch 是一个空镜像，如果我们的应用是一个不依赖动态链接库的、包含所有依赖的二进制文件，则可以使用 scratch 作为基础镜像，此时镜像的体积差不多就是二进制文件的体积。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-11-25 16:09:19 +0800 CST'>十一月 25, 2023</span></footer>
+  <a class="entry-link" aria-label="post link to Docker 精简镜像实践" href="/tech/docker/docker-%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F%E5%AE%9E%E8%B7%B5/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">常用串口通讯参数解析
     </h2>
   </header>
@@ -283,23 +297,12 @@ https://go.dev/wiki/CodeReviewComments https://go.dev/wiki/CommonMistakes Review
   <footer class="entry-footer"><span title='2023-05-06 16:09:19 +0800 CST'>五月 6, 2023</span></footer>
   <a class="entry-link" aria-label="post link to Golang Code Review Comments" href="/tech/golang/golang-code-review-comments/"></a>
 </article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Golang 错误处理
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>1. panic 与 error 1.1 panic panic 会中止程序执行进入异常处理逻辑，panic可以在当前函数或者调用链向上的任何一层被defer recover 捕获处理，没被捕获的panic会使程序打印堆栈后异常退出。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-02-11 16:09:19 +0800 CST'>二月 11, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Golang 错误处理" href="/tech/golang/golang-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/"></a>
-</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="prev" href="/tech/page/2/">
       «&nbsp;上一页&nbsp;
+    </a>
+    <a class="next" href="/tech/page/4/">下一页&nbsp;&nbsp;»
     </a>
   </nav>
 </footer>

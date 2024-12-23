@@ -96,6 +96,21 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;参考资料：&lt;/strong&gt;&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Docker 精简镜像实践</title>
+      <link>/tech/docker/docker-%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F%E5%AE%9E%E8%B7%B5/</link>
+      <pubDate>Sat, 25 Nov 2023 16:09:19 +0800</pubDate>
+      <guid>/tech/docker/docker-%E7%B2%BE%E7%AE%80%E9%95%9C%E5%83%8F%E5%AE%9E%E8%B7%B5/</guid>
+      <description>&lt;h1 id=&#34;使用精简的基础镜像&#34;&gt;使用精简的基础镜像&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Alpine&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Alpine一个基于 musl libc 和 busybox、面向安全的轻量级 Linux 发行版，压缩体积只有 3M 左右，很多流行的镜像都有基于 alpine 的制作的基础镜像。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;scratch&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;scratch 是一个空镜像，如果我们的应用是一个不依赖动态链接库的、包含所有依赖的二进制文件，则可以使用 scratch 作为基础镜像，此时镜像的体积差不多就是二进制文件的体积。&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Docker 网段与主机网段冲突导致网络中断</title>
       <link>/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/</link>
       <pubDate>Mon, 09 Oct 2023 16:09:19 +0800</pubDate>
