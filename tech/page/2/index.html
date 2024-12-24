@@ -161,6 +161,19 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">K8s 启用 ipvs 模式
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 安装 ipvs 1# 安装 ipvs 相关软件包 2yum install ipvsadm ipset sysstat conntrack libseccomp 3 4# 载入模块 5modprobe -- ip_vs 6modprobe -- ip_vs_rr 7modprobe -- ip_vs_wrr 8modprobe -- ip_vs_sh 9modprobe -- nf_conntrack 10 11# 创建ipvs.conf，设置内核模块的自动载入。 12cat &lt;&lt;EOF &gt; /etc/modules-load.d/ipvs.conf 13ip_vs 14ip_vs_lc 15ip_vs_wlc 16ip_vs_rr 17ip_vs_wrr 18ip_vs_lblc 19ip_vs_lblcr 20ip_vs_dh 21ip_vs_sh 22ip_vs_fo 23ip_vs_nq 24ip_vs_sed 25ip_vs_ftp 26ip_vs_sh 27nf_conntrack 28ip_tables 29ip_set 30xt_set 31ipt_set 32ipt_rpfilter 33ipt_REJECT 34ipip 35EOF 1systemctl enable --now systemd-modules-load.service 修改 kube-proxy configmap 1# 将 mode 改为 &#39;ipvs&#39; 2kubectl edit cm kube-proxy -n kube-system 重启 kube-proxy 1kubectl -n kube-system rollout restart daemonset kube-proxy 查看新 Kube-proxy pod 的日志 会出现 Using ipvs Proxier
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-04-13 16:09:19 +0800 CST'>四月 13, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to K8s 启用 ipvs 模式" href="/tech/kubernetes/k8s-%E5%90%AF%E7%94%A8-ipvs-%E6%A8%A1%E5%BC%8F/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">MQTT 连接参数配置
     </h2>
   </header>
@@ -282,20 +295,6 @@ Volume 定义了外置存储的细节，并内嵌到 Pod 中作为 Pod 的一部
   </div>
   <footer class="entry-footer"><span title='2024-01-31 16:09:19 +0800 CST'>一月 31, 2024</span></footer>
   <a class="entry-link" aria-label="post link to K8s Pod 基础知识" href="/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">CVE-2008-5161 OpenSSH CBC模式信息泄露漏洞
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>升级 OpenSSH 从选择一个最新的版本 https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/
-1# 获取最新版本 openssh 2wget --no-check-certificate https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.7p1.tar.gz 3 4# 解压 5tar -zxvf openssh-9.7p1.tar.gz 6 7# 安装相关需要组件 8yum -y install pam-devel gcc zlib-devel openssl-devel 9 10# 检查配置 11./configure --prefix=/usr --sysconfdir=/etc/ssh --with-zlib --with-ssl-dir=/usr/local/ssl --with-md5-passwords --mandir=/usr/share/man --with-pam 12 13# 编译安装 14make &amp;&amp; make install 编译完成之后会有部分文件中的参数例如 GSSAPIAuthentication 显示不支持，将其删掉即可。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-01-04 16:09:19 +0800 CST'>一月 4, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to CVE-2008-5161 OpenSSH CBC模式信息泄露漏洞" href="/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

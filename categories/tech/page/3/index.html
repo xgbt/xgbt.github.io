@@ -146,6 +146,20 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">CVE-2008-5161 OpenSSH CBC模式信息泄露漏洞
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>升级 OpenSSH 从选择一个最新的版本 https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/
+1# 获取最新版本 openssh 2wget --no-check-certificate https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.7p1.tar.gz 3 4# 解压 5tar -zxvf openssh-9.7p1.tar.gz 6 7# 安装相关需要组件 8yum -y install pam-devel gcc zlib-devel openssl-devel 9 10# 检查配置 11./configure --prefix=/usr --sysconfdir=/etc/ssh --with-zlib --with-ssl-dir=/usr/local/ssl --with-md5-passwords --mandir=/usr/share/man --with-pam 12 13# 编译安装 14make &amp;&amp; make install 编译完成之后会有部分文件中的参数例如 GSSAPIAuthentication 显示不支持，将其删掉即可。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-01-04 16:09:19 +0800 CST'>一月 4, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to CVE-2008-5161 OpenSSH CBC模式信息泄露漏洞" href="/tech/ops/cve-2008-5161-openssh-cbc%E6%A8%A1%E5%BC%8F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Golang template 跳过 HTML 转义
     </h2>
   </header>
@@ -267,20 +281,6 @@ PLC 设备使用的常见值包括 7 或 8 个数据位。
   </div>
   <footer class="entry-footer"><span title='2023-08-03 16:09:19 +0800 CST'>八月 3, 2023</span></footer>
   <a class="entry-link" aria-label="post link to Golang Channel 使用场景" href="/tech/golang/golang-channel-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Golang Code Review Comments
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>参考资料：
-https://go.dev/wiki/CodeReviewComments https://go.dev/wiki/CommonMistakes Review Comments 使用 gofmt 或者 goimports 自动格式化代码 记录声明的注释应该是完整的句子，注释应以所描述事物的名称开头并以句点结束。 1// Request represents a request to run a command. 2type Request struct { ... 3 4// Encode writes the JSON encoding of req to w. 5func Encode(w io.Writer, req *Request) { ... context.Context 类型的值携带跨 API 和进程边界的安全凭证、跟踪信息、截止日期和取消信号。Go 程序沿着从传入 RPC 和 HTTP 请求到传出请求的整个函数调用链显式传递上下文。大多数使用 Context 的函数都将它作为第一个参数： 1func F(ctx context.Context, /* other arguments */) {} 注意，不要将 Context 成员添加到结构类型中；而是向需要传递该类型的每个方法添加一个 ctx 参数。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-05-06 16:09:19 +0800 CST'>五月 6, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Golang Code Review Comments" href="/tech/golang/golang-code-review-comments/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

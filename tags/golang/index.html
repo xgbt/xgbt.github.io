@@ -160,6 +160,20 @@ Go 语言实现 GC 机制，因此开发者不需要关心内存分配在栈上�
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Golang 空结构体
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在 Go 语言中，空结构体 struct{} 是一个非常特殊的类型，它不包含任何字段且不占用任何内存空间。
+空结构体不占用内存空间 1type Empty struct{} 2 3func main() { 4 5	var s1 struct{} 6	s2 := Empty{} 7	s3 := struct{}{} 8 9	fmt.Printf(&#34;s1 addr: %p, size: %d\n&#34;, &amp;s1, unsafe.Sizeof(s1)) 10	fmt.Printf(&#34;s2 addr: %p, size: %d\n&#34;, &amp;s2, unsafe.Sizeof(s2)) 11	fmt.Printf(&#34;s3 addr: %p, size: %d\n&#34;, &amp;s3, unsafe.Sizeof(s3)) 12	fmt.Printf(&#34;s1 == s2 == s3: %t\n&#34;, s1 == s2 &amp;&amp; s2 == s3) 13} 得到输出如下
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-05-03 16:09:19 +0800 CST'>五月 3, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to Golang 空结构体" href="/tech/golang/golang-%E7%A9%BA%E7%BB%93%E6%9E%84%E4%BD%93/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Golang 标准库丨sync
     </h2>
   </header>

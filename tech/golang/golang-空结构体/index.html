@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Golang 空结构体 | xgbt&#39;s Blog</title>
+<meta name="keywords" content="Golang">
+<meta name="description" content="在 Go 语言中，空结构体 struct{} 是一个非常特殊的类型，它不包含任何字段且不占用任何内存空间。
+空结构体不占用内存空间
+ 1type Empty struct{}
+ 2
+ 3func main() {
+ 4
+ 5	var s1 struct{}
+ 6	s2 := Empty{}
+ 7	s3 := struct{}{}
+ 8
+ 9	fmt.Printf(&#34;s1 addr: %p, size: %d\n&#34;, &amp;s1, unsafe.Sizeof(s1))
+10	fmt.Printf(&#34;s2 addr: %p, size: %d\n&#34;, &amp;s2, unsafe.Sizeof(s2))
+11	fmt.Printf(&#34;s3 addr: %p, size: %d\n&#34;, &amp;s3, unsafe.Sizeof(s3))
+12	fmt.Printf(&#34;s1 == s2 == s3: %t\n&#34;, s1 == s2 &amp;&amp; s2 == s3)
+13}
+得到输出如下">
+<meta name="author" content="">
+<link rel="canonical" href="/tech/golang/golang-%E7%A9%BA%E7%BB%93%E6%9E%84%E4%BD%93/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4b0be15b6b891613a91dad3a5279f108f18aa855a6dcb49a1e5ff9fade239870.css" integrity="sha256-SwvhW2uJFhOpHa06UnnxCPGKqFWm3LSaHl/5&#43;t4jmHA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="/assets/apple-icon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="zh" href="/tech/golang/golang-%E7%A9%BA%E7%BB%93%E6%9E%84%E4%BD%93/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><style>
+@import url('https://fonts.cdnfonts.com/css/code-new-roman');
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=LXGW+WenKai+TC&display=swap"
+    rel="stylesheet"><meta property="og:title" content="Golang 空结构体" />
+<meta property="og:description" content="在 Go 语言中，空结构体 struct{} 是一个非常特殊的类型，它不包含任何字段且不占用任何内存空间。
+空结构体不占用内存空间
+ 1type Empty struct{}
+ 2
+ 3func main() {
+ 4
+ 5	var s1 struct{}
+ 6	s2 := Empty{}
+ 7	s3 := struct{}{}
+ 8
+ 9	fmt.Printf(&#34;s1 addr: %p, size: %d\n&#34;, &amp;s1, unsafe.Sizeof(s1))
+10	fmt.Printf(&#34;s2 addr: %p, size: %d\n&#34;, &amp;s2, unsafe.Sizeof(s2))
+11	fmt.Printf(&#34;s3 addr: %p, size: %d\n&#34;, &amp;s3, unsafe.Sizeof(s3))
+12	fmt.Printf(&#34;s1 == s2 == s3: %t\n&#34;, s1 == s2 &amp;&amp; s2 == s3)
+13}
+得到输出如下" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/tech/golang/golang-%E7%A9%BA%E7%BB%93%E6%9E%84%E4%BD%93/" /><meta property="article:section" content="tech" />
+<meta property="article:published_time" content="2024-05-03T16:09:19+08:00" />
+<meta property="article:modified_time" content="2024-05-03T16:09:19+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Golang 空结构体"/>
+<meta name="twitter:description" content="在 Go 语言中，空结构体 struct{} 是一个非常特殊的类型，它不包含任何字段且不占用任何内存空间。
+空结构体不占用内存空间
+ 1type Empty struct{}
+ 2
+ 3func main() {
+ 4
+ 5	var s1 struct{}
+ 6	s2 := Empty{}
+ 7	s3 := struct{}{}
+ 8
+ 9	fmt.Printf(&#34;s1 addr: %p, size: %d\n&#34;, &amp;s1, unsafe.Sizeof(s1))
+10	fmt.Printf(&#34;s2 addr: %p, size: %d\n&#34;, &amp;s2, unsafe.Sizeof(s2))
+11	fmt.Printf(&#34;s3 addr: %p, size: %d\n&#34;, &amp;s3, unsafe.Sizeof(s3))
+12	fmt.Printf(&#34;s1 == s2 == s3: %t\n&#34;, s1 == s2 &amp;&amp; s2 == s3)
+13}
+得到输出如下"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Tech",
+      "item": "/tech/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Golang 空结构体",
+      "item": "/tech/golang/golang-%E7%A9%BA%E7%BB%93%E6%9E%84%E4%BD%93/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Golang 空结构体",
+  "name": "Golang 空结构体",
+  "description": "在 Go 语言中，空结构体 struct{} 是一个非常特殊的类型，它不包含任何字段且不占用任何内存空间。\n空结构体不占用内存空间 1type Empty struct{} 2 3func main() { 4 5\tvar s1 struct{} 6\ts2 := Empty{} 7\ts3 := struct{}{} 8 9\tfmt.Printf(\u0026#34;s1 addr: %p, size: %d\\n\u0026#34;, \u0026amp;s1, unsafe.Sizeof(s1)) 10\tfmt.Printf(\u0026#34;s2 addr: %p, size: %d\\n\u0026#34;, \u0026amp;s2, unsafe.Sizeof(s2)) 11\tfmt.Printf(\u0026#34;s3 addr: %p, size: %d\\n\u0026#34;, \u0026amp;s3, unsafe.Sizeof(s3)) 12\tfmt.Printf(\u0026#34;s1 == s2 == s3: %t\\n\u0026#34;, s1 == s2 \u0026amp;\u0026amp; s2 == s3) 13} 得到输出如下\n",
+  "keywords": [
+    "Golang"
+  ],
+  "articleBody": "在 Go 语言中，空结构体 struct{} 是一个非常特殊的类型，它不包含任何字段且不占用任何内存空间。\n空结构体不占用内存空间 1type Empty struct{} 2 3func main() { 4 5\tvar s1 struct{} 6\ts2 := Empty{} 7\ts3 := struct{}{} 8 9\tfmt.Printf(\"s1 addr: %p, size: %d\\n\", \u0026s1, unsafe.Sizeof(s1)) 10\tfmt.Printf(\"s2 addr: %p, size: %d\\n\", \u0026s2, unsafe.Sizeof(s2)) 11\tfmt.Printf(\"s3 addr: %p, size: %d\\n\", \u0026s3, unsafe.Sizeof(s3)) 12\tfmt.Printf(\"s1 == s2 == s3: %t\\n\", s1 == s2 \u0026\u0026 s2 == s3) 13} 得到输出如下\n1s1 addr: 0x1048507c0, size: 0 2s2 addr: 0x1048507c0, size: 0 3s3 addr: 0x1048507c0, size: 0 4s1 == s2 == s3: true 由上可得：\n多个空结构体内存地址相同。 空结构体占用字节数为 0，即不占用内存空间。 空结构体之间的值相等。 但是，对于结论 1，有一些特殊情况。\n1func main() { 2 3\tvar ( 4\ta struct{} 5\tb struct{} 6\tc struct{} 7\td struct{} 8\t) 9 10\tprintln(\"\u0026a:\", \u0026a) 11\tprintln(\"\u0026b:\", \u0026b) 12\tprintln(\"\u0026c:\", \u0026c) 13\tprintln(\"\u0026d:\", \u0026d) 14 15\tprintln(\"\u0026a == \u0026b:\", \u0026a == \u0026b) 16\tx := \u0026a 17\ty := \u0026b 18\tprintln(\"x == y:\", x == y) 19 20\tfmt.Printf(\"\u0026c(%p) == \u0026d(%p): %t\\n\", \u0026c, \u0026d, \u0026c == \u0026d) 21} 这段代码中定义了 4 个空结构体，依次打印它们的内存地址，然后又分别对比了 a 与 b 的内存地址，和 c 与 d 的内存地址两两是否相等。输出结果如下：\n1go run -gcflags='-m -N -l' main.go 使用 -gcflags 选项向 Go 编译器传递标志，这些标志会影响编译器的行为。\n-m 标志用于启动编译器的内存逃逸分析。 -N 标志用于禁用编译器优化。 -l 标志用于禁用函数内联。\n1# command-line-arguments 2./main.go:12:3: moved to heap: c 3./main.go:13:3: moved to heap: d 4./main.go:26:12: ... argument does not escape 5./main.go:26:50: \u0026c == \u0026d escapes to heap 6\u0026a: 0x1400011ae84 7\u0026b: 0x1400011ae84 8\u0026c: 0x1048987e0 9\u0026d: 0x1048987e0 10\u0026a == \u0026b: false 11x == y: true 12\u0026c(0x1048987e0) == \u0026d(0x1048987e0): true 根据输出可以发现，变量 c 和 d 发生了内存逃逸，并且最终二者的内存地址相同，相等比较结果为 true。\n而 a 和 b 两个变量的输出结果就比较有意思了，两个变量没有发生内存逃逸，并且二者打印出来的内存地址相同，但内存地址相等比较结果却为 false。\nA struct or array type has size zero if it contains no fields (or elements, respectively) that have a size greater than zero. Two distinct zero-size variables may have the same address in memory. Size and alignment guarantees¶\n因此，正确结论为：「多个空结构体内存地址可能相同」。\n空结构体影响内存对齐 空结构体也并不是什么时候都不会占用内存空间，比如空结构体作为另一个结构体字段时，根据位置不同，可能因内存对齐原因，导致外层结构体大小不一样：\n1func main() { 2 3\ttype A struct { 4\tx int 5\ty string 6\tz struct{} 7\t} 8 9\ttype B struct { 10\tx int 11\tz struct{} 12\ty string 13\t} 14 15\ttype C struct { 16\tz struct{} 17\tx int 18\ty string 19\t} 20 21\ta := A{} 22\tb := B{} 23\tc := C{} 24\tfmt.Printf(\"struct a size: %d\\n\", unsafe.Sizeof(a)) 25\tfmt.Printf(\"struct b size: %d\\n\", unsafe.Sizeof(b)) 26\tfmt.Printf(\"struct c size: %d\\n\", unsafe.Sizeof(c)) 27} 执行示例代码，输出结果如下：\n1struct a size: 32 2struct b size: 24 3struct c size: 24 由上可得，当空结构体放在另一个结构体最后一个字段时，会触发内存对齐。\n此时外层结构体会占用更多的内存空间，所以如果你的程序对内存要求比较严格，则在使用空结构体作为字段时需要考虑这一点。\n空结构体常见用法 实现 Set 结构体最常用的地方，就是用来实现 set(集合) 类型。\nGo 语言在语法层面没有提供 set 类型。不过我们可以很方便的使用 map + struct{} 来实现 set 类型，代码如下：\n1// Set 基于空结构体实现 set 2type Set map[string]struct{} 3 4// Add 添加元素到 set 5func (s Set) Add(element string) { 6\ts[element] = struct{}{} 7} 8 9// Remove 从 set 中移除元素 10func (s Set) Remove(element string) { 11\tdelete(s, element) 12} 13 14// Contains 检查 set 中是否包含指定元素 15func (s Set) Contains(element string) bool { 16\t_, exists := s[element] 17\treturn exists 18} 19 20// Size 返回 set 大小 21func (s Set) Size() int { 22\treturn len(s) 23} 24 25// String implements fmt.Stringer 26func (s Set) String() string { 27\tformat := \"(\" 28\tfor element := range s { 29\tformat += element + \" \" 30\t} 31\tformat = strings.TrimRight(format, \" \") + \")\" 32\treturn format 33} 使用 map 和空结构体，可以非常容易实现 set 类型。map 的 key 实际上与 set 不重复的特性刚好一致，一个不需要关心 value 的 map 即为 set。\n空结构体类型最适合作为这个不需要关心的 value 的 map 了，因为它不占空间，没有语义。\n也许有人会认为使用 any 作为 map 的 value 也可以实现 set。但 any 是会占用内存空间。\n1func main() { 2\ts := make(map[string]any) 3\ts[\"t1\"] = nil 4\ts[\"t2\"] = struct{}{} 5\tfmt.Printf(\"set t1 value: %v, size: %d\\n\", s[\"t1\"], unsafe.Sizeof(s[\"t1\"])) 6\tfmt.Printf(\"set t2 value: %v, size: %d\\n\", s[\"t2\"], unsafe.Sizeof(s[\"t2\"])) 7} 执行示例代码，输出结果如下：\n1set t1 value: , size: 16 2set t2 value: {}, size: 16 可以发现，any 类型的 value 是有大小的，所以并不合适。\n日常中，还有另一种 set 的常见用法：\n1s := map[string]struct{}{ 2 \"one\": {}, 3 \"two\": {}, 4 \"three\": {}, 5} 6for element := range s { 7 fmt.Println(element) 8} 这种用法也比较常见，无需声明一个 set 类型，直接通过字面量定义一个 value 为空结构体的 map，非常方便。\n信号通知 空结构体另一个经常使用的方法是与 channel 结合，当作信号来使用：\n1func main() { 2\tdone := make(chan struct{}) 3 4\tgo func() { 5\ttime.Sleep(1 * time.Second) // 执行一些操作... 6\tfmt.Printf(\"goroutine done\\n\") 7\tdone \u003c- struct{}{} // 发送完成信号 8\t}() 9 10\tfmt.Printf(\"waiting...\\n\") 11\t\u003c-done // 等待完成 12\tfmt.Printf(\"main exit\\n\") 13} 这段代码中声明了一个长度为 0 的 channel，其类型为 chan struct{}。\n然后启动一个 goroutine 执行业务逻辑，主协程等待信号退出，二者使用 channel 进行通信。由于 struct{} 并不占用内存，所以实际上 channel 内部只需要将计数器加一即可，不涉及数据传输，故没有额外内存开销。\n在 Go 语言 context 源码中也使用了 struct{} 作为完成信号：\n1type Context interface { 2 Deadline() (deadline time.Time, ok bool) 3 // See https://blog.golang.org/pipelines for more examples of how to use 4 // a Done channel for cancellation. 5 Done() \u003c-chan struct{} 6 Err() error 7 Value(key any) any 8} 接口实现 用 struct{} 作为作为接口的实现。\n1// Discard is a [Writer] on which all Write calls succeed 2// without doing anything. 3var Discard Writer = discard{} 4 5type discard struct{} 6 7func (discard) Write(p []byte) (int, error) { 8 return len(p), nil 9} 标识符 Go 中的 sync.Pool 其定义如下：\n1type Pool struct { 2 noCopy noCopy 3 4 local unsafe.Pointer 5 localSize uintptr 6 7 victim unsafe.Pointer 8 victimSize uintptr 9 10 New func() any 11} 其中， noCopy 属性定义如下：\n1type noCopy struct{} 2 3func (*noCopy) Lock() {} 4func (*noCopy) Unlock() {} noCopy 即为一个空结构体，其实现也非常简单，仅定义了两个空方法。该字段的主要作用是阻止 sync.Pool 被意外复制。\n它通过编译器静态分析，来防止结构体被不当复制，以确保正确的使用和内存安全性。\n通过 go vet 命令检可以测出 sync.Pool 是否被意外复制。所以，有了 noCopy 这个标记，就代表结构体不可复制。\n1package main 2 3type noCopy struct{} 4 5func (*noCopy) Lock() {} 6func (*noCopy) Unlock() {} 7 8func main() { 9\ttype A struct { 10\tnoCopy noCopy 11\ta string 12\t} 13 14\ttype B struct { 15\tb string 16\t} 17 18\ta := A{a: \"a\"} 19\tb := B{b: \"b\"} 20 21\t_ = a 22\t_ = b 23} 使用 go vet 命令检查是否存在意外的结构体复制：\n1go vet main.go 2# command-line-arguments 3# [command-line-arguments] 4./main.go:21:6: assignment copies lock value to _: command-line-arguments.A contains command-line-arguments.noCopy 可以发现，go vet 已经检测出我们通过 _ = a 复制了 noCopy 结构体 A。\n参考资料 https://mp.weixin.qq.com/s/o3-yPO-OfdVlXvEtVPIzRw ",
+  "wordCount" : "2112",
+  "inLanguage": "zh",
+  "datePublished": "2024-05-03T16:09:19+08:00",
+  "dateModified": "2024-05-03T16:09:19+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/tech/golang/golang-%E7%A9%BA%E7%BB%93%E6%9E%84%E4%BD%93/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "xgbt's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/assets/apple-icon.png"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="xgbt&#39;s Blog (Alt + H)">xgbt&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/" title="🏠主页">
+                    <span>🏠主页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/search" title="🔍搜索">
+                    <span>🔍搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags" title="🏷️标签">
+                    <span>🏷️标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="/archives" title="📦归档">
+                    <span>📦归档</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="/">主页</a>&nbsp;»&nbsp;<a href="/tech/">Tech</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Golang 空结构体
+    </h1>
+    <div class="post-meta"><span title='2024-05-03 16:09:19 +0800 CST'>五月 3, 2024</span>
+
+</div>
+  </header> <aside id="toc-container" class="toc-container wide">
+        <div class="toc">
+            <details  open>
+                <summary accesskey="c" title="(Alt + C)">
+                    <span class="details">目录</span>
+                </summary>
+
+                <div class="inner"><ul>
+                        <li>
+                            <a href="#%e7%a9%ba%e7%bb%93%e6%9e%84%e4%bd%93%e4%b8%8d%e5%8d%a0%e7%94%a8%e5%86%85%e5%ad%98%e7%a9%ba%e9%97%b4" aria-label="空结构体不占用内存空间">空结构体不占用内存空间</a></li>
+                        <li>
+                            <a href="#%e7%a9%ba%e7%bb%93%e6%9e%84%e4%bd%93%e5%bd%b1%e5%93%8d%e5%86%85%e5%ad%98%e5%af%b9%e9%bd%90" aria-label="空结构体影响内存对齐">空结构体影响内存对齐</a></li>
+                        <li>
+                            <a href="#%e7%a9%ba%e7%bb%93%e6%9e%84%e4%bd%93%e5%b8%b8%e8%a7%81%e7%94%a8%e6%b3%95" aria-label="空结构体常见用法">空结构体常见用法</a><ul>
+                                    
+                        <li>
+                            <a href="#%e5%ae%9e%e7%8e%b0-set" aria-label="实现 Set">实现 Set</a></li>
+                        <li>
+                            <a href="#%e4%bf%a1%e5%8f%b7%e9%80%9a%e7%9f%a5" aria-label="信号通知">信号通知</a></li>
+                        <li>
+                            <a href="#%e6%8e%a5%e5%8f%a3%e5%ae%9e%e7%8e%b0" aria-label="接口实现">接口实现</a></li>
+                        <li>
+                            <a href="#%e6%a0%87%e8%af%86%e7%ac%a6" aria-label="标识符">标识符</a></li></ul>
+                        </li>
+                        <li>
+                            <a href="#%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99" aria-label="参考资料">参考资料</a>
+                        </li>
+                    </ul>
+                </div>
+            </details>
+        </div>
+    </aside>
+    <script>
+        let activeElement;
+        let elements;
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            checkTocPosition();
+
+            elements = document.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+            if (elements.length > 0) {
+                
+                activeElement = elements[0];
+                const id = encodeURI(activeElement.getAttribute('id')).toLowerCase();
+                document.querySelector(`.inner ul li a[href="#${id}"]`).classList.add('active');
+            }
+
+            
+            const topLink = document.getElementById('top-link');
+            if (topLink) {
+                topLink.addEventListener('click', (event) => {
+                    
+                    event.preventDefault();
+
+                    
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+        }, false);
+
+        window.addEventListener('resize', function (event) {
+            checkTocPosition();
+        }, false);
+
+        window.addEventListener('scroll', () => {
+            
+            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
+            
+            if (scrollPosition === 0) {
+                return;
+            }
+
+            
+            if (elements && elements.length > 0) {
+                
+                activeElement = Array.from(elements).find((element) => {
+                    if ((getOffsetTop(element) - scrollPosition) > 0 &&
+                        (getOffsetTop(element) - scrollPosition) < window.innerHeight / 2) {
+                        return element;
+                    }
+                }) || activeElement;
+
+                elements.forEach(element => {
+                    const id = encodeURI(element.getAttribute('id')).toLowerCase();
+                    const tocLink = document.querySelector(`.inner ul li a[href="#${id}"]`);
+                    if (element === activeElement) {
+                        tocLink.classList.add('active');
+
+                        
+                        const tocContainer = document.querySelector('.toc .inner');
+                        const linkOffsetTop = tocLink.offsetTop;
+                        const containerHeight = tocContainer.clientHeight;
+                        const linkHeight = tocLink.clientHeight;
+
+                        
+                        const scrollPosition = linkOffsetTop - (containerHeight / 2) + (linkHeight / 2);
+                        tocContainer.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+                    } else {
+                        tocLink.classList.remove('active');
+                    }
+                });
+            }
+        }, false);
+
+        const main = parseInt(getComputedStyle(document.body).getPropertyValue('--article-width'), 10);
+        const toc = parseInt(getComputedStyle(document.body).getPropertyValue('--toc-width'), 10);
+        const gap = parseInt(getComputedStyle(document.body).getPropertyValue('--gap'), 10);
+
+        function checkTocPosition() {
+            const width = document.body.scrollWidth;
+
+            if (width - main - (toc * 2) - (gap * 4) > 0) {
+                document.getElementById("toc-container").classList.add("wide");
+            } else {
+                document.getElementById("toc-container").classList.remove("wide");
+            }
+        }
+
+        function getOffsetTop(element) {
+            if (!element.getClientRects().length) {
+                return 0;
+            }
+            let rect = element.getBoundingClientRect();
+            let win = element.ownerDocument.defaultView;
+            return rect.top + win.pageYOffset;
+        }
+
+    </script>
+  <div class="post-content"><p>在 Go 语言中，空结构体 <code>struct{}</code> 是一个非常特殊的类型，它<strong>不包含任何字段</strong>且<strong>不占用任何内存空间</strong>。</p>
+<h1 id="空结构体不占用内存空间">空结构体不占用内存空间<a hidden class="anchor" aria-hidden="true" href="#空结构体不占用内存空间">#</a></h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">type</span> <span class="nx">Empty</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">	<span class="kd">var</span> <span class="nx">s1</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="nx">s2</span> <span class="o">:=</span> <span class="nx">Empty</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="nx">s3</span> <span class="o">:=</span> <span class="kd">struct</span><span class="p">{}{}</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;s1 addr: %p, size: %d\n&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">s1</span><span class="p">,</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="nx">s1</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;s2 addr: %p, size: %d\n&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">s2</span><span class="p">,</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="nx">s2</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;s3 addr: %p, size: %d\n&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">s3</span><span class="p">,</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="nx">s3</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;s1 == s2 == s3: %t\n&#34;</span><span class="p">,</span> <span class="nx">s1</span> <span class="o">==</span> <span class="nx">s2</span> <span class="o">&amp;&amp;</span> <span class="nx">s2</span> <span class="o">==</span> <span class="nx">s3</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>得到输出如下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="ln">1</span><span class="cl">s1 addr: 0x1048507c0, size: 0
+</span></span><span class="line"><span class="ln">2</span><span class="cl">s2 addr: 0x1048507c0, size: 0
+</span></span><span class="line"><span class="ln">3</span><span class="cl">s3 addr: 0x1048507c0, size: 0
+</span></span><span class="line"><span class="ln">4</span><span class="cl">s1 == s2 == s3: true
+</span></span></code></pre></div><p>由上可得：</p>
+<ul>
+<li><em>多个空结构体内存地址相同。</em></li>
+<li>空结构体占用字节数为 0，即不占用内存空间。</li>
+<li>空结构体之间的值相等。</li>
+</ul>
+<p>但是，对于结论 1，有一些特殊情况。</p>
+<hr>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="kd">var</span> <span class="p">(</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">		<span class="nx">a</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">		<span class="nx">b</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="nx">c</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">		<span class="nx">d</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">	<span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="nb">println</span><span class="p">(</span><span class="s">&#34;&amp;a:&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">a</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="nb">println</span><span class="p">(</span><span class="s">&#34;&amp;b:&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="nb">println</span><span class="p">(</span><span class="s">&#34;&amp;c:&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">c</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">	<span class="nb">println</span><span class="p">(</span><span class="s">&#34;&amp;d:&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">d</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">	<span class="nb">println</span><span class="p">(</span><span class="s">&#34;&amp;a == &amp;b:&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">a</span> <span class="o">==</span> <span class="o">&amp;</span><span class="nx">b</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">	<span class="nx">x</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">a</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">	<span class="nx">y</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">b</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">	<span class="nb">println</span><span class="p">(</span><span class="s">&#34;x == y:&#34;</span><span class="p">,</span> <span class="nx">x</span> <span class="o">==</span> <span class="nx">y</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">
+</span></span><span class="line"><span class="ln">20</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;&amp;c(%p) == &amp;d(%p): %t\n&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">c</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">d</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">c</span> <span class="o">==</span> <span class="o">&amp;</span><span class="nx">d</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>这段代码中定义了 4 个空结构体，依次打印它们的内存地址，然后又分别对比了 <code>a</code> 与 <code>b</code> 的内存地址，和 <code>c</code> 与 <code>d</code> 的内存地址两两是否相等。输出结果如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln">1</span><span class="cl">go run -gcflags<span class="o">=</span><span class="s1">&#39;-m -N -l&#39;</span> main.go
+</span></span></code></pre></div><p>使用 <code>-gcflags</code> 选项向 Go 编译器传递标志，这些标志会影响编译器的行为。</p>
+<p><code>-m</code> 标志用于启动编译器的内存逃逸分析。
+<code>-N </code>标志用于禁用编译器优化。
+<code>-l</code> 标志用于禁用函数内联。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="ln"> 1</span><span class="cl"># command-line-arguments
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">./main.go:12:3: moved to heap: c
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">./main.go:13:3: moved to heap: d
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">./main.go:26:12: ... argument does not escape
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">./main.go:26:50: &amp;c == &amp;d escapes to heap
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">&amp;a: 0x1400011ae84
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">&amp;b: 0x1400011ae84
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">&amp;c: 0x1048987e0
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">&amp;d: 0x1048987e0
+</span></span><span class="line"><span class="ln">10</span><span class="cl">&amp;a == &amp;b: false
+</span></span><span class="line"><span class="ln">11</span><span class="cl">x == y: true
+</span></span><span class="line"><span class="ln">12</span><span class="cl">&amp;c(0x1048987e0) == &amp;d(0x1048987e0): true
+</span></span></code></pre></div><p>根据输出可以发现，变量 c 和 d 发生了内存逃逸，并且最终二者的内存地址相同，相等比较结果为 true。</p>
+<p>而 a 和 b 两个变量的输出结果就比较有意思了，两个变量没有发生内存逃逸，并且二者打印出来的内存地址相同，但内存地址相等比较结果却为 false。</p>
+<blockquote>
+<p>A struct or array type has size zero if it contains no fields (or elements, respectively) that have a size greater than zero. Two distinct zero-size variables may have the same address in memory. <a href="https://go.dev/ref/spec">Size and alignment guarantees¶</a></p>
+</blockquote>
+<p>因此，正确结论为：「<strong>多个空结构体内存地址可能相同</strong>」。</p>
+<h1 id="空结构体影响内存对齐">空结构体影响内存对齐<a hidden class="anchor" aria-hidden="true" href="#空结构体影响内存对齐">#</a></h1>
+<p>空结构体也并不是什么时候都不会占用内存空间，比如空结构体作为另一个结构体字段时，根据位置不同，可能因内存对齐原因，导致外层结构体大小不一样：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">	<span class="kd">type</span> <span class="nx">A</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">		<span class="nx">x</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">		<span class="nx">y</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="nx">z</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="kd">type</span> <span class="nx">B</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">		<span class="nx">x</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">		<span class="nx">z</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">		<span class="nx">y</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">
+</span></span><span class="line"><span class="ln">15</span><span class="cl">	<span class="kd">type</span> <span class="nx">C</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">		<span class="nx">z</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">		<span class="nx">x</span> <span class="kt">int</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl">		<span class="nx">y</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">
+</span></span><span class="line"><span class="ln">21</span><span class="cl">	<span class="nx">a</span> <span class="o">:=</span> <span class="nx">A</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">	<span class="nx">b</span> <span class="o">:=</span> <span class="nx">B</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl">	<span class="nx">c</span> <span class="o">:=</span> <span class="nx">C</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;struct a size: %d\n&#34;</span><span class="p">,</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="nx">a</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">25</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;struct b size: %d\n&#34;</span><span class="p">,</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="nx">b</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">26</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;struct c size: %d\n&#34;</span><span class="p">,</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="nx">c</span><span class="p">))</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>执行示例代码，输出结果如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="ln">1</span><span class="cl">struct a size: 32
+</span></span><span class="line"><span class="ln">2</span><span class="cl">struct b size: 24
+</span></span><span class="line"><span class="ln">3</span><span class="cl">struct c size: 24
+</span></span></code></pre></div><p>由上可得，<strong>当空结构体放在另一个结构体最后一个字段时，会触发内存对齐。</strong></p>
+<p>此时外层结构体会占用更多的内存空间，所以如果你的程序对内存要求比较严格，则在使用空结构体作为字段时需要考虑这一点。</p>
+<h1 id="空结构体常见用法">空结构体常见用法<a hidden class="anchor" aria-hidden="true" href="#空结构体常见用法">#</a></h1>
+<h2 id="实现-set">实现 Set<a hidden class="anchor" aria-hidden="true" href="#实现-set">#</a></h2>
+<p>结构体最常用的地方，就是用来实现 set(集合) 类型。</p>
+<p>Go 语言在语法层面没有提供 set 类型。不过我们可以很方便的使用 map + struct{} 来实现 set 类型，代码如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="c1">// Set 基于空结构体实现 set
+</span></span></span><span class="line"><span class="ln"> 2</span><span class="cl"><span class="c1"></span><span class="kd">type</span> <span class="nx">Set</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1">// Add 添加元素到 set
+</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Set</span><span class="p">)</span> <span class="nf">Add</span><span class="p">(</span><span class="nx">element</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="nx">s</span><span class="p">[</span><span class="nx">element</span><span class="p">]</span> <span class="p">=</span> <span class="kd">struct</span><span class="p">{}{}</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c1">// Remove 从 set 中移除元素
+</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Set</span><span class="p">)</span> <span class="nf">Remove</span><span class="p">(</span><span class="nx">element</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="nb">delete</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="nx">element</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="c1">// Contains 检查 set 中是否包含指定元素
+</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Set</span><span class="p">)</span> <span class="nf">Contains</span><span class="p">(</span><span class="nx">element</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">	<span class="nx">_</span><span class="p">,</span> <span class="nx">exists</span> <span class="o">:=</span> <span class="nx">s</span><span class="p">[</span><span class="nx">element</span><span class="p">]</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">	<span class="k">return</span> <span class="nx">exists</span>
+</span></span><span class="line"><span class="ln">18</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">
+</span></span><span class="line"><span class="ln">20</span><span class="cl"><span class="c1">// Size 返回 set 大小
+</span></span></span><span class="line"><span class="ln">21</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Set</span><span class="p">)</span> <span class="nf">Size</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">	<span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">24</span><span class="cl">
+</span></span><span class="line"><span class="ln">25</span><span class="cl"><span class="c1">// String implements fmt.Stringer
+</span></span></span><span class="line"><span class="ln">26</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Set</span><span class="p">)</span> <span class="nf">String</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">27</span><span class="cl">	<span class="nx">format</span> <span class="o">:=</span> <span class="s">&#34;(&#34;</span>
+</span></span><span class="line"><span class="ln">28</span><span class="cl">	<span class="k">for</span> <span class="nx">element</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">s</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">29</span><span class="cl">		<span class="nx">format</span> <span class="o">+=</span> <span class="nx">element</span> <span class="o">+</span> <span class="s">&#34; &#34;</span>
+</span></span><span class="line"><span class="ln">30</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">31</span><span class="cl">	<span class="nx">format</span> <span class="p">=</span> <span class="nx">strings</span><span class="p">.</span><span class="nf">TrimRight</span><span class="p">(</span><span class="nx">format</span><span class="p">,</span> <span class="s">&#34; &#34;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#34;)&#34;</span>
+</span></span><span class="line"><span class="ln">32</span><span class="cl">	<span class="k">return</span> <span class="nx">format</span>
+</span></span><span class="line"><span class="ln">33</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>使用 map 和空结构体，可以非常容易实现 set 类型。map 的 key 实际上与 set 不重复的特性刚好一致，一个不需要关心 value 的 map 即为 set。</p>
+<p>空结构体类型最适合作为这个不需要关心的 value 的 map 了，因为它不占空间，没有语义。</p>
+<hr>
+<p>也许有人会认为使用 any 作为 map 的 value 也可以实现 set。但 any 是会占用内存空间。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">	<span class="nx">s</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nx">any</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">	<span class="nx">s</span><span class="p">[</span><span class="s">&#34;t1&#34;</span><span class="p">]</span> <span class="p">=</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">	<span class="nx">s</span><span class="p">[</span><span class="s">&#34;t2&#34;</span><span class="p">]</span> <span class="p">=</span> <span class="kd">struct</span><span class="p">{}{}</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;set t1 value: %v, size: %d\n&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">[</span><span class="s">&#34;t1&#34;</span><span class="p">],</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="nx">s</span><span class="p">[</span><span class="s">&#34;t1&#34;</span><span class="p">]))</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;set t2 value: %v, size: %d\n&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">[</span><span class="s">&#34;t2&#34;</span><span class="p">],</span> <span class="nx">unsafe</span><span class="p">.</span><span class="nf">Sizeof</span><span class="p">(</span><span class="nx">s</span><span class="p">[</span><span class="s">&#34;t2&#34;</span><span class="p">]))</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>执行示例代码，输出结果如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="ln">1</span><span class="cl">set t1 value: &lt;nil&gt;, size: 16
+</span></span><span class="line"><span class="ln">2</span><span class="cl">set t2 value: {}, size: 16
+</span></span></code></pre></div><p>可以发现，<code>any</code> 类型的 <code>value</code> 是有大小的，所以并不合适。</p>
+<hr>
+<p>日常中，还有另一种 set 的常见用法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="nx">s</span> <span class="o">:=</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">struct</span><span class="p">{}{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"> <span class="s">&#34;one&#34;</span><span class="p">:</span>   <span class="p">{},</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"> <span class="s">&#34;two&#34;</span><span class="p">:</span>   <span class="p">{},</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"> <span class="s">&#34;three&#34;</span><span class="p">:</span> <span class="p">{},</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="k">for</span> <span class="nx">element</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">s</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl"> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>这种用法也比较常见，无需声明一个 set 类型，直接通过字面量定义一个 value 为空结构体的 map，非常方便。</p>
+<h2 id="信号通知">信号通知<a hidden class="anchor" aria-hidden="true" href="#信号通知">#</a></h2>
+<p>空结构体另一个经常使用的方法是与 <code>channel</code> 结合，当作信号来使用：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="nx">done</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">struct</span><span class="p">{})</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">	<span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">		<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span> <span class="c1">// 执行一些操作...
+</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="c1"></span>		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;goroutine done\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">		<span class="nx">done</span> <span class="o">&lt;-</span> <span class="kd">struct</span><span class="p">{}{}</span> <span class="c1">// 发送完成信号
+</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="c1"></span>	<span class="p">}()</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;waiting...\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="o">&lt;-</span><span class="nx">done</span> <span class="c1">// 等待完成
+</span></span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;main exit\n&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>这段代码中声明了一个长度为 <code>0</code> 的 <code>channel</code>，其类型为 <code>chan struct{}</code>。</p>
+<p>然后启动一个 <code>goroutine</code> 执行业务逻辑，主协程等待信号退出，二者使用 <code>channel</code> 进行通信。由于 <code>struct{}</code> 并不占用内存，所以实际上 <code>channel</code> 内部只需要将计数器加一即可，不涉及数据传输，故没有额外内存开销。</p>
+<hr>
+<p>在 Go 语言 <code>context</code> 源码中也使用了 <code>struct{}</code> 作为完成信号：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">type</span> <span class="nx">Context</span> <span class="kd">interface</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"> <span class="nf">Deadline</span><span class="p">()</span> <span class="p">(</span><span class="nx">deadline</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Time</span><span class="p">,</span> <span class="nx">ok</span> <span class="kt">bool</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"> <span class="c1">// See https://blog.golang.org/pipelines for more examples of how to use
+</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1"></span> <span class="c1">// a Done channel for cancellation.
+</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="c1"></span> <span class="nf">Done</span><span class="p">()</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl"> <span class="nf">Err</span><span class="p">()</span> <span class="kt">error</span>
+</span></span><span class="line"><span class="ln">7</span><span class="cl"> <span class="nf">Value</span><span class="p">(</span><span class="nx">key</span> <span class="nx">any</span><span class="p">)</span> <span class="nx">any</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="接口实现">接口实现<a hidden class="anchor" aria-hidden="true" href="#接口实现">#</a></h2>
+<p>用 <code>struct{}</code> 作为作为接口的实现。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// Discard is a [Writer] on which all Write calls succeed
+</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1">// without doing anything.
+</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span><span class="kd">var</span> <span class="nx">Discard</span> <span class="nx">Writer</span> <span class="p">=</span> <span class="nx">discard</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="kd">type</span> <span class="nx">discard</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln">6</span><span class="cl">
+</span></span><span class="line"><span class="ln">7</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">discard</span><span class="p">)</span> <span class="nf">Write</span><span class="p">(</span><span class="nx">p</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">8</span><span class="cl"> <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="nx">p</span><span class="p">),</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">9</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="标识符">标识符<a hidden class="anchor" aria-hidden="true" href="#标识符">#</a></h2>
+<p> Go 中的 <code>sync.Pool</code> 其定义如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">type</span> <span class="nx">Pool</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl"> <span class="nx">noCopy</span> <span class="nx">noCopy</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl"> <span class="nx">local</span>     <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"> <span class="nx">localSize</span> <span class="kt">uintptr</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl"> <span class="nx">victim</span>     <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"> <span class="nx">victimSize</span> <span class="kt">uintptr</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">
+</span></span><span class="line"><span class="ln">10</span><span class="cl"> <span class="nx">New</span> <span class="kd">func</span><span class="p">()</span> <span class="nx">any</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>其中， <code>noCopy</code> 属性定义如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">type</span> <span class="nx">noCopy</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="o">*</span><span class="nx">noCopy</span><span class="p">)</span> <span class="nf">Lock</span><span class="p">()</span>   <span class="p">{}</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="o">*</span><span class="nx">noCopy</span><span class="p">)</span> <span class="nf">Unlock</span><span class="p">()</span> <span class="p">{}</span>
+</span></span></code></pre></div><p><code>noCopy</code> 即为一个空结构体，其实现也非常简单，仅定义了两个空方法。该字段的主要作用是阻止 <code>sync.Pool</code> 被意外复制。</p>
+<p>它通过编译器静态分析，来防止结构体被不当复制，以确保正确的使用和内存安全性。</p>
+<p>通过 <code>go vet</code> 命令检可以测出 <code>sync.Pool</code> 是否被意外复制。所以，有了 <code>noCopy</code> 这个标记，就代表结构体不可复制。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
+</span></span><span class="line"><span class="ln"> 2</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="kd">type</span> <span class="nx">noCopy</span> <span class="kd">struct</span><span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="o">*</span><span class="nx">noCopy</span><span class="p">)</span> <span class="nf">Lock</span><span class="p">()</span>   <span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="o">*</span><span class="nx">noCopy</span><span class="p">)</span> <span class="nf">Unlock</span><span class="p">()</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="kd">type</span> <span class="nx">A</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">		<span class="nx">noCopy</span> <span class="nx">noCopy</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">		<span class="nx">a</span>      <span class="kt">string</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">
+</span></span><span class="line"><span class="ln">14</span><span class="cl">	<span class="kd">type</span> <span class="nx">B</span> <span class="kd">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">		<span class="nx">b</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl">
+</span></span><span class="line"><span class="ln">18</span><span class="cl">	<span class="nx">a</span> <span class="o">:=</span> <span class="nx">A</span><span class="p">{</span><span class="nx">a</span><span class="p">:</span> <span class="s">&#34;a&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">19</span><span class="cl">	<span class="nx">b</span> <span class="o">:=</span> <span class="nx">B</span><span class="p">{</span><span class="nx">b</span><span class="p">:</span> <span class="s">&#34;b&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">20</span><span class="cl">
+</span></span><span class="line"><span class="ln">21</span><span class="cl">	<span class="nx">_</span> <span class="p">=</span> <span class="nx">a</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">	<span class="nx">_</span> <span class="p">=</span> <span class="nx">b</span>
+</span></span><span class="line"><span class="ln">23</span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>使用 <code>go vet</code> 命令检查是否存在意外的结构体复制：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="ln">1</span><span class="cl">go vet main.go 
+</span></span><span class="line"><span class="ln">2</span><span class="cl"># command-line-arguments
+</span></span><span class="line"><span class="ln">3</span><span class="cl"># [command-line-arguments]
+</span></span><span class="line"><span class="ln">4</span><span class="cl">./main.go:21:6: assignment copies lock value to _: command-line-arguments.A contains command-line-arguments.noCopy
+</span></span></code></pre></div><p>可以发现，<code>go vet</code> 已经检测出我们通过 <code>_ = a</code> 复制了 <code>noCopy</code> 结构体 <code>A</code>。</p>
+<h1 id="参考资料">参考资料<a hidden class="anchor" aria-hidden="true" href="#参考资料">#</a></h1>
+<ul>
+<li><a href="https://mp.weixin.qq.com/s/o3-yPO-OfdVlXvEtVPIzRw">https://mp.weixin.qq.com/s/o3-yPO-OfdVlXvEtVPIzRw</a></li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="/tags/golang/">Golang</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="/tech/golang/golang-%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>Golang 逃逸分析</span>
+  </a>
+  <a class="next" href="/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/">
+    <span class="title">下一页 »</span>
+    <br>
+    <span>K8s 下线节点流程</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = '复制';
+
+        function copyingDone() {
+            copybutton.innerHTML = '已复制！';
+            setTimeout(() => {
+                copybutton.innerHTML = '复制';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

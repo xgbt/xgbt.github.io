@@ -146,6 +146,20 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Golang Code Review Comments
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>参考资料：
+https://go.dev/wiki/CodeReviewComments https://go.dev/wiki/CommonMistakes Review Comments 使用 gofmt 或者 goimports 自动格式化代码 记录声明的注释应该是完整的句子，注释应以所描述事物的名称开头并以句点结束。 1// Request represents a request to run a command. 2type Request struct { ... 3 4// Encode writes the JSON encoding of req to w. 5func Encode(w io.Writer, req *Request) { ... context.Context 类型的值携带跨 API 和进程边界的安全凭证、跟踪信息、截止日期和取消信号。Go 程序沿着从传入 RPC 和 HTTP 请求到传出请求的整个函数调用链显式传递上下文。大多数使用 Context 的函数都将它作为第一个参数： 1func F(ctx context.Context, /* other arguments */) {} 注意，不要将 Context 成员添加到结构类型中；而是向需要传递该类型的每个方法添加一个 ctx 参数。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-05-06 16:09:19 +0800 CST'>五月 6, 2023</span></footer>
+  <a class="entry-link" aria-label="post link to Golang Code Review Comments" href="/tech/golang/golang-code-review-comments/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Golang 错误处理
     </h2>
   </header>
