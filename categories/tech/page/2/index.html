@@ -146,6 +146,19 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">K8s 下线节点流程
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> 将节点设置为不可调度，防止新的Pod调度到该节点上。 1kubectl cordon &lt;节点名&gt; 排空节点上的Pod 1 kubectl drain &lt;节点名&gt; --ignore-daemonsets --delete-emptydir-data –ignore-daemonsets：允许跳过DaemonSet管理的Pod –delete-emptydir-data：允许删除使用emptyDir卷的Pod 可以直接执行kubectl drain操作，省略cordon步骤。 drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-04-14 16:09:19 +0800 CST'>四月 14, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to K8s 下线节点流程" href="/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">K8s 启用 ipvs 模式
     </h2>
   </header>
@@ -267,19 +280,6 @@ Volume 定义了外置存储的细节，并内嵌到 Pod 中作为 Pod 的一部
   </div>
   <footer class="entry-footer"><span title='2024-02-11 16:09:19 +0800 CST'>二月 11, 2024</span></footer>
   <a class="entry-link" aria-label="post link to Golang Defer" href="/tech/golang/golang-defer/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">K8s Pod 基础知识
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>Pod 是 K8s 集群中创建和管理的、最小的可部署的计算单元。K8s 不会直接操作容器，而是通过 Pod 封装了容器，集群通过管控 Pod ，便可控制容器的存储、网络等资源，实现资源隔离或共享。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-01-31 16:09:19 +0800 CST'>一月 31, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to K8s Pod 基础知识" href="/tech/kubernetes/pod-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

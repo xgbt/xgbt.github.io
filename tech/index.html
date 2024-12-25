@@ -161,6 +161,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Charles 安卓抓包配置
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>charles 抓包工具基于 HTTP 请求中间人代理，通过和服务端、客户端建立通信将客户端的请求数据发送服务器，并将响应数据传输给客户端，实现抓包记录。
+代理配置 「Proxy」-&gt;「Proxy Settings」 配置监听端口号，例如 9999，并勾选 「Enable transparent HTTP proxying」
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-12-25 22:09:19 +0800 CST'>十二月 25, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to Charles 安卓抓包配置" href="/tech/tools/charles-%E5%AE%89%E5%8D%93%E6%8A%93%E5%8C%85%E9%85%8D%E7%BD%AE/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Kubernetes 1.29.6 高可用集群部署
     </h2>
   </header>
@@ -282,19 +296,6 @@ Go 语言实现 GC 机制，因此开发者不需要关心内存分配在栈上�
   </div>
   <footer class="entry-footer"><span title='2024-05-03 16:09:19 +0800 CST'>五月 3, 2024</span></footer>
   <a class="entry-link" aria-label="post link to Golang 空结构体" href="/tech/golang/golang-%E7%A9%BA%E7%BB%93%E6%9E%84%E4%BD%93/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">K8s 下线节点流程
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p> 将节点设置为不可调度，防止新的Pod调度到该节点上。 1kubectl cordon &lt;节点名&gt; 排空节点上的Pod 1 kubectl drain &lt;节点名&gt; --ignore-daemonsets --delete-emptydir-data –ignore-daemonsets：允许跳过DaemonSet管理的Pod –delete-emptydir-data：允许删除使用emptyDir卷的Pod 可以直接执行kubectl drain操作，省略cordon步骤。 drain会先cordon之后，再尝试优雅地终止该节点上地Pod（排空）。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-04-14 16:09:19 +0800 CST'>四月 14, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to K8s 下线节点流程" href="/tech/kubernetes/k8s-%E4%B8%8B%E7%BA%BF%E8%8A%82%E7%82%B9%E6%B5%81%E7%A8%8B/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

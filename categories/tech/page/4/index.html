@@ -146,6 +146,20 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Golang Channel 使用场景
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>1. future/promise 1.1 单向接收 Channel 作为函数返回 sumSquares函数调用的两个实参请求并发进行。每个通道读取操作将阻塞到请求返回结果为止。
+1func longTimeRequest() &lt;-chan int64 { 2	r := make(chan int64) 3 4	go func() { 5	time.Sleep(time.Second * 3) // 模拟一个工作负载 6	r &lt;- rand.Int63n(100) 7	}() 8 9	return r 10} 11 12func sumSquares(a, b int64) int64 { 13	return a*a &#43; b*b 14} 15 16func main() { 17 18	a, b := longTimeRequest(), longTimeRequest() 19	fmt.Println(sumSquares(&lt;-a, &lt;-b)) 20} 1.2 单向发送 Channel 作为函数实参 sumSquares函数调用的两个实参的请求也是并发进行的。和上例不同的是longTimeRequest函数接收一个单向发送通道类型参数而不是返回一个单向接收通道结果。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2023-08-03 16:09:19 +0800 CST'>八月 3, 2023</span></footer>
+  <a class="entry-link" aria-label="post link to Golang Channel 使用场景" href="/tech/golang/golang-channel-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Golang Code Review Comments
     </h2>
   </header>
