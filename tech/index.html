@@ -189,6 +189,19 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Kubernetes 故障排查方法论
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>问题导向&amp;排查 网络诊断 连通性测试：使用 ping、nc、telnet 等工具测试 Pod 间的网络连通性，或通过 curl 检查服务端口是否可达。 NetworkPolicy 检查：确认 NetworkPolicy 规则是否过于严格导致通信阻断，使用 kubectl get netpol 查看并分析现有策略。 CNI 插件排查：检查 CNI 插件（如 Calico、Flannel 等）的日志，排查网络配置或插件自身问题。 存储问题排查 PVC/PV 状态检查：使用 kubectl get pvc,pv 查看 PersistentVolumeClaim 和 PersistentVolume 的绑定状态与容量，确认是否存在未绑定、容量不足等问题。 存储日志与事件：检查存储插件（如 Local Volume、CSI Driver 等）日志，以及 PVC/PV 的事件信息，查找存储访问异常。 数据完整性验证：必要时，直接在宿主机上挂载存储卷，检查数据完整性和一致性。 资源调度与亲和性问题 节点资源分析：使用 kubectl top nodes 查看节点资源使用情况，判断是否存在资源瓶颈。 调度策略检查：确认 Deployments、StatefulSets 等资源的 .spec.template.spec.nodeSelector、.spec.affinity、.spec.tolerations 等调度相关字段配置，看是否限制了 Pod 的调度范围。 kube-scheduler 日志：分析 kube-scheduler 日志，了解调度决策过程，找出影响调度的因素。 认证授权与访问控制 RBAC 规则审查：使用 kubectl get rolebindings,clusterrolebindings 检查角色绑定关系，确保用户或服务账户具有正确的 API 访问权限。 API Server 访问日志：分析 kube-apiserver-audit.log，跟踪特定用户或账户的 API 请求与响应，排查授权问题。 网络代理与认证配置：检查 kubeconfig 文件、API Server 配置及网络代理（如 kube-proxy、ingress-nginx 等）的认证设置，确保访问路径无误。 不管是否初学者，大家一般都可以从现象识别到问题定位，再到深入排查与解决方案制定，形成一套完整的问题解决闭环。随着实践经验的积累，排查效率与解决问题的能力将不断提升。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-10-26 16:09:19 +0800 CST'>十月 26, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to Kubernetes 故障排查方法论" href="/tech/kubernetes/kubernetes-%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E6%96%B9%E6%B3%95/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">基于 Kubeadm 手动更新证书
     </h2>
   </header>
@@ -283,20 +296,6 @@ Go 语言实现 GC 机制，因此开发者不需要关心内存分配在栈上�
   <footer class="entry-footer"><span title='2024-05-17 16:09:19 +0800 CST'>五月 17, 2024</span></footer>
   <a class="entry-link" aria-label="post link to Golang 逃逸分析" href="/tech/golang/golang-%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/"></a>
 </article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Golang 空结构体
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>在 Go 语言中，空结构体 struct{} 是一个非常特殊的类型，它不包含任何字段且不占用任何内存空间。
-空结构体不占用内存空间 1type Empty struct{} 2 3func main() { 4 5	var s1 struct{} 6	s2 := Empty{} 7	s3 := struct{}{} 8 9	fmt.Printf(&#34;s1 addr: %p, size: %d\n&#34;, &amp;s1, unsafe.Sizeof(s1)) 10	fmt.Printf(&#34;s2 addr: %p, size: %d\n&#34;, &amp;s2, unsafe.Sizeof(s2)) 11	fmt.Printf(&#34;s3 addr: %p, size: %d\n&#34;, &amp;s3, unsafe.Sizeof(s3)) 12	fmt.Printf(&#34;s1 == s2 == s3: %t\n&#34;, s1 == s2 &amp;&amp; s2 == s3) 13} 得到输出如下
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-05-03 16:09:19 +0800 CST'>五月 3, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to Golang 空结构体" href="/tech/golang/golang-%E7%A9%BA%E7%BB%93%E6%9E%84%E4%BD%93/"></a>
-</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="next" href="/tech/page/2/">下一页&nbsp;&nbsp;»
@@ -306,7 +305,7 @@ Go 语言实现 GC 机制，因此开发者不需要关心内存分配在栈上�
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+        <span>&copy; 2025 <a href="/">xgbt&#39;s Blog</a></span> · 
 
     <span>
         Powered by

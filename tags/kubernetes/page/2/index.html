@@ -146,6 +146,20 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">理解与使用 Container Capabilities
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在使用 K8S 过程中，偶尔会遇到如下所示的一段配置：
+1securityContext: 2 capabilities: 3 drop: 4 - ALL 5 add: 6 - NET_BIND_SERVICE 实际上这是配置对应的容器的 Capabilities，在我们使用 docker run 的时候可以通过 --cap-add 和 --cap-drop 命令来给容器添加 Linux Capabilities。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-03-19 16:09:19 +0800 CST'>三月 19, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to 理解与使用 Container Capabilities" href="/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Volume 基础知识
     </h2>
   </header>
@@ -180,7 +194,7 @@ Volume 定义了外置存储的细节，并内嵌到 Pod 中作为 Pod 的一部
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+        <span>&copy; 2025 <a href="/">xgbt&#39;s Blog</a></span> · 
 
     <span>
         Powered by

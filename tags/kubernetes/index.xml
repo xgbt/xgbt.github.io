@@ -66,6 +66,38 @@
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;添加解析记录，使节点直接使用主机名访问通信&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Kubernetes 故障排查方法论</title>
+      <link>/tech/kubernetes/kubernetes-%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Sat, 26 Oct 2024 16:09:19 +0800</pubDate>
+      <guid>/tech/kubernetes/kubernetes-%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E6%96%B9%E6%B3%95/</guid>
+      <description>&lt;h1 id=&#34;问题导向排查&#34;&gt;问题导向&amp;amp;排查&lt;/h1&gt;
+&lt;h2 id=&#34;网络诊断&#34;&gt;网络诊断&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;连通性测试&lt;/strong&gt;：使用 &lt;code&gt;ping&lt;/code&gt;、&lt;code&gt;nc&lt;/code&gt;、&lt;code&gt;telnet&lt;/code&gt; 等工具测试 Pod 间的网络连通性，或通过 &lt;code&gt;curl&lt;/code&gt; 检查服务端口是否可达。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;NetworkPolicy 检查&lt;/strong&gt;：确认 NetworkPolicy 规则是否过于严格导致通信阻断，使用 &lt;code&gt;kubectl get netpol&lt;/code&gt; 查看并分析现有策略。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CNI 插件排查&lt;/strong&gt;：检查 CNI 插件（如 Calico、Flannel 等）的日志，排查网络配置或插件自身问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;存储问题排查&#34;&gt;存储问题排查&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;PVC/PV 状态检查&lt;/strong&gt;：使用 &lt;code&gt;kubectl get pvc,pv&lt;/code&gt; 查看 &lt;code&gt;PersistentVolumeClaim&lt;/code&gt; 和 &lt;code&gt;PersistentVolume&lt;/code&gt; 的绑定状态与容量，确认是否存在未绑定、容量不足等问题。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;存储日志与事件&lt;/strong&gt;：检查存储插件（如 Local Volume、CSI Driver 等）日志，以及 PVC/PV 的事件信息，查找存储访问异常。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据完整性验证&lt;/strong&gt;：必要时，直接在宿主机上挂载存储卷，检查数据完整性和一致性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;资源调度与亲和性问题&#34;&gt;资源调度与亲和性问题&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;节点资源分析&lt;/strong&gt;：使用 &lt;code&gt;kubectl top nodes&lt;/code&gt; 查看节点资源使用情况，判断是否存在资源瓶颈。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;调度策略检查&lt;/strong&gt;：确认 Deployments、StatefulSets 等资源的 &lt;code&gt;.spec.template.spec.nodeSelector&lt;/code&gt;、&lt;code&gt;.spec.affinity&lt;/code&gt;、&lt;code&gt;.spec.tolerations&lt;/code&gt; 等调度相关字段配置，看是否限制了 Pod 的调度范围。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;kube-scheduler 日志&lt;/strong&gt;：分析 kube-scheduler 日志，了解调度决策过程，找出影响调度的因素。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;认证授权与访问控制&#34;&gt;认证授权与访问控制&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;RBAC 规则审查&lt;/strong&gt;：使用 &lt;code&gt;kubectl get rolebindings,clusterrolebindings&lt;/code&gt; 检查角色绑定关系，确保用户或服务账户具有正确的 API 访问权限。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;API Server 访问日志&lt;/strong&gt;：分析 &lt;code&gt;kube-apiserver-audit.log&lt;/code&gt;，跟踪特定用户或账户的 API 请求与响应，排查授权问题。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;网络代理与认证配置&lt;/strong&gt;：检查 kubeconfig 文件、API Server 配置及网络代理（如 kube-proxy、ingress-nginx 等）的认证设置，确保访问路径无误。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;不管是否初学者，大家一般都可以从现象识别到问题定位，再到深入排查与解决方案制定，形成一套完整的问题解决闭环。随着实践经验的积累，排查效率与解决问题的能力将不断提升。&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>基于 Kubeadm 手动更新证书</title>
       <link>/tech/kubernetes/%E5%9F%BA%E4%BA%8E-kubeadm-%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%96%B0%E8%AF%81%E4%B9%A6/</link>
       <pubDate>Tue, 15 Oct 2024 16:09:19 +0800</pubDate>

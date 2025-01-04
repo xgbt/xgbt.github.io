@@ -160,6 +160,19 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Kubernetes 故障排查方法论
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>问题导向&amp;排查 网络诊断 连通性测试：使用 ping、nc、telnet 等工具测试 Pod 间的网络连通性，或通过 curl 检查服务端口是否可达。 NetworkPolicy 检查：确认 NetworkPolicy 规则是否过于严格导致通信阻断，使用 kubectl get netpol 查看并分析现有策略。 CNI 插件排查：检查 CNI 插件（如 Calico、Flannel 等）的日志，排查网络配置或插件自身问题。 存储问题排查 PVC/PV 状态检查：使用 kubectl get pvc,pv 查看 PersistentVolumeClaim 和 PersistentVolume 的绑定状态与容量，确认是否存在未绑定、容量不足等问题。 存储日志与事件：检查存储插件（如 Local Volume、CSI Driver 等）日志，以及 PVC/PV 的事件信息，查找存储访问异常。 数据完整性验证：必要时，直接在宿主机上挂载存储卷，检查数据完整性和一致性。 资源调度与亲和性问题 节点资源分析：使用 kubectl top nodes 查看节点资源使用情况，判断是否存在资源瓶颈。 调度策略检查：确认 Deployments、StatefulSets 等资源的 .spec.template.spec.nodeSelector、.spec.affinity、.spec.tolerations 等调度相关字段配置，看是否限制了 Pod 的调度范围。 kube-scheduler 日志：分析 kube-scheduler 日志，了解调度决策过程，找出影响调度的因素。 认证授权与访问控制 RBAC 规则审查：使用 kubectl get rolebindings,clusterrolebindings 检查角色绑定关系，确保用户或服务账户具有正确的 API 访问权限。 API Server 访问日志：分析 kube-apiserver-audit.log，跟踪特定用户或账户的 API 请求与响应，排查授权问题。 网络代理与认证配置：检查 kubeconfig 文件、API Server 配置及网络代理（如 kube-proxy、ingress-nginx 等）的认证设置，确保访问路径无误。 不管是否初学者，大家一般都可以从现象识别到问题定位，再到深入排查与解决方案制定，形成一套完整的问题解决闭环。随着实践经验的积累，排查效率与解决问题的能力将不断提升。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-10-26 16:09:19 +0800 CST'>十月 26, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to Kubernetes 故障排查方法论" href="/tech/kubernetes/kubernetes-%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E6%96%B9%E6%B3%95/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">基于 Kubeadm 手动更新证书
     </h2>
   </header>
@@ -267,20 +280,6 @@
   <footer class="entry-footer"><span title='2024-03-21 16:09:19 +0800 CST'>三月 21, 2024</span></footer>
   <a class="entry-link" aria-label="post link to K8s 修改 NodePort 默认范围" href="/tech/kubernetes/k8s-%E4%BF%AE%E6%94%B9-nodeport-%E9%BB%98%E8%AE%A4%E8%8C%83%E5%9B%B4/"></a>
 </article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">理解与使用 Container Capabilities
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>在使用 K8S 过程中，偶尔会遇到如下所示的一段配置：
-1securityContext: 2 capabilities: 3 drop: 4 - ALL 5 add: 6 - NET_BIND_SERVICE 实际上这是配置对应的容器的 Capabilities，在我们使用 docker run 的时候可以通过 --cap-add 和 --cap-drop 命令来给容器添加 Linux Capabilities。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-03-19 16:09:19 +0800 CST'>三月 19, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to 理解与使用 Container Capabilities" href="/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/"></a>
-</article>
 <footer class="page-footer">
   <nav class="pagination">
     <a class="next" href="/tags/kubernetes/page/2/">下一页&nbsp;&nbsp;»
@@ -290,7 +289,7 @@
     </main>
     
 <footer class="footer">
-        <span>&copy; 2024 <a href="/">xgbt&#39;s Blog</a></span> · 
+        <span>&copy; 2025 <a href="/">xgbt&#39;s Blog</a></span> · 
 
     <span>
         Powered by
