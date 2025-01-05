@@ -146,6 +146,20 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Docker 安装与配置
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>操作系统版本 AlmaLinux 9.3
+安装 dnf-utils 1sudo dnf install -y dnf-utils 添加 Docker CE 存储库 1sudo dnf config-manager --add-repo https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo 1yum-config-manager --add-repo https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo 添加过后，执行列出 Alma Linux上可用存储库的列表
+1sudo dnf repolist 把软件仓库地址替换为镜像站 1sed -i &#39;s&#43;https://download.docker.com&#43;https://mirrors.tuna.tsinghua.edu.cn/docker-ce&#43;&#39; /etc/yum.repos.d/docker-ce.repo 安装 Docker CE 1sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 启动并启用 Docker 1sudo systemctl start docker 2sudo systemctl enable docker 配置国内镜像源 1{ 2 &#34;registry-mirrors&#34;: [ 3	&#34;https://docker.1panel.live&#34; 4 ] 5} 1sudo systemctl daemon-reload 2sudo systemctl restart docker </p>
+  </div>
+  <footer class="entry-footer"><span title='2023-08-11 16:09:19 +0800 CST'>八月 11, 2023</span></footer>
+  <a class="entry-link" aria-label="post link to Docker 安装与配置" href="/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Golang 控制协程并发数量
     </h2>
   </header>

@@ -161,6 +161,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Golang 标准库丨sync
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>1. WaitGroup WaitGroup 等待一组 Goroutine 完成。主 Goroutine 调用 Add(delta) 来设置要等待的 Goroutine 的数量。然后每个 Goroutine 运行并在完成时调用 Done()。同时，可以使用 Wait() 来阻塞，直到所有 Goroutine 完成。
+1type WaitGroup struct { 2	noCopy noCopy 3 4	// 64-bit value: high 32 bits are counter, low 32 bits are waiter count. 5	// 64-bit atomic operations require 64-bit alignment, but 32-bit 6	// compilers do not ensure it. So we allocate 12 bytes and then use 7	// the aligned 8 bytes in them as state, and the other 4 as storage 8	// for the sema. 9	state1 [3]uint32 10} wg.Add(delta int)：Add 将 delta（可能为负）添加到 WaitGroup 计数器。如果计数器变为 0，所有在 Wait 时阻塞的 Goroutine 将被释放。如果计数器变成负值，Add 会 panic。 wg.Done()：当 WaitGroup 同步等待组中的某个 Goroutine 执行完毕后，设置这个 WaitGroup 的 counter 数值减 1，其实就是调用了 Add(-1)。 wg.Wait()：表示让当前的 Goroutine 等待，进入阻塞状态。一直到 WaitGroup 的计数器为 0，才能解除阻塞，这个 Goroutine 才能继续执行。 总之，WaitGroup 让某个协程等待其它若干协程都先完成它们各自的任务。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-02-13 16:09:19 +0800 CST'>二月 13, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to Golang 标准库丨sync" href="/tech/golang/golang-%E6%A0%87%E5%87%86%E5%BA%93-sync/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Golang Defer
     </h2>
   </header>
@@ -282,20 +296,6 @@ PLC 设备使用的常见值包括 7 或 8 个数据位。
   </div>
   <footer class="entry-footer"><span title='2023-09-08 16:09:19 +0800 CST'>九月 8, 2023</span></footer>
   <a class="entry-link" aria-label="post link to 修改 Linux DNS 配置" href="/tech/linux/%E4%BF%AE%E6%94%B9-linux-dns-%E9%85%8D%E7%BD%AE/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Docker 安装与配置
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>操作系统版本 AlmaLinux 9.3
-安装 dnf-utils 1sudo dnf install -y dnf-utils 添加 Docker CE 存储库 1sudo dnf config-manager --add-repo https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo 1yum-config-manager --add-repo https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo 添加过后，执行列出 Alma Linux上可用存储库的列表
-1sudo dnf repolist 把软件仓库地址替换为镜像站 1sed -i &#39;s&#43;https://download.docker.com&#43;https://mirrors.tuna.tsinghua.edu.cn/docker-ce&#43;&#39; /etc/yum.repos.d/docker-ce.repo 安装 Docker CE 1sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 启动并启用 Docker 1sudo systemctl start docker 2sudo systemctl enable docker 配置国内镜像源 1{ 2 &#34;registry-mirrors&#34;: [ 3	&#34;https://docker.1panel.live&#34; 4 ] 5} 1sudo systemctl daemon-reload 2sudo systemctl restart docker </p>
-  </div>
-  <footer class="entry-footer"><span title='2023-08-11 16:09:19 +0800 CST'>八月 11, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Docker 安装与配置" href="/tech/docker/docker-%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

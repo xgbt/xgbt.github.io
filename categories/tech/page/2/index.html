@@ -146,6 +146,20 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Golang 逃逸分析
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>堆内存与栈内存 Go 在 2 个位置为变量分配内存，全局堆(heap)空间，和每个 goroutine 的栈(stack)空间。
+Go 语言实现 GC 机制，因此开发者不需要关心内存分配在栈上，还是堆上。但是从性能的角度出发，在栈上分配内存和在堆上分配内存，性能差异是非常大的。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-05-17 16:09:19 +0800 CST'>五月 17, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to Golang 逃逸分析" href="/tech/golang/golang-%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Golang 空结构体
     </h2>
   </header>
@@ -266,20 +280,6 @@ Volume 定义了外置存储的细节，并内嵌到 Pod 中作为 Pod 的一部
   </div>
   <footer class="entry-footer"><span title='2024-03-15 16:09:19 +0800 CST'>三月 15, 2024</span></footer>
   <a class="entry-link" aria-label="post link to Volume 基础知识" href="/tech/kubernetes/volume-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Golang 标准库丨sync
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>1. WaitGroup WaitGroup 等待一组 Goroutine 完成。主 Goroutine 调用 Add(delta) 来设置要等待的 Goroutine 的数量。然后每个 Goroutine 运行并在完成时调用 Done()。同时，可以使用 Wait() 来阻塞，直到所有 Goroutine 完成。
-1type WaitGroup struct { 2	noCopy noCopy 3 4	// 64-bit value: high 32 bits are counter, low 32 bits are waiter count. 5	// 64-bit atomic operations require 64-bit alignment, but 32-bit 6	// compilers do not ensure it. So we allocate 12 bytes and then use 7	// the aligned 8 bytes in them as state, and the other 4 as storage 8	// for the sema. 9	state1 [3]uint32 10} wg.Add(delta int)：Add 将 delta（可能为负）添加到 WaitGroup 计数器。如果计数器变为 0，所有在 Wait 时阻塞的 Goroutine 将被释放。如果计数器变成负值，Add 会 panic。 wg.Done()：当 WaitGroup 同步等待组中的某个 Goroutine 执行完毕后，设置这个 WaitGroup 的 counter 数值减 1，其实就是调用了 Add(-1)。 wg.Wait()：表示让当前的 Goroutine 等待，进入阻塞状态。一直到 WaitGroup 的计数器为 0，才能解除阻塞，这个 Goroutine 才能继续执行。 总之，WaitGroup 让某个协程等待其它若干协程都先完成它们各自的任务。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-02-13 16:09:19 +0800 CST'>二月 13, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to Golang 标准库丨sync" href="/tech/golang/golang-%E6%A0%87%E5%87%86%E5%BA%93-sync/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

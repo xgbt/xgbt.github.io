@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Kafka on xgbt&#39;s Blog</title>
+    <link>/tags/kafka/</link>
+    <description>Recent content in Kafka on xgbt&#39;s Blog</description>
+    <generator>Hugo -- 0.139.3</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 05 Jan 2025 21:09:19 +0800</lastBuildDate>
+    <atom:link href="/tags/kafka/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kafka 零拷贝技术</title>
+      <link>/tech/kafka-%E9%9B%B6%E6%8B%B7%E8%B4%9D%E6%8A%80%E6%9C%AF/</link>
+      <pubDate>Sun, 05 Jan 2025 21:09:19 +0800</pubDate>
+      <guid>/tech/kafka-%E9%9B%B6%E6%8B%B7%E8%B4%9D%E6%8A%80%E6%9C%AF/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;💡 零拷贝操作可以避免对数据的非必要拷贝，当然，并非是说完全没有拷贝。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在 Kafka 的场景下，操作系统可以从 page cache 拷贝数据到 socket buffer，直接绕过 Kafka broker 这个 Java 程序。这可以节省一些额外的拷贝，节省一些用户态和内核态的切换。让我们看一个例子。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
