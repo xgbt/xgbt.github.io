@@ -161,6 +161,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">理解与使用 Container Capabilities
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>在使用 K8S 过程中，偶尔会遇到如下所示的一段配置：
+1securityContext: 2 capabilities: 3 drop: 4 - ALL 5 add: 6 - NET_BIND_SERVICE 实际上这是配置对应的容器的 Capabilities，在我们使用 docker run 的时候可以通过 --cap-add 和 --cap-drop 命令来给容器添加 Linux Capabilities。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-03-19 16:09:19 +0800 CST'>三月 19, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to 理解与使用 Container Capabilities" href="/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Volume 基础知识
     </h2>
   </header>
@@ -284,20 +298,6 @@ PLC 设备使用的常见值包括 7 或 8 个数据位。
   </div>
   <footer class="entry-footer"><span title='2023-10-26 16:09:19 +0800 CST'>十月 26, 2023</span></footer>
   <a class="entry-link" aria-label="post link to 常用串口通讯参数解析" href="/tech/iot/%E5%B8%B8%E7%94%A8%E4%B8%B2%E5%8F%A3%E9%80%9A%E8%AE%AF%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Docker 网段与主机网段冲突导致网络中断
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>问题描述 有 IP 地址为 172.24.x.xx/24 的服务器无法 ping 通，原因为 docker 默认网段 172.17.0.0/16 占用了服务器所在网段，导致外部请求无法访问到真实服务器。
-解决方案 查看路由信息 1ifconfig docker0 2 3docker0: flags=4099&lt;UP,BROADCAST,MULTICAST&gt; mtu 1500 4 inet 172.17.0.1 netmask 255.255.0.0 broadcast 172.17.255.255 5 ether 02:42:90:e0:c1:a0 txqueuelen 0 (Ethernet) 6 RX packets 0 bytes 0 (0.0 B) 7 RX errors 0 dropped 0 overruns 0 frame 0 8 TX packets 0 bytes 0 (0.0 B) 9 TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0 可以看到，docker0 占用的网段为 172.17.0.1/16
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2023-10-09 16:09:19 +0800 CST'>十月 9, 2023</span></footer>
-  <a class="entry-link" aria-label="post link to Docker 网段与主机网段冲突导致网络中断" href="/tech/docker/docker-%E7%BD%91%E6%AE%B5%E4%B8%8E%E4%B8%BB%E6%9C%BA%E7%BD%91%E6%AE%B5%E5%86%B2%E7%AA%81%E5%AF%BC%E8%87%B4%E7%BD%91%E7%BB%9C%E4%B8%AD%E6%96%AD/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

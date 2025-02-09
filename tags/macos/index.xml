@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>MacOS on xgbt&#39;s Blog</title>
+    <link>/tags/macos/</link>
+    <description>Recent content in MacOS on xgbt&#39;s Blog</description>
+    <generator>Hugo -- 0.142.0</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 03 Feb 2025 18:09:19 +0800</lastBuildDate>
+    <atom:link href="/tags/macos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>解决 macOS 无法验证 App 问题</title>
+      <link>/tech/%E8%A7%A3%E5%86%B3-macos-%E6%97%A0%E6%B3%95%E9%AA%8C%E8%AF%81-app/</link>
+      <pubDate>Mon, 03 Feb 2025 18:09:19 +0800</pubDate>
+      <guid>/tech/%E8%A7%A3%E5%86%B3-macos-%E6%97%A0%E6%B3%95%E9%AA%8C%E8%AF%81-app/</guid>
+      <description>&lt;h1 id=&#34;问题&#34;&gt;问题&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;无法打开“XXX”，因为Apple无法检查其是否包含恶意软件。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;解决步骤&#34;&gt;解决步骤&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;cl&#34;&gt;sudo spctl --master-disable
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;「设置」-「隐私与安全性」-「安全性」-「允许以下来源的应用」，选择任何来源&lt;/p&gt;
+&lt;h1 id=&#34;参考资料&#34;&gt;参考资料&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://jo-cruise.github.io/posts/AuthorizeUnknownDeveloper/&#34;&gt;https://jo-cruise.github.io/posts/AuthorizeUnknownDeveloper/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -161,6 +161,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">使用 NFS 作为 K8s 存储插件
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>1. 基础配置 首先，在所有 master 节点和 worker 节点上安装 nfs-utils.
+1sudo yum -y install nfs-utils 2systemctl enable nfs-utils 2. NFS Server 配置 服务端安装 nfs-utils 和 rpcbind 1sudo yum -y install nfs-utils rpcbind 2systemctl enable nfs-utils 3systemctl enable rpcbind 创建共享目录 1mkdir /hc-data/nfs **创建并修改配置文件 配置文件为 /etc/exports
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-08-24 16:09:19 +0800 CST'>八月 24, 2024</span></footer>
+  <a class="entry-link" aria-label="post link to 使用 NFS 作为 K8s 存储插件" href="/tech/kubernetes/%E4%BD%BF%E7%94%A8-nfs-%E4%BD%9C%E4%B8%BA-k8s-%E5%AD%98%E5%82%A8%E6%8F%92%E4%BB%B6/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Nginx 实现 GPT 流式传输
     </h2>
   </header>
@@ -281,20 +295,6 @@ Go 语言实现 GC 机制，因此开发者不需要关心内存分配在栈上�
   </div>
   <footer class="entry-footer"><span title='2024-03-20 16:09:19 +0800 CST'>三月 20, 2024</span></footer>
   <a class="entry-link" aria-label="post link to MQTT QoS 简介" href="/tech/iot/mqtt-qos--%E7%AE%80%E4%BB%8B/"></a>
-</article>
-
-<article class="post-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">理解与使用 Container Capabilities
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>在使用 K8S 过程中，偶尔会遇到如下所示的一段配置：
-1securityContext: 2 capabilities: 3 drop: 4 - ALL 5 add: 6 - NET_BIND_SERVICE 实际上这是配置对应的容器的 Capabilities，在我们使用 docker run 的时候可以通过 --cap-add 和 --cap-drop 命令来给容器添加 Linux Capabilities。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-03-19 16:09:19 +0800 CST'>三月 19, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to 理解与使用 Container Capabilities" href="/tech/kubernetes/%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8-container-capabilities/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
