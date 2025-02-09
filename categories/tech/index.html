@@ -146,6 +146,20 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">ElasticSearch 深度分页记录丢失问题
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>问题 在 Elasticsearch 中使用 SearchAfter 进行深度分页时，SearchAfter 会排除掉排序字段值与 SearchAfter 参数值完全相同的文档。
+当你获取最后一个文档的 Sort 值作为下一次查询的 SearchAfter 参数时，如果最后一个文档的排序字段值与其他文档相同，那么下一次查询就会排除掉这些排序字段值相同的文档，从而导致第二页少一个或多个记录。
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2025-02-08 18:09:19 +0800 CST'>二月 8, 2025</span></footer>
+  <a class="entry-link" aria-label="post link to ElasticSearch 深度分页记录丢失问题" href="/tech/elasticsearch-%E6%B7%B1%E5%BA%A6%E5%88%86%E9%A1%B5%E8%AE%B0%E5%BD%95%E4%B8%A2%E5%A4%B1%E9%97%AE%E9%A2%98/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Kafka 零拷贝技术
     </h2>
   </header>
@@ -266,20 +280,6 @@
   </div>
   <footer class="entry-footer"><span title='2024-08-24 16:09:19 +0800 CST'>八月 24, 2024</span></footer>
   <a class="entry-link" aria-label="post link to 使用 NFS 作为 K8s 存储插件" href="/tech/kubernetes/%E4%BD%BF%E7%94%A8-nfs-%E4%BD%9C%E4%B8%BA-k8s-%E5%AD%98%E5%82%A8%E6%8F%92%E4%BB%B6/"></a>
-</article>
-
-<article class="post-entry tag-entry"> 
-  <header class="entry-header">
-    <h2 class="entry-hint-parent">Nginx 实现 GPT 流式传输
-    </h2>
-  </header>
-  <div class="entry-content">
-    <p>核心参数
-1proxy_buffering off; 该指令使 Nginx 不缓冲来自上游服务器的响应，而是立即将其发送给客户端。适合需要实时或流式传输数据的场景非常有用，比如实时聊天、流媒体等。
-...</p>
-  </div>
-  <footer class="entry-footer"><span title='2024-05-29 16:09:19 +0800 CST'>五月 29, 2024</span></footer>
-  <a class="entry-link" aria-label="post link to Nginx 实现 GPT 流式传输" href="/tech/ops/nginx-%E5%AE%9E%E7%8E%B0-gpt-%E6%B5%81%E5%BC%8F%E4%BC%A0%E8%BE%93/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">

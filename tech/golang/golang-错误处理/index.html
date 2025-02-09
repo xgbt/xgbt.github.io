@@ -343,8 +343,8 @@ panic 会中止程序执行进入异常处理逻辑，panic可以在当前函数
 <h2 id="12-error">1.2 error<a hidden class="anchor" aria-hidden="true" href="#12-error">#</a></h2>
 <p>error会显得更平凡，所有满足error这个interface的值都可以当做一个合法的错误：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">type</span> <span class="kt">error</span> <span class="kd">interface</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="c1">// 输出对该错误的文本描述
-</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span>    <span class="nf">Error</span><span class="p">()</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="c1">// 输出对该错误的文本描述</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="nf">Error</span><span class="p">()</span> <span class="kt">string</span>
 </span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>在Go语言中，error是<a href="https://go.dev/blog/errors-are-values">一个值</a>，运行时不会用特殊的逻辑对待它，不处理它不会让程序打印堆栈异常退出。</p>
 <p>error会在代码中大量出现，表示<strong>连接超时、JSON解析失败、文件不存在等用户层级的错误，往往和业务直接相关</strong>，程序需要着重考虑它们。</p>
@@ -384,20 +384,20 @@ panic 会中止程序执行进入异常处理逻辑，panic可以在当前函数
 </span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="ln"> 7</span><span class="cl">	
 </span></span><span class="line"><span class="ln"> 8</span><span class="cl">	<span class="k">if</span> <span class="nx">weather</span> <span class="o">!=</span> <span class="s">&#34;&#34;</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">		<span class="c1">// cache hit
-</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"></span>		<span class="k">return</span> 
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">		<span class="c1">// cache hit</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">		<span class="k">return</span> 
 </span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="ln">12</span><span class="cl">	
-</span></span><span class="line"><span class="ln">13</span><span class="cl">	<span class="c1">// cache missed, query for data source and update cache
-</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="c1"></span>	<span class="c1">// ...
-</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">	<span class="c1">// cache missed, query for data source and update cache</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl">	<span class="c1">// ...</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="ln">16</span><span class="cl">
 </span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="kd">func</span> <span class="nf">ReadCache</span><span class="p">(</span><span class="nx">city</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="nx">weather</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="ln">18</span><span class="cl">	<span class="nx">cacheKey</span> <span class="o">:=</span> <span class="s">&#34;city-&#34;</span> <span class="o">+</span> <span class="nx">city</span>
 </span></span><span class="line"><span class="ln">19</span><span class="cl">	<span class="nx">weather</span><span class="p">,</span> <span class="nx">err</span> <span class="p">=</span> <span class="nx">cache</span><span class="p">.</span><span class="nf">Get</span><span class="p">(</span><span class="nx">cacheKey</span><span class="p">)</span>
 </span></span><span class="line"><span class="ln">20</span><span class="cl">	<span class="k">if</span> <span class="nx">err</span> <span class="o">==</span> <span class="nx">redis</span><span class="p">.</span><span class="nx">Nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">21</span><span class="cl">		<span class="c1">// cache missed
-</span></span></span><span class="line"><span class="ln">22</span><span class="cl"><span class="c1"></span>		<span class="nx">err</span> <span class="p">=</span> <span class="kc">nil</span>
+</span></span><span class="line"><span class="ln">21</span><span class="cl">		<span class="c1">// cache missed</span>
+</span></span><span class="line"><span class="ln">22</span><span class="cl">		<span class="nx">err</span> <span class="p">=</span> <span class="kc">nil</span>
 </span></span><span class="line"><span class="ln">23</span><span class="cl">		<span class="k">return</span> 
 </span></span><span class="line"><span class="ln">24</span><span class="cl">	<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
 </span></span><span class="line"><span class="ln">25</span><span class="cl">		<span class="nx">err</span> <span class="p">=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;redis Get: %w&#34;</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>

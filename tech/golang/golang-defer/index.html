@@ -442,26 +442,26 @@ defer、return、返回值三者的执行逻辑应该是："/>
 </span></span><span class="line"><span class="ln">5</span><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="ln">6</span><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="ln">7</span><span class="cl">
-</span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="c1">// 43210
-</span></span></span></code></pre></div><h2 id="12-实时解析函数参数">1.2 实时解析函数参数<a hidden class="anchor" aria-hidden="true" href="#12-实时解析函数参数">#</a></h2>
+</span></span><span class="line"><span class="ln">8</span><span class="cl"><span class="c1">// 43210</span>
+</span></span></code></pre></div><h2 id="12-实时解析函数参数">1.2 实时解析函数参数<a hidden class="anchor" aria-hidden="true" href="#12-实时解析函数参数">#</a></h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kn">package</span> <span class="nx">main</span>
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">
 </span></span><span class="line"><span class="ln"> 3</span><span class="cl"><span class="kn">import</span> <span class="s">&#34;fmt&#34;</span>
 </span></span><span class="line"><span class="ln"> 4</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="kd">func</span> <span class="nf">test</span><span class="p">(</span><span class="nx">a</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span><span class="c1">//无返回值函数
-</span></span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="c1"></span>	<span class="k">defer</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;1、a =&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span> <span class="c1">//方法
-</span></span></span><span class="line"><span class="ln"> 7</span><span class="cl"><span class="c1"></span>	<span class="k">defer</span> <span class="kd">func</span><span class="p">(</span><span class="nx">v</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;2、a =&#34;</span><span class="p">,</span> <span class="nx">v</span><span class="p">)}</span> <span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="c1">//有参函数
-</span></span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="c1"></span>	<span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;3、a =&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)}</span> <span class="p">()</span> <span class="c1">//无参函数
-</span></span></span><span class="line"><span class="ln"> 9</span><span class="cl"><span class="c1"></span>	<span class="nx">a</span><span class="o">++</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="kd">func</span> <span class="nf">test</span><span class="p">(</span><span class="nx">a</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span><span class="c1">//无返回值函数</span>
+</span></span><span class="line"><span class="ln"> 6</span><span class="cl">	<span class="k">defer</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;1、a =&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)</span> <span class="c1">//方法</span>
+</span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="k">defer</span> <span class="kd">func</span><span class="p">(</span><span class="nx">v</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;2、a =&#34;</span><span class="p">,</span> <span class="nx">v</span><span class="p">)}</span> <span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="c1">//有参函数</span>
+</span></span><span class="line"><span class="ln"> 8</span><span class="cl">	<span class="k">defer</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;3、a =&#34;</span><span class="p">,</span> <span class="nx">a</span><span class="p">)}</span> <span class="p">()</span> <span class="c1">//无参函数</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="nx">a</span><span class="o">++</span>
 </span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="nf">test</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="ln">14</span><span class="cl">
-</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c1">// 3、a = 2
-</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="c1">// 2、a = 1
-</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1">// 1、a = 1
-</span></span></span></code></pre></div><h2 id="13-return-返回机制">1.3 return 返回机制<a hidden class="anchor" aria-hidden="true" href="#13-return-返回机制">#</a></h2>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c1">// 3、a = 2</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="c1">// 2、a = 1</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1">// 1、a = 1</span>
+</span></span></code></pre></div><h2 id="13-return-返回机制">1.3 return 返回机制<a hidden class="anchor" aria-hidden="true" href="#13-return-返回机制">#</a></h2>
 <p><strong>defer、return、返回值三者的执行逻辑应该是：</strong></p>
 <ul>
 <li>首先，return 最先执行，return将结果写入返回值中；</li>
@@ -513,8 +513,8 @@ defer、return、返回值三者的执行逻辑应该是："/>
 </span></span><span class="line"><span class="ln"> 7</span><span class="cl">		<span class="nx">i</span><span class="o">++</span>
 </span></span><span class="line"><span class="ln"> 8</span><span class="cl">		<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;defer1:&#34;</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span>
 </span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="p">}()</span>
-</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="k">return</span> <span class="nx">i</span> <span class="c1">//或者直接写成return
-</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="k">return</span> <span class="nx">i</span> <span class="c1">//或者直接写成return</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="ln">12</span><span class="cl">
 </span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="ln">14</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;return:&#34;</span><span class="p">,</span> <span class="nf">b</span><span class="p">())</span>
@@ -566,10 +566,10 @@ defer、return、返回值三者的执行逻辑应该是："/>
 </span></span><span class="line"><span class="ln">10</span><span class="cl">		<span class="k">defer</span> <span class="nx">t</span><span class="p">.</span><span class="nf">pp</span><span class="p">()</span>
 </span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1">// c
-</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="c1">// c
-</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c1">// c
-</span></span></span></code></pre></div><p><strong>修改代码，使用有参参数</strong></p>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1">// c</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="c1">// c</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c1">// c</span>
+</span></span></code></pre></div><p><strong>修改代码，使用有参参数</strong></p>
 <p>defer语句中的参数会实时解析，所以在碰到defer语句的时候就把该时的t代入了。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">type</span> <span class="nx">Test</span> <span class="kd">struct</span> <span class="p">{</span>
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="nx">name</span> <span class="kt">string</span>
@@ -583,10 +583,10 @@ defer、return、返回值三者的执行逻辑应该是："/>
 </span></span><span class="line"><span class="ln">10</span><span class="cl">		<span class="k">defer</span> <span class="nf">pp</span><span class="p">(</span><span class="nx">t</span><span class="p">)</span>
 </span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="ln">12</span><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1">// c
-</span></span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="c1">// b
-</span></span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c1">// a
-</span></span></span></code></pre></div><p><strong>修改代码，在循环中声明新变量</strong></p>
+</span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1">// c</span>
+</span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="c1">// b</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl"><span class="c1">// a</span>
+</span></span></code></pre></div><p><strong>修改代码，在循环中声明新变量</strong></p>
 <p>每次都有一个新的变量<code>tt:=t</code>，所以每次在执行defer语句时，对应的 <code>tt</code> 不是同一个，所以输出的结果也不相同。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kd">type</span> <span class="nx">Test</span> <span class="kd">struct</span> <span class="p">{</span>
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">	<span class="nx">name</span> <span class="kt">string</span>

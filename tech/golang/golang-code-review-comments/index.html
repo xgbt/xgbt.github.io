@@ -407,21 +407,21 @@ context.Context 类型的值携带跨 API 和进程边界的安全凭证、跟�
 </ol>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln"> 1</span><span class="cl"><span class="kn">import</span> <span class="p">(</span>
 </span></span><span class="line"><span class="ln"> 2</span><span class="cl">    <span class="s">&#34;crypto/rand&#34;</span>
-</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="c1">// &#34;encoding/base64&#34;
-</span></span></span><span class="line"><span class="ln"> 4</span><span class="cl"><span class="c1"></span>    <span class="c1">// &#34;encoding/hex&#34;
-</span></span></span><span class="line"><span class="ln"> 5</span><span class="cl"><span class="c1"></span>    <span class="s">&#34;fmt&#34;</span>
+</span></span><span class="line"><span class="ln"> 3</span><span class="cl">    <span class="c1">// &#34;encoding/base64&#34;</span>
+</span></span><span class="line"><span class="ln"> 4</span><span class="cl">    <span class="c1">// &#34;encoding/hex&#34;</span>
+</span></span><span class="line"><span class="ln"> 5</span><span class="cl">    <span class="s">&#34;fmt&#34;</span>
 </span></span><span class="line"><span class="ln"> 6</span><span class="cl"><span class="p">)</span>
 </span></span><span class="line"><span class="ln"> 7</span><span class="cl">
 </span></span><span class="line"><span class="ln"> 8</span><span class="cl"><span class="kd">func</span> <span class="nf">Key</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
 </span></span><span class="line"><span class="ln"> 9</span><span class="cl">    <span class="nx">buf</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
 </span></span><span class="line"><span class="ln">10</span><span class="cl">    <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">rand</span><span class="p">.</span><span class="nf">Read</span><span class="p">(</span><span class="nx">buf</span><span class="p">)</span>
 </span></span><span class="line"><span class="ln">11</span><span class="cl">    <span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">12</span><span class="cl">        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>  <span class="c1">// out of randomness, should never happen
-</span></span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="ln">12</span><span class="cl">        <span class="nb">panic</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span>  <span class="c1">// out of randomness, should never happen</span>
+</span></span><span class="line"><span class="ln">13</span><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="ln">14</span><span class="cl">    <span class="k">return</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%x&#34;</span><span class="p">,</span> <span class="nx">buf</span><span class="p">)</span>
-</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="c1">// or hex.EncodeToString(buf)
-</span></span></span><span class="line"><span class="ln">16</span><span class="cl"><span class="c1"></span>    <span class="c1">// or base64.StdEncoding.EncodeToString(buf)
-</span></span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">15</span><span class="cl">    <span class="c1">// or hex.EncodeToString(buf)</span>
+</span></span><span class="line"><span class="ln">16</span><span class="cl">    <span class="c1">// or base64.StdEncoding.EncodeToString(buf)</span>
+</span></span><span class="line"><span class="ln">17</span><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><ol start="5">
 <li>以下两种声明切片的方式，前者声明了一个 nil 切片，而后者声明了空切片，两者的 len() 和 cap() 都为 0，<strong>通常情况下 nil 切片更好</strong>， nil 切片底层指针地址为 0 。</li>
 </ol>
@@ -437,17 +437,17 @@ context.Context 类型的值携带跨 API 和进程边界的安全凭证、跟�
 </ol>
 <p>不推荐：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="c1">// error handling
-</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="c1">// normal code
-</span></span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="c1">// error handling</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl">    <span class="c1">// normal code</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>推荐：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="c1">// error handling
-</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span>    <span class="k">return</span> <span class="c1">// or continue, etc.
-</span></span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="c1"></span><span class="p">}</span>
-</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="c1">// normal code
-</span></span></span></code></pre></div><ol start="10">
+</span></span><span class="line"><span class="ln">2</span><span class="cl">    <span class="c1">// error handling</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl">    <span class="k">return</span> <span class="c1">// or continue, etc.</span>
+</span></span><span class="line"><span class="ln">4</span><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="ln">5</span><span class="cl"><span class="c1">// normal code</span>
+</span></span></code></pre></div><ol start="10">
 <li>
 <p><strong>首字母缩写词，具有一致的大小写。</strong> 例如，&ldquo;URL&rdquo; 应写为&quot;URL&quot;或&quot;url&quot;，而不是&quot;Url&quot;；使用 &ldquo;ServeHTTP&rdquo; 而不是 &ldquo;ServeHttp&rdquo;；使用 &ldquo;xmlHTTPRequest&rdquo; 或&quot;XMLHTTPRequest&quot;；使用 &ldquo;appID&rdquo; 而不是 &ldquo;appId&rdquo;。由 protocol buffer 生成的代码不受此规则的约束。人类编写的代码比机器编写的代码具有更高的标准。</p>
 </li>
@@ -458,9 +458,9 @@ context.Context 类型的值携带跨 API 和进程边界的安全凭证、跟�
 <p>不推荐：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">Foo</span><span class="p">)</span> <span class="nf">Location</span><span class="p">()</span> <span class="p">(</span><span class="kt">float64</span><span class="p">,</span> <span class="kt">float64</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span>
 </span></span></code></pre></div><p>推荐：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// Location returns f&#39;s latitude and longitude.
-</span></span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1">// Negative values mean south and west, respectively.
-</span></span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">Foo</span><span class="p">)</span> <span class="nf">Location</span><span class="p">()</span> <span class="p">(</span><span class="nx">lat</span><span class="p">,</span> <span class="nx">long</span> <span class="kt">float64</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="line"><span class="ln">1</span><span class="cl"><span class="c1">// Location returns f&#39;s latitude and longitude.</span>
+</span></span><span class="line"><span class="ln">2</span><span class="cl"><span class="c1">// Negative values mean south and west, respectively.</span>
+</span></span><span class="line"><span class="ln">3</span><span class="cl"><span class="kd">func</span> <span class="p">(</span><span class="nx">f</span> <span class="o">*</span><span class="nx">Foo</span><span class="p">)</span> <span class="nf">Location</span><span class="p">()</span> <span class="p">(</span><span class="nx">lat</span><span class="p">,</span> <span class="nx">long</span> <span class="kt">float64</span><span class="p">,</span> <span class="nx">err</span> <span class="kt">error</span><span class="p">)</span>
 </span></span></code></pre></div><ol start="12">
 <li>
 <p><strong>避免仅仅为了节省几个字节而将指针作为函数参数传递。</strong> 如果一个函数自始至终，仅将其参数 <code>x</code> 引用为 <code>*x</code>，那这个传入的参数不应该是指针而是值。将指针作为参数的情况例如：传递指向字符串的指针 <code>*string</code> 或指向接口值的指针 <code>*io.Reader</code>，这两个例子中，<strong>指针所指向的值本身是固定大小的，因此可以直接传递</strong>。但不适用于指针指向大型结构体，包括不适用于可能增长的小型结构体。</p>
@@ -527,8 +527,8 @@ context.Context 类型的值携带跨 API 和进程边界的安全凭证、跟�
 </span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="p">}()</span>
 </span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="ln"> 8</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="c1">// wait 10 second
-</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"></span>	<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="c1">// wait 10 second</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="nx">time</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">)</span>
 </span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>上述代码不会按顺序打印的每个值，因为所有闭包函数都绑定了同一个变量，运行此代码时，因为 goroutine 可能要等到循环结束后才会开始执行，所以只会打印最后一个元素10。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="ln"> 1</span><span class="cl">$ go run test.go 
@@ -551,8 +551,8 @@ context.Context 类型的值携带跨 API 和进程边界的安全凭证、跟�
 </span></span><span class="line"><span class="ln"> 6</span><span class="cl">		<span class="p">}(</span><span class="nx">val</span><span class="p">)</span>
 </span></span><span class="line"><span class="ln"> 7</span><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="ln"> 8</span><span class="cl">
-</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="c1">// wait for goroutines to finish
-</span></span></span><span class="line"><span class="ln">10</span><span class="cl"><span class="c1"></span>	<span class="kd">var</span> <span class="nx">input</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="ln"> 9</span><span class="cl">	<span class="c1">// wait for goroutines to finish</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="kd">var</span> <span class="nx">input</span> <span class="kt">string</span>
 </span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Scanln</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">input</span><span class="p">)</span>
 </span></span><span class="line"><span class="ln">12</span><span class="cl">
 </span></span><span class="line"><span class="ln">13</span><span class="cl"><span class="p">}</span>
@@ -579,8 +579,8 @@ context.Context 类型的值携带跨 API 和进程边界的安全凭证、跟�
 </span></span><span class="line"><span class="ln"> 7</span><span class="cl">		<span class="p">}()</span>
 </span></span><span class="line"><span class="ln"> 8</span><span class="cl">	<span class="p">}</span>
 </span></span><span class="line"><span class="ln"> 9</span><span class="cl">
-</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="c1">// wait for goroutines to finish
-</span></span></span><span class="line"><span class="ln">11</span><span class="cl"><span class="c1"></span>	<span class="kd">var</span> <span class="nx">input</span> <span class="kt">string</span>
+</span></span><span class="line"><span class="ln">10</span><span class="cl">	<span class="c1">// wait for goroutines to finish</span>
+</span></span><span class="line"><span class="ln">11</span><span class="cl">	<span class="kd">var</span> <span class="nx">input</span> <span class="kt">string</span>
 </span></span><span class="line"><span class="ln">12</span><span class="cl">	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Scanln</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">input</span><span class="p">)</span>
 </span></span><span class="line"><span class="ln">13</span><span class="cl">
 </span></span><span class="line"><span class="ln">14</span><span class="cl"><span class="p">}</span>
